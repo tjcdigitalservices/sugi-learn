@@ -29,7 +29,7 @@ export default async function AdminMediaDetailPage({
   } catch {
     return (
       <div className="space-y-4">
-        <PageHeader eyebrow="Media" title="Media asset" />
+        <PageHeader title="Media asset" />
         <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
           Unable to load this media asset.
         </div>
@@ -47,9 +47,8 @@ export default async function AdminMediaDetailPage({
   return (
     <div className="space-y-8">
       <PageHeader
-        eyebrow="Media"
         title="Media asset"
-        description="Edit metadata, review status, and section association."
+        description="Edit details, approval status, and chapter assignment."
       />
 
       <Link href="/admin/media" className="text-sm underline underline-offset-4">

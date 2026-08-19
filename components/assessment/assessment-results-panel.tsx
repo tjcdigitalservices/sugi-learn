@@ -69,8 +69,7 @@ export function AssessmentResultsPanel({ view }: AssessmentResultsViewProps) {
         </dl>
 
         <p className="text-xs text-muted-foreground">
-          Pass/fail thresholds and educational interpretation are{" "}
-          <strong>Pending Client Confirmation</strong>.
+          Scores show how many questions you answered correctly.
         </p>
       </section>
 
@@ -172,9 +171,7 @@ export function AssessmentResultsPanel({ view }: AssessmentResultsViewProps) {
             ))}
           </ul>
           <p className="text-xs text-muted-foreground">
-            Retake policy and which attempt is used for comparison are{" "}
-            <strong>Pending Client Confirmation</strong>. The most recent completed
-            attempt per assessment type is shown by default.
+            Your most recent completed attempt for each assessment is shown.
           </p>
         </section>
       ) : null}

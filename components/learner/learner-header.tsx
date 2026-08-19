@@ -74,7 +74,7 @@ export function LearnerHeader({ userLabel, focused = false }: LearnerHeaderProps
     <header className="bg-sl-navy text-white shadow-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
         <Link href="/learn" className="shrink-0">
-          <SugiLearnMark light />
+          <SugiLearnMark light showTagline={false} />
         </Link>
 
         {!isFocused ? (

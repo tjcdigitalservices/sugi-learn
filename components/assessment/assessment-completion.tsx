@@ -11,7 +11,6 @@ interface AssessmentCompletionProps {
 }
 
 export function AssessmentCompletion({
-  assessmentTitle,
   result,
   continueHref,
   continueLabel,
@@ -23,9 +22,6 @@ export function AssessmentCompletion({
     >
       <div className="space-y-6 px-6 py-8 sm:px-8">
         <header className="space-y-2">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sl-gold">
-            {assessmentTitle}
-          </p>
           <h1
             id="assessment-completion-heading"
             className="font-display text-3xl font-semibold tracking-tight text-sl-navy"
@@ -33,8 +29,7 @@ export function AssessmentCompletion({
             Assessment completed
           </h1>
           <p className="text-sm text-sl-ink-muted">
-            Your responses have been saved. Detailed research interpretation is
-            not shown at this stage.
+            Your responses have been saved.
           </p>
         </header>
 
@@ -57,15 +52,15 @@ export function AssessmentCompletion({
           </div>
         </dl>
 
-        <div className="flex flex-wrap gap-3">
-          <Link href={continueHref} className="sl-btn-gold">
-            {continueLabel}
-          </Link>
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <Link
             href="/learn"
             className="inline-flex items-center rounded-full border border-[color:rgba(44,36,22,0.15)] px-5 py-3 text-sm font-medium text-sl-ink transition hover:bg-white"
           >
             Back to home
+          </Link>
+          <Link href={continueHref} className="sl-btn-gold">
+            {continueLabel}
           </Link>
         </div>
       </div>

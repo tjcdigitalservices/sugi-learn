@@ -29,7 +29,7 @@ export default async function PostAssessmentPage() {
     return (
       <AssessmentAccessBlockedState
         title="Post-Assessment is not available yet"
-        description="Complete all chapters before taking the post-assessment. This requirement is Pending Client Confirmation and may change."
+        description="Complete all chapters before taking the post-assessment."
       />
     );
   }
@@ -41,7 +41,7 @@ export default async function PostAssessmentPage() {
     return (
       <AssessmentAccessBlockedState
         title="Pre-Assessment required"
-        description="Complete the pre-assessment before taking the post-assessment. This requirement is Pending Client Confirmation and may change."
+        description="Complete the pre-assessment before taking the post-assessment."
       />
     );
   }

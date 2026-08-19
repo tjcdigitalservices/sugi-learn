@@ -101,7 +101,13 @@ export function LearnerAnimationLesson({
                 <p className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
                   Chapter complete. Your progress has been saved.
                 </p>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <Link
+                    href="/learn"
+                    className="inline-flex items-center rounded-full border border-[color:rgba(44,36,22,0.15)] px-5 py-3 text-sm font-medium text-sl-ink transition hover:bg-white"
+                  >
+                    Return to home
+                  </Link>
                   {nextChapterId ? (
                     <Link
                       href={`/learn/chapters/${nextChapterId}`}
@@ -114,12 +120,6 @@ export function LearnerAnimationLesson({
                       Take the Post-Test
                     </Link>
                   )}
-                  <Link
-                    href="/learn"
-                    className="inline-flex items-center rounded-full border border-[color:rgba(44,36,22,0.15)] px-5 py-3 text-sm font-medium text-sl-ink transition hover:bg-white"
-                  >
-                    Return to home
-                  </Link>
                 </div>
               </div>
             ) : animationSection && asset?.storagePath ? (

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Caveat } from "next/font/google";
 import { forwardRef } from "react";
 
@@ -35,7 +34,8 @@ export const LearnerAssessmentReport = forwardRef<
       <div className="space-y-6 px-8 py-8 sm:px-10 sm:py-10">
         <header className="flex flex-col items-start gap-3 border-b border-[color:rgba(44,36,22,0.12)] pb-5">
           <div className="flex items-center gap-3">
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element -- plain img so PDF capture (html2canvas) can read pixels */}
+            <img
               src="/brand/sugilearn-icon.png"
               alt=""
               width={52}
@@ -83,12 +83,11 @@ export const LearnerAssessmentReport = forwardRef<
       </div>
 
       <div className="relative mt-2 min-h-[220px] overflow-hidden sm:min-h-[280px]">
-        <Image
+        {/* eslint-disable-next-line @next/next/no-img-element -- plain img so PDF capture (html2canvas) can read pixels */}
+        <img
           src="/images/landing-hero.png"
           alt=""
-          fill
-          className="object-cover object-center grayscale contrast-110"
-          sizes="720px"
+          className="absolute inset-0 h-full w-full object-cover object-center grayscale contrast-110"
         />
         <div
           className="absolute inset-0 bg-gradient-to-r from-[rgba(247,239,228,0.55)] via-transparent to-[rgba(247,239,228,0.2)]"

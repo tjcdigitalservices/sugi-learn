@@ -29,9 +29,8 @@ export default async function AdminMediaPage() {
   return (
     <div className="space-y-8">
       <PageHeader
-        eyebrow="Media"
         title="Media Library"
-        description="Upload and manage illustrations, audio, and animation assets. New uploads start as Draft and require approval before learners can see them."
+        description="Upload and manage illustrations, audio, and animation. Approve items before learners can see them."
       />
 
       {errorMessage ? (

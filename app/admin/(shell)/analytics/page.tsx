@@ -46,9 +46,8 @@ export default async function AdminAnalyticsPage({
   return (
     <div className="space-y-8">
       <PageHeader
-        eyebrow="Analytics"
         title="Admin Analytics"
-        description="Participation, progress, and assessment metrics from persisted SugiLearn records. Metrics show data only — not research conclusions."
+        description="Participation, progress, and assessment metrics."
       />
       <AnalyticsWorkspace summary={summary} />
     </div>

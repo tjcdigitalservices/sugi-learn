@@ -19,14 +19,16 @@ export function QuestionResultsGrid({ outcomes }: QuestionResultsGridProps) {
 
       <ul className="flex flex-wrap gap-3">
         {outcomes.map((outcome) => (
-          <li key={outcome.questionId} className="flex w-11 flex-col items-center gap-1.5 sm:w-12">
-            <span className="text-[10px] font-semibold uppercase tracking-wide text-sl-ink-muted">
-              Q{outcome.index}
-            </span>
+          <li
+            key={outcome.questionId}
+            className="flex w-11 flex-col items-center gap-1.5 sm:w-12"
+          >
             <span
               className={cn(
-                "inline-flex h-9 w-9 items-center justify-center rounded-full text-white shadow-sm",
-                outcome.isCorrect ? "bg-emerald-600" : "bg-rose-600",
+                "inline-flex h-9 w-9 items-center justify-center rounded-full",
+                outcome.isCorrect
+                  ? "bg-emerald-500/10 text-emerald-700/70"
+                  : "bg-rose-500/10 text-rose-700/70",
               )}
               aria-label={
                 outcome.isCorrect
@@ -35,10 +37,13 @@ export function QuestionResultsGrid({ outcomes }: QuestionResultsGridProps) {
               }
             >
               {outcome.isCorrect ? (
-                <Check className="h-4 w-4" aria-hidden="true" strokeWidth={3} />
+                <Check className="h-4 w-4" aria-hidden="true" strokeWidth={2.5} />
               ) : (
-                <X className="h-4 w-4" aria-hidden="true" strokeWidth={3} />
+                <X className="h-4 w-4" aria-hidden="true" strokeWidth={2.5} />
               )}
+            </span>
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-sl-ink-muted">
+              Q{outcome.index}
             </span>
           </li>
         ))}
@@ -46,13 +51,13 @@ export function QuestionResultsGrid({ outcomes }: QuestionResultsGridProps) {
 
       <div className="flex flex-wrap items-center gap-4 text-xs text-sl-ink-muted">
         <span className="inline-flex items-center gap-2">
-          <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-600 text-white">
+          <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-700/70">
             <Check className="h-3 w-3" aria-hidden="true" />
           </span>
           Correct
         </span>
         <span className="inline-flex items-center gap-2">
-          <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-rose-600 text-white">
+          <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-rose-500/10 text-rose-700/70">
             <X className="h-3 w-3" aria-hidden="true" />
           </span>
           Incorrect

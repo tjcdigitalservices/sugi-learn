@@ -14,9 +14,8 @@ export default async function ChaptersPage() {
   return (
     <div className="mx-auto max-w-4xl space-y-8">
       <PageHeader
-        eyebrow="Chapter Journey"
         title={`${journey.totalChapters} Chapter${journey.totalChapters === 1 ? "" : "s"}`}
-        description="Each chapter uses the same reusable chapter engine. Your progress is saved as you read."
+        description="Your progress is saved as you go."
       />
 
       <OverallProgress

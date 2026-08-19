@@ -197,8 +197,7 @@ export function MediaUploadForm({
         <h2 className="text-lg font-semibold">Upload media</h2>
         <p className="text-sm text-muted-foreground">
           New uploads start as Draft. Large videos upload directly to storage
-          (max {maxMb} MB). Do not invent cultural or story content in metadata
-          fields.
+          (max {maxMb} MB).
         </p>
       </div>
 
@@ -281,7 +280,7 @@ export function MediaUploadForm({
       <FormField
         label="Source reference"
         htmlFor="media-source"
-        hint="Document or approval reference — not invented story content."
+        hint="Optional document or approval reference."
       >
         <input
           id="media-source"

@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { ArrowRight, Bookmark } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import { HeritageWave } from "@/components/brand/heritage-wave";
 import { cn } from "@/lib/utils";
@@ -27,12 +26,7 @@ interface AssessmentQuestionPanelProps {
   correctOptionId?: string | null;
 }
 
-function bookmarkKey(assessmentTitle: string) {
-  return `sugilearn:bookmarks:${assessmentTitle}`;
-}
-
 export function AssessmentQuestionPanel({
-  assessmentTitle,
   question,
   questionNumber,
   totalQuestions,
@@ -50,31 +44,6 @@ export function AssessmentQuestionPanel({
   correctOptionId = null,
 }: AssessmentQuestionPanelProps) {
   const groupName = `question-${question.id}`;
-  const [bookmarked, setBookmarked] = useState(false);
-
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(bookmarkKey(assessmentTitle));
-      const ids: string[] = raw ? (JSON.parse(raw) as string[]) : [];
-      setBookmarked(ids.includes(question.id));
-    } catch {
-      setBookmarked(false);
-    }
-  }, [assessmentTitle, question.id]);
-
-  function toggleBookmark() {
-    try {
-      const raw = localStorage.getItem(bookmarkKey(assessmentTitle));
-      const ids: string[] = raw ? (JSON.parse(raw) as string[]) : [];
-      const next = ids.includes(question.id)
-        ? ids.filter((id) => id !== question.id)
-        : [...ids, question.id];
-      localStorage.setItem(bookmarkKey(assessmentTitle), JSON.stringify(next));
-      setBookmarked(next.includes(question.id));
-    } catch {
-      // Ignore storage failures (private mode, etc.)
-    }
-  }
 
   return (
     <article
@@ -164,25 +133,7 @@ export function AssessmentQuestionPanel({
         )}
 
         <footer className="flex flex-wrap items-center justify-between gap-3 pt-1">
-          <button
-            type="button"
-            onClick={toggleBookmark}
-            className={cn(
-              "inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium transition",
-              bookmarked
-                ? "text-sl-gold"
-                : "text-sl-ink-muted hover:text-sl-navy",
-            )}
-            aria-pressed={bookmarked}
-          >
-            <Bookmark
-              className={cn("h-4 w-4", bookmarked ? "fill-current" : null)}
-              aria-hidden="true"
-            />
-            Bookmark
-          </button>
-
-          <div className="flex flex-wrap items-center gap-2">
+          <div>
             {!isFirst ? (
               <button
                 type="button"
@@ -193,7 +144,9 @@ export function AssessmentQuestionPanel({
                 Previous
               </button>
             ) : null}
+          </div>
 
+          <div className="flex flex-wrap items-center gap-2">
             {isLast ? (
               previewMode ? (
                 <span className="text-sm text-sl-ink-muted">End of preview</span>

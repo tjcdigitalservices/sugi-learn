@@ -18,9 +18,8 @@ export default async function AdminDashboardPage() {
     return (
       <div className="space-y-10">
         <PageHeader
-          eyebrow="Administration"
           title="Dashboard"
-          description="Overview of chapters, content readiness, and system records. All values reflect current database state."
+          description="Overview of chapters, content readiness, and activity."
         />
 
         <MetricsGrid summary={summary} />
@@ -39,9 +38,8 @@ export default async function AdminDashboardPage() {
     return (
       <div className="space-y-8">
         <PageHeader
-          eyebrow="Administration"
           title="Dashboard"
-          description="Overview of chapters, content readiness, and system records."
+          description="Overview of chapters, content readiness, and activity."
         />
         <DashboardError />
       </div>

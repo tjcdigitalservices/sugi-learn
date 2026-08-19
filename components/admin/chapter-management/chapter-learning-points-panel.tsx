@@ -88,8 +88,7 @@ export function ChapterLearningPointsPanel({
       <div>
         <h2 className="text-lg font-semibold">Learning points</h2>
         <p className="text-sm text-muted-foreground">
-          Manage learning points for this chapter. Use approved content only —
-          do not invent official learning points.
+          Manage learning points for this chapter.
         </p>
       </div>
 

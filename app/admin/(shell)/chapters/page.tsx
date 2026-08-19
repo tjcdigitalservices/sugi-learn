@@ -15,16 +15,12 @@ export default async function AdminChaptersPage() {
       "Unable to load chapters. Please refresh the page or try again later.";
   }
 
-  const activeCount = chapters.filter((chapter) => chapter.isActive !== false)
-    .length;
-
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <PageHeader
-          eyebrow="Chapter Management"
           title="Chapters"
-          description={`Manage ${activeCount} active chapter${activeCount === 1 ? "" : "s"} and their structure. The initial 13 Sugidanon stories are seeded content — you can add more without developer changes.`}
+          description="Manage chapter structure and content."
         />
         <CreateChapterPanel />
       </div>
@@ -38,8 +34,8 @@ export default async function AdminChaptersPage() {
       <ChapterListTable chapters={chapters} />
 
       <p className="text-sm text-muted-foreground">
-        Archive a chapter to remove it from new learner journeys. Existing
-        learner progress and analytics records are preserved.
+        Archive a chapter to hide it from new learner journeys. Existing
+        learner progress is kept.
       </p>
     </div>
   );

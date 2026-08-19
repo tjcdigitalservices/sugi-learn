@@ -18,9 +18,8 @@ export default async function AdminAssessmentsPage() {
   return (
     <div className="space-y-8">
       <PageHeader
-        eyebrow="Assessments"
         title="Assessment Management"
-        description="Manage pre- and post-assessment questions, options, and review status. Content is data-driven — do not invent official SugiLearn questions."
+        description="Manage pre- and post-assessment questions and answers."
       />
 
       {errorMessage ? (

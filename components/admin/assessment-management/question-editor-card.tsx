@@ -268,7 +268,7 @@ export function QuestionEditorCard({
           <FormField
             label="Source reference"
             htmlFor={`source-${question.id}`}
-            hint="Traceability to approved learning material. Do not invent references."
+            hint="Optional reference to the source material."
           >
             <input
               id={`source-${question.id}`}

@@ -1,14 +1,28 @@
 import "server-only";
 
-import { listAssessmentsForAdmin, getAssessmentQuestionsForAdmin } from "@/lib/domain/assessment-management";
-import { listChaptersForAdmin, getChapterForAdmin } from "@/lib/domain/chapter-management";
+import {
+  listAssessmentsForAdmin,
+  getAssessmentQuestionsForAdmin,
+} from "@/lib/domain/assessment-management";
+import {
+  listChaptersForAdmin,
+  getChapterForAdmin,
+} from "@/lib/domain/chapter-management";
 import { listMediaAssetsForAdmin } from "@/lib/domain/media-management";
+import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { hasSupabaseConfig } from "@/lib/supabase/service";
 import type { ReviewStatus } from "@/types/review";
 import { getReviewStatusLabel, isReviewQueueStatus } from "@/types/review";
 
 export interface ContentReviewQueueItem {
   id: string;
-  area: "chapter" | "section" | "learning_point" | "media" | "assessment" | "question";
+  area:
+    | "chapter"
+    | "section"
+    | "learning_point"
+    | "media"
+    | "assessment"
+    | "question";
   title: string;
   subtitle: string | null;
   reviewStatus: ReviewStatus;
@@ -20,6 +34,15 @@ export interface ContentReviewQueueSummary {
   counts: Record<ReviewStatus, number>;
 }
 
+function emptyCounts(): Record<ReviewStatus, number> {
+  return {
+    draft: 0,
+    for_review: 0,
+    approved: 0,
+    needs_revision: 0,
+  };
+}
+
 function incrementCount(
   counts: Record<ReviewStatus, number>,
   status: ReviewStatus,
@@ -27,18 +50,225 @@ function incrementCount(
   counts[status] += 1;
 }
 
-export async function getContentReviewQueue(): Promise<ContentReviewQueueSummary> {
-  const counts: Record<ReviewStatus, number> = {
-    draft: 0,
-    for_review: 0,
-    approved: 0,
-    needs_revision: 0,
-  };
+function sortQueueItems(items: ContentReviewQueueItem[]): void {
+  items.sort((left, right) => {
+    const statusOrder = (status: ReviewStatus) => {
+      if (status === "needs_revision") {
+        return 0;
+      }
+      if (status === "for_review") {
+        return 1;
+      }
+      return 2;
+    };
 
+    const orderDiff =
+      statusOrder(left.reviewStatus) - statusOrder(right.reviewStatus);
+    if (orderDiff !== 0) {
+      return orderDiff;
+    }
+
+    return left.title.localeCompare(right.title);
+  });
+}
+
+/**
+ * Fast path: a few bulk selects instead of loading every chapter in full
+ * (the previous N+1 loop made /admin/review appear to load forever).
+ */
+async function getContentReviewQueueFromSupabase(): Promise<ContentReviewQueueSummary> {
+  const supabase = await getSupabaseServerClient();
+  const counts = emptyCounts();
+  const items: ContentReviewQueueItem[] = [];
+
+  const [
+    chaptersResult,
+    sectionsResult,
+    pointsResult,
+    mediaResult,
+    assessmentsResult,
+    questionsResult,
+  ] = await Promise.all([
+    supabase
+      .from("chapters")
+      .select("id, slug, chapter_number, title, review_status")
+      .order("chapter_number", { ascending: true }),
+    supabase
+      .from("chapter_sections")
+      .select("id, chapter_id, kind, title, review_status"),
+    supabase
+      .from("learning_points")
+      .select("id, chapter_id, title, review_status"),
+    supabase
+      .from("media_assets")
+      .select("id, title, chapter_id, review_status"),
+    supabase.from("assessments").select("id, type, title, review_status"),
+    supabase
+      .from("questions")
+      .select("id, assessment_id, prompt, sort_order, review_status"),
+  ]);
+
+  const firstError =
+    chaptersResult.error ??
+    sectionsResult.error ??
+    pointsResult.error ??
+    mediaResult.error ??
+    assessmentsResult.error ??
+    questionsResult.error;
+
+  if (firstError) {
+    throw new Error(`Unable to load review queue: ${firstError.message}`);
+  }
+
+  const chapters = chaptersResult.data ?? [];
+  const chapterById = new Map(
+    chapters.map((chapter) => [
+      chapter.id,
+      {
+        slug: chapter.slug,
+        title: chapter.title,
+        number: chapter.chapter_number,
+      },
+    ]),
+  );
+
+  for (const chapter of chapters) {
+    const status = chapter.review_status as ReviewStatus;
+    incrementCount(counts, status);
+    if (isReviewQueueStatus(status)) {
+      items.push({
+        id: `chapter-${chapter.slug}`,
+        area: "chapter",
+        title: chapter.title,
+        subtitle: `Chapter ${chapter.chapter_number} metadata`,
+        reviewStatus: status,
+        href: `/admin/chapters/${chapter.slug}`,
+      });
+    }
+  }
+
+  for (const section of sectionsResult.data ?? []) {
+    const status = section.review_status as ReviewStatus;
+    incrementCount(counts, status);
+    if (!isReviewQueueStatus(status)) {
+      continue;
+    }
+    const chapter = chapterById.get(section.chapter_id);
+    items.push({
+      id: `section-${section.id}`,
+      area: "section",
+      title: section.title,
+      subtitle: chapter
+        ? `${chapter.title} — ${String(section.kind).replaceAll("_", " ")}`
+        : String(section.kind).replaceAll("_", " "),
+      reviewStatus: status,
+      href: chapter ? `/admin/chapters/${chapter.slug}` : "/admin/chapters",
+    });
+  }
+
+  for (const point of pointsResult.data ?? []) {
+    const status = point.review_status as ReviewStatus;
+    incrementCount(counts, status);
+    if (!isReviewQueueStatus(status)) {
+      continue;
+    }
+    const chapter = chapterById.get(point.chapter_id);
+    items.push({
+      id: `learning-point-${point.id}`,
+      area: "learning_point",
+      title: point.title ?? "Untitled learning point",
+      subtitle: chapter
+        ? `${chapter.title} — learning point`
+        : "Learning point",
+      reviewStatus: status,
+      href: chapter ? `/admin/chapters/${chapter.slug}` : "/admin/chapters",
+    });
+  }
+
+  for (const asset of mediaResult.data ?? []) {
+    const status = asset.review_status as ReviewStatus;
+    incrementCount(counts, status);
+    if (!isReviewQueueStatus(status)) {
+      continue;
+    }
+    const chapter = asset.chapter_id
+      ? chapterById.get(asset.chapter_id)
+      : undefined;
+    items.push({
+      id: `media-${asset.id}`,
+      area: "media",
+      title: asset.title ?? "Untitled media asset",
+      subtitle: chapter
+        ? `Chapter: ${chapter.slug}`
+        : "Unassigned media",
+      reviewStatus: status,
+      href: `/admin/media/${asset.id}`,
+    });
+  }
+
+  const assessments = assessmentsResult.data ?? [];
+  const assessmentById = new Map(
+    assessments.map((assessment) => [
+      assessment.id,
+      {
+        title: assessment.title,
+        type: assessment.type as "pre" | "post",
+      },
+    ]),
+  );
+
+  for (const assessment of assessments) {
+    const status = assessment.review_status as ReviewStatus;
+    incrementCount(counts, status);
+    if (isReviewQueueStatus(status)) {
+      items.push({
+        id: `assessment-${assessment.id}`,
+        area: "assessment",
+        title: assessment.title,
+        subtitle:
+          assessment.type === "pre" ? "Pre-Assessment" : "Post-Assessment",
+        reviewStatus: status,
+        href: `/admin/assessments/${assessment.id}`,
+      });
+    }
+  }
+
+  for (const question of questionsResult.data ?? []) {
+    const status = question.review_status as ReviewStatus;
+    incrementCount(counts, status);
+    if (!isReviewQueueStatus(status)) {
+      continue;
+    }
+    const assessment = assessmentById.get(question.assessment_id);
+    items.push({
+      id: `question-${question.id}`,
+      area: "question",
+      title: question.prompt,
+      subtitle: assessment
+        ? `${assessment.title} — question ${question.sort_order}`
+        : `Question ${question.sort_order}`,
+      reviewStatus: status,
+      href: assessment
+        ? `/admin/assessments/${question.assessment_id}`
+        : "/admin/assessments",
+    });
+  }
+
+  sortQueueItems(items);
+  return { items, counts };
+}
+
+/** Mock / offline fallback — parallel chapter loads (still heavier than bulk SQL). */
+async function getContentReviewQueueFromDomain(): Promise<ContentReviewQueueSummary> {
+  const counts = emptyCounts();
   const items: ContentReviewQueueItem[] = [];
 
   const chapters = await listChaptersForAdmin();
-  for (const chapter of chapters) {
+  const details = await Promise.all(
+    chapters.map((chapter) => getChapterForAdmin(chapter.id)),
+  );
+
+  chapters.forEach((chapter, index) => {
     incrementCount(counts, chapter.reviewStatus);
 
     if (isReviewQueueStatus(chapter.reviewStatus)) {
@@ -52,9 +282,9 @@ export async function getContentReviewQueue(): Promise<ContentReviewQueueSummary
       });
     }
 
-    const detail = await getChapterForAdmin(chapter.id);
+    const detail = details[index];
     if (!detail) {
-      continue;
+      return;
     }
 
     for (const section of detail.sections) {
@@ -86,9 +316,13 @@ export async function getContentReviewQueue(): Promise<ContentReviewQueueSummary
         });
       }
     }
-  }
+  });
 
-  const mediaAssets = await listMediaAssetsForAdmin({});
+  const [mediaAssets, assessments] = await Promise.all([
+    listMediaAssetsForAdmin({}),
+    listAssessmentsForAdmin(),
+  ]);
+
   for (const asset of mediaAssets) {
     incrementCount(counts, asset.reviewStatus);
 
@@ -106,8 +340,13 @@ export async function getContentReviewQueue(): Promise<ContentReviewQueueSummary
     }
   }
 
-  const assessments = await listAssessmentsForAdmin();
-  for (const assessment of assessments) {
+  const questionLists = await Promise.all(
+    assessments.map((assessment) =>
+      getAssessmentQuestionsForAdmin(assessment.id),
+    ),
+  );
+
+  assessments.forEach((assessment, index) => {
     incrementCount(counts, assessment.reviewStatus);
 
     if (isReviewQueueStatus(assessment.reviewStatus)) {
@@ -115,15 +354,14 @@ export async function getContentReviewQueue(): Promise<ContentReviewQueueSummary
         id: `assessment-${assessment.id}`,
         area: "assessment",
         title: assessment.title,
-        subtitle: assessment.type === "pre" ? "Pre-Assessment" : "Post-Assessment",
+        subtitle:
+          assessment.type === "pre" ? "Pre-Assessment" : "Post-Assessment",
         reviewStatus: assessment.reviewStatus,
         href: `/admin/assessments/${assessment.id}`,
       });
     }
 
-    const detailQuestions = await getAssessmentQuestionsForAdmin(assessment.id);
-
-    for (const question of detailQuestions) {
+    for (const question of questionLists[index] ?? []) {
       incrementCount(counts, question.reviewStatus);
 
       if (isReviewQueueStatus(question.reviewStatus)) {
@@ -137,31 +375,17 @@ export async function getContentReviewQueue(): Promise<ContentReviewQueueSummary
         });
       }
     }
-  }
-
-  items.sort((left, right) => {
-    const statusOrder = (status: ReviewStatus) => {
-      if (status === "needs_revision") {
-        return 0;
-      }
-      if (status === "for_review") {
-        return 1;
-      }
-      return 2;
-    };
-
-    const orderDiff = statusOrder(left.reviewStatus) - statusOrder(right.reviewStatus);
-    if (orderDiff !== 0) {
-      return orderDiff;
-    }
-
-    return left.title.localeCompare(right.title);
   });
 
-  return {
-    items,
-    counts,
-  };
+  sortQueueItems(items);
+  return { items, counts };
+}
+
+export async function getContentReviewQueue(): Promise<ContentReviewQueueSummary> {
+  if (hasSupabaseConfig()) {
+    return getContentReviewQueueFromSupabase();
+  }
+  return getContentReviewQueueFromDomain();
 }
 
 export function formatReviewQueueArea(
