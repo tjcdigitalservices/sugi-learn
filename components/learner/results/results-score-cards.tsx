@@ -30,18 +30,22 @@ interface ScoreCardsProps {
 }
 
 export function ResultsScoreCards({ view, compact = false }: ScoreCardsProps) {
-  const cardPad = compact ? "px-4 py-4" : "px-4 py-5 sm:px-5 sm:py-6";
+  const cardPad = compact
+    ? "px-2.5 py-3 sm:px-4 sm:py-4"
+    : "px-2.5 py-3.5 sm:px-5 sm:py-6";
   const scoreClass = compact
-    ? "mt-2 text-2xl font-semibold tabular-nums leading-none"
-    : "mt-3 text-3xl font-semibold tabular-nums leading-none sm:text-4xl";
+    ? "mt-1.5 text-xl font-semibold tabular-nums leading-none sm:mt-2 sm:text-2xl"
+    : "mt-1.5 text-xl font-semibold tabular-nums leading-none sm:mt-3 sm:text-3xl md:text-4xl";
   const labelClass =
-    "text-xs font-semibold uppercase tracking-[0.14em]";
+    "text-[9px] font-semibold uppercase tracking-[0.08em] sm:text-xs sm:tracking-[0.14em]";
+  const metaClass =
+    "mt-1.5 text-[10px] font-medium leading-snug text-sl-ink-muted sm:mt-2 sm:text-sm";
 
   return (
-    <div className="grid gap-3 sm:grid-cols-3 sm:gap-4">
+    <div className="grid grid-cols-3 gap-2 sm:gap-4">
       <article
         className={cn(
-          "rounded-2xl border border-[color:rgba(92,127,166,0.35)] bg-[color:rgba(92,127,166,0.12)]",
+          "min-w-0 rounded-xl border border-[color:rgba(92,127,166,0.35)] bg-[color:rgba(92,127,166,0.12)] sm:rounded-2xl",
           cardPad,
         )}
       >
@@ -51,9 +55,7 @@ export function ResultsScoreCards({ view, compact = false }: ScoreCardsProps) {
             <p className={cn(scoreClass, "text-sl-navy")}>
               {view.pre.correctCount}/{view.pre.total}
             </p>
-            <p className="mt-2 text-sm font-medium tabular-nums text-sl-ink-muted">
-              {view.pre.score}%
-            </p>
+            <p className={cn(metaClass, "tabular-nums")}>{view.pre.score}%</p>
           </>
         ) : (
           <p className={cn(scoreClass, "text-sl-ink-muted")}>—</p>
@@ -62,7 +64,7 @@ export function ResultsScoreCards({ view, compact = false }: ScoreCardsProps) {
 
       <article
         className={cn(
-          "rounded-2xl border border-[color:rgba(46,94,78,0.35)] bg-[color:rgba(46,94,78,0.12)]",
+          "min-w-0 rounded-xl border border-[color:rgba(46,94,78,0.35)] bg-[color:rgba(46,94,78,0.12)] sm:rounded-2xl",
           cardPad,
         )}
       >
@@ -70,14 +72,12 @@ export function ResultsScoreCards({ view, compact = false }: ScoreCardsProps) {
         <p className={cn(scoreClass, "text-sl-navy")}>
           {view.post.correctCount}/{view.post.total}
         </p>
-        <p className="mt-2 text-sm font-medium tabular-nums text-sl-ink-muted">
-          {view.post.score}%
-        </p>
+        <p className={cn(metaClass, "tabular-nums")}>{view.post.score}%</p>
       </article>
 
       <article
         className={cn(
-          "rounded-2xl border border-[color:rgba(209,165,58,0.45)] bg-[color:rgba(240,212,138,0.45)]",
+          "min-w-0 rounded-xl border border-[color:rgba(209,165,58,0.45)] bg-[color:rgba(240,212,138,0.45)] sm:rounded-2xl",
           cardPad,
         )}
       >
@@ -94,9 +94,7 @@ export function ResultsScoreCards({ view, compact = false }: ScoreCardsProps) {
           {formatGainValue(view.learningGainPercentagePoints)}
         </p>
         {view.learningGainPercentagePoints !== null ? (
-          <p className="mt-2 text-sm font-medium text-sl-ink-muted">
-            percentage points
-          </p>
+          <p className={metaClass}>percentage points</p>
         ) : null}
       </article>
     </div>

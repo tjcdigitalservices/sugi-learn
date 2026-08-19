@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { ArrowLeft, ArrowRight, Check, Info, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, X } from "lucide-react";
 
 import { HeritageWave } from "@/components/brand/heritage-wave";
 import type { AttemptQuestionReviewItem } from "@/types/assessment";
@@ -50,9 +50,6 @@ export function QuestionReviewPanel({
   }
 
   const item = incorrectReviews[index];
-  const explanation =
-    item.explanation?.trim() ||
-    "No explanation was provided for this question.";
 
   return (
     <div className="mx-auto max-w-2xl space-y-6 pb-10">
@@ -101,18 +98,6 @@ export function QuestionReviewPanel({
               <span>{item.correctLabel}</span>
             </p>
           </div>
-        </div>
-
-        <div className="rounded-xl border border-[color:rgba(11,29,58,0.12)] bg-[color:rgba(11,29,58,0.04)] px-4 py-4">
-          <div className="mb-2 flex items-center gap-2 text-sl-navy">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-sl-navy text-white">
-              <Info className="h-4 w-4" aria-hidden="true" />
-            </span>
-            <h2 className="text-sm font-semibold uppercase tracking-wide">
-              Explanation
-            </h2>
-          </div>
-          <p className="text-sm leading-relaxed text-sl-ink">{explanation}</p>
         </div>
 
         <div className="flex items-center justify-between gap-3 pt-2">
