@@ -1,0 +1,348 @@
+{
+  "pre": {
+    "id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1",
+    "type": "pre",
+    "title": "Pre-Assessment",
+    "instructions": "Measure baseline knowledge before the learning experience. Choose the best answer for each question. 1 point per question.",
+    "questions": [
+      {
+        "id": "b1000000-0000-4000-8000-000000000001",
+        "prompt": "Who is Tikum Kadlum?",
+        "correctIndex": 1,
+        "options": [
+          "A powerful underworld being",
+          "An extraordinary dog belonging to Datu Paiburong",
+          "A rival of Labaw Donggon",
+          "A ritual specialist"
+        ]
+      },
+      {
+        "id": "b1000000-0000-4000-8000-000000000002",
+        "prompt": "What happened when Paiburong cut the unusual bamboo?",
+        "correctIndex": 2,
+        "options": [
+          "He discovered a hidden treasure",
+          "The bamboo transformed into an island",
+          "It caused a dispute because the bamboo belonged to Makabagting and Amburukay",
+          "Tikum Kadlum became ill"
+        ]
+      },
+      {
+        "id": "b1000000-0000-4000-8000-000000000003",
+        "prompt": "How did Amburukay keep Matan-ayon and Saranggaon?",
+        "correctIndex": 0,
+        "options": [
+          "In a golden chamber as binukot",
+          "In an underworld kingdom",
+          "On a magical island",
+          "In a sailing vessel"
+        ]
+      },
+      {
+        "id": "b1000000-0000-4000-8000-000000000004",
+        "prompt": "What did Labaw Donggon need to obtain from Amburukay?",
+        "correctIndex": 1,
+        "options": [
+          "Her golden boat",
+          "Her golden hair",
+          "Her magical necklace",
+          "Her heirloom vessel"
+        ]
+      },
+      {
+        "id": "b1000000-0000-4000-8000-000000000005",
+        "prompt": "What was the significance of the gold medallion in Derikaryong Pada?",
+        "correctIndex": 1,
+        "options": [
+          "It represented a weapon",
+          "It marked an agreement promising Matan-ayon to Labaw Donggon",
+          "It belonged to Paglambuhan",
+          "It was used to enter the underworld"
+        ]
+      },
+      {
+        "id": "b1000000-0000-4000-8000-000000000006",
+        "prompt": "What makes Balanakon different from an ordinary warrior?",
+        "correctIndex": 1,
+        "options": [
+          "He owns a magical boat",
+          "He possesses extraordinary innate power as a dalagangan",
+          "He controls the underworld",
+          "He can transform into a pawikan"
+        ]
+      },
+      {
+        "id": "b1000000-0000-4000-8000-000000000007",
+        "prompt": "In Kalampay, what does Masangladon transform into an island?",
+        "correctIndex": 2,
+        "options": [
+          "A bamboo tree",
+          "A giant turtle",
+          "A crab",
+          "A lion"
+        ]
+      },
+      {
+        "id": "b1000000-0000-4000-8000-000000000008",
+        "prompt": "What happens to Labaw Donggon in Pahagunong?",
+        "correctIndex": 1,
+        "options": [
+          "He becomes a lion",
+          "He becomes a pawikan",
+          "He becomes a giant crab",
+          "He becomes a tree"
+        ]
+      },
+      {
+        "id": "b1000000-0000-4000-8000-000000000009",
+        "prompt": "Where is Sinagnayan's life-force concealed?",
+        "correctIndex": 2,
+        "options": [
+          "Inside a golden boat",
+          "Inside a bamboo tree",
+          "In an eggshell inside the heart of a lion",
+          "Inside an enchanted pillow"
+        ]
+      },
+      {
+        "id": "b1000000-0000-4000-8000-000000000010",
+        "prompt": "Who is Nagmalitong Yawa, also frequently called Mali?",
+        "correctIndex": 1,
+        "options": [
+          "Labaw Donggon's mother",
+          "Humadapnon's courtship partner",
+          "Sinagnayan's mother",
+          "Laon Sina's sister"
+        ]
+      },
+      {
+        "id": "b1000000-0000-4000-8000-000000000011",
+        "prompt": "What is the tuos in the Pagbalukat ka Biday story?",
+        "correctIndex": 0,
+        "options": [
+          "A mark of engagement represented by an heirloom boat",
+          "A ritual performed by Ginduluman",
+          "A magical weapon",
+          "A golden chamber"
+        ]
+      },
+      {
+        "id": "b1000000-0000-4000-8000-000000000012",
+        "prompt": "What happens during the Hungaw story?",
+        "correctIndex": 0,
+        "options": [
+          "Humadapnon and Mali's marriage is formally arranged",
+          "Matan-ayon enters the underworld",
+          "Paiburong cuts the unusual bamboo",
+          "Sinagnayan fights Balanakon"
+        ]
+      },
+      {
+        "id": "b1000000-0000-4000-8000-000000000013",
+        "prompt": "What happens to Mali during Ginlawan?",
+        "correctIndex": 2,
+        "options": [
+          "She becomes a pawikan",
+          "She is carried into the underworld",
+          "She dies during the conflict and is later restored to life",
+          "She becomes a ritual specialist"
+        ]
+      },
+      {
+        "id": "b1000000-0000-4000-8000-000000000014",
+        "prompt": "What is the purpose of the alayaw tree in Alayaw?",
+        "correctIndex": 1,
+        "options": [
+          "To protect Humadapnon from Sinagnayan",
+          "To entice Mali outside her enclosure so Humadapnon can see her",
+          "To open a passage into the underworld",
+          "To restore Matan-ayon's health"
+        ]
+      },
+      {
+        "id": "b1000000-0000-4000-8000-000000000015",
+        "prompt": "What does Nagbuhis reveal about Mali?",
+        "correctIndex": 2,
+        "options": [
+          "She is only a passive character in Humadapnon's story",
+          "She has no connection to ritual knowledge",
+          "She uses deception and magic and is connected to the inheritance of ritual knowledge through her maternal family",
+          "She is the owner of the heirloom boat"
+        ]
+      }
+    ]
+  },
+  "post": {
+    "id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2",
+    "type": "post",
+    "title": "Post-Assessment",
+    "instructions": "Measure understanding after completing the SugiLearn learning experience. Choose the best answer for each question. 1 point per question.",
+    "questions": [
+      {
+        "id": "c1000000-0000-4000-8000-000000000001",
+        "prompt": "Why did Paiburong's cutting of the unusual bamboo create a conflict?",
+        "correctIndex": 1,
+        "options": [
+          "The bamboo belonged to his brother",
+          "The bamboo was a sacred object owned by Makabagting and Amburukay",
+          "The bamboo contained a hidden treasure",
+          "The bamboo was needed to build a boat"
+        ]
+      },
+      {
+        "id": "c1000000-0000-4000-8000-000000000002",
+        "prompt": "What was unusual about Amburukay's treatment of Matan-ayon and Saranggaon?",
+        "correctIndex": 1,
+        "options": [
+          "She imprisoned them in the underworld",
+          "She raised them as her own daughters in a golden chamber as binukot",
+          "She sent them to Labaw Donggon",
+          "She trained them to become warriors"
+        ]
+      },
+      {
+        "id": "c1000000-0000-4000-8000-000000000003",
+        "prompt": "What does the story of Amburukay demonstrate about Labaw Donggon's actions?",
+        "correctIndex": 0,
+        "options": [
+          "Taking what one wants can create obligations and consequences",
+          "Physical strength always solves conflicts",
+          "Marriage is unrelated to family obligations",
+          "Magical objects have no importance"
+        ]
+      },
+      {
+        "id": "c1000000-0000-4000-8000-000000000004",
+        "prompt": "In Derikaryong Pada, why was recovering the heirloom sailboat important?",
+        "correctIndex": 1,
+        "options": [
+          "It was needed to enter the underworld",
+          "It was the condition through which a suitor could prove his right to marry Matan-ayon",
+          "It belonged to Sinagnayan",
+          "It was used during a ritual ceremony"
+        ]
+      },
+      {
+        "id": "c1000000-0000-4000-8000-000000000005",
+        "prompt": "What does the conflict involving Balanakon demonstrate?",
+        "correctIndex": 2,
+        "options": [
+          "Every conflict can be solved through greater physical strength",
+          "Extraordinary power makes negotiation unnecessary",
+          "Some conflicts require an authoritative intermediary rather than force alone",
+          "Rivalries are always resolved through marriage"
+        ]
+      },
+      {
+        "id": "c1000000-0000-4000-8000-000000000006",
+        "prompt": "Why was Matan-ayon carried toward the underworld in Kalampay?",
+        "correctIndex": 1,
+        "options": [
+          "She intentionally travelled there to meet Masangladon",
+          "She unknowingly entered the transformed crab-island while gathering fruit",
+          "Labaw Donggon sent her there",
+          "She was searching for Sinagnayan"
+        ]
+      },
+      {
+        "id": "c1000000-0000-4000-8000-000000000007",
+        "prompt": "What does Labaw Donggon's experience with Masangladon show?",
+        "correctIndex": 0,
+        "options": [
+          "Even a powerful hero may need to respect other jurisdictions and powers",
+          "Heroes always win through combat",
+          "The underworld has no rules",
+          "Matan-ayon can resolve every conflict herself"
+        ]
+      },
+      {
+        "id": "c1000000-0000-4000-8000-000000000008",
+        "prompt": "How did Matan-ayon respond when Pahagunong became involved in the conflict?",
+        "correctIndex": 1,
+        "options": [
+          "She remained passive and waited for Labaw Donggon",
+          "She transformed herself into a man and entered the conflict",
+          "She escaped into the underworld",
+          "She asked Sinagnayan for help"
+        ]
+      },
+      {
+        "id": "c1000000-0000-4000-8000-000000000009",
+        "prompt": "How was Sinagnayan ultimately defeated?",
+        "correctIndex": 2,
+        "options": [
+          "Labaw Donggon defeated him through strength alone",
+          "Matan-ayon defeated him with magic",
+          "Knowledge about his hidden life-force, disguise, cooperation, and strategy made his defeat possible",
+          "Balanakon defeated him"
+        ]
+      },
+      {
+        "id": "c1000000-0000-4000-8000-000000000010",
+        "prompt": "Which statement best describes Mali/Nagmalitong Yawa?",
+        "correctIndex": 1,
+        "options": [
+          "She is mainly a passive character waiting for Humadapnon",
+          "She actively uses disguise, ritual, magic, strategy, and rescue throughout the story",
+          "She appears only during the wedding",
+          "She is primarily an antagonist to Humadapnon"
+        ]
+      },
+      {
+        "id": "c1000000-0000-4000-8000-000000000011",
+        "prompt": "What does the tuos represent in Pagbalukat ka Biday?",
+        "correctIndex": 1,
+        "options": [
+          "A punishment for breaking a promise",
+          "A mark of engagement represented by an heirloom boat",
+          "A weapon used by Paglambuhan",
+          "A ceremony for entering the underworld"
+        ]
+      },
+      {
+        "id": "c1000000-0000-4000-8000-000000000012",
+        "prompt": "What is the significance of the Hungaw story?",
+        "correctIndex": 0,
+        "options": [
+          "It focuses on a formal marriage involving extended families, hospitality, and social relationships",
+          "It explains how Tikum Kadlum was born",
+          "It describes Matan-ayon's journey into the underworld",
+          "It focuses on Balanakon's powers"
+        ]
+      },
+      {
+        "id": "c1000000-0000-4000-8000-000000000013",
+        "prompt": "What important idea is presented through Mali's death and restoration in Ginlawan?",
+        "correctIndex": 1,
+        "options": [
+          "Supernatural powers always guarantee a happy ending",
+          "Honour, loyalty, justice, and marital obligations can have consequences even after supernatural rescue",
+          "Marriage eliminates all conflict",
+          "Humadapnon's actions have no consequences"
+        ]
+      },
+      {
+        "id": "c1000000-0000-4000-8000-000000000014",
+        "prompt": "Why did Laon Sina recommend planting an alayaw tree?",
+        "correctIndex": 2,
+        "options": [
+          "To protect Mali's family",
+          "To provide food for Humadapnon",
+          "To entice Mali out of her enclosure so Humadapnon could see her",
+          "To open a passage to the underworld"
+        ]
+      },
+      {
+        "id": "c1000000-0000-4000-8000-000000000015",
+        "prompt": "What does Nagbuhis reveal about Mali's role and the transmission of knowledge?",
+        "correctIndex": 1,
+        "options": [
+          "Mali is excluded completely from ritual knowledge",
+          "Mali is connected to the inheritance of ritual knowledge and authority through her maternal family",
+          "Only Humadapnon can possess supernatural knowledge",
+          "Ritual knowledge is unrelated to family"
+        ]
+      }
+    ]
+  }
+}

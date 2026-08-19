@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SugiLearn — A Multimedia Learning System for the Panay Bukidnon Sugidanon</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ============================================================ -->
+  <!-- 1. HOME -->
+  <!-- ============================================================ -->
+  <section class="screen is-active" id="screen-home">
+    <header class="learner-topbar">
+      <div class="brand"><span class="brand-mark"><svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><circle cx="20" cy="20" r="18" fill="currentColor" opacity="0.12"></circle><path d="M8 24c4-10 10-15 15-15s6 6 3 11-11 4-13-2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"></path></svg></span>SugiLearn</div>
+      <a class="admin-entry-link" data-nav="admin-login" style="color:var(--charcoal-60);border-color:var(--line-strong);">Admin</a>
+    </header>
+
+    <div class="hero">
+      <div>
+        <span class="hero-eyebrow">Panay Bukidnon Sugidanon · Multimedia Learning</span>
+        <h1>Discover the <em>Sugidanon</em>,<br>one chanted verse at a time.</h1>
+        <p class="lede">SugiLearn brings the epic-chant tradition of the Panay Bukidnon to life through guided lessons, listening, and visual storytelling — built with, and reviewed by, the keepers of this heritage.</p>
+        <div class="hero-actions">
+          <button class="btn btn-terracotta" data-nav="pre-assessment">Start Learning →</button>
+          <span class="hero-note">15-question check-in · ~5 minutes</span>
+        </div>
+      </div>
+      <div class="hero-visual" id="hero-thread">
+        <svg class="thread-svg" viewBox="0 0 420 440" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="threadGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#B5562E"/>
+              <stop offset="100%" stop-color="#D3941F"/>
+            </linearGradient>
+          </defs>
+          <circle cx="210" cy="220" r="192" fill="#1E3B2E" opacity="0.05"/>
+          <path d="M70 120 C 140 70, 230 90, 250 160 S 190 280, 250 320 S 360 300, 340 380"
+                fill="none" stroke="url(#threadGrad)" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+          <path d="M70 120 C 140 70, 230 90, 250 160 S 190 280, 250 320 S 360 300, 340 380"
+                fill="none" stroke="#1E3B2E" stroke-width="1" stroke-dasharray="1 10" stroke-linecap="round" opacity="0.35"/>
+
+          <g class="thread-node">
+            <circle cx="70" cy="120" r="30" fill="#F5EFE1" stroke="#B5562E" stroke-width="2"/>
+            <circle cx="70" cy="120" r="7" fill="#B5562E"/>
+            <text x="70" y="170" text-anchor="middle" class="thread-node-label">Discover</text>
+          </g>
+          <g class="thread-node">
+            <circle cx="250" cy="160" r="26" fill="#F5EFE1" stroke="#D3941F" stroke-width="2"/>
+            <circle cx="250" cy="160" r="6" fill="#D3941F"/>
+            <text x="250" y="204" text-anchor="middle" class="thread-node-label">Listen</text>
+          </g>
+          <g class="thread-node">
+            <circle cx="250" cy="320" r="26" fill="#F5EFE1" stroke="#8FA285" stroke-width="2"/>
+            <circle cx="250" cy="320" r="6" fill="#8FA285"/>
+            <text x="250" y="364" text-anchor="middle" class="thread-node-label">Watch</text>
+          </g>
+          <g class="thread-node">
+            <circle cx="340" cy="380" r="30" fill="#F5EFE1" stroke="#1E3B2E" stroke-width="2"/>
+            <circle cx="340" cy="380" r="7" fill="#1E3B2E"/>
+            <text x="340" y="428" text-anchor="middle" class="thread-node-label">Reflect</text>
+          </g>
+
+          <rect x="106" y="24" width="150" height="34" rx="17" fill="#FFFDF7" stroke="#E7DFCB"/>
+          <text x="181" y="46" text-anchor="middle" font-family="IBM Plex Mono" font-size="10.5" fill="#2B241C" letter-spacing="0.5">[Approved Illustration]</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="section-strip">
+      <div class="strip-head">
+        <div>
+          <h2>Your learning journey</h2>
+          <p>A short path from what you know now to a fuller understanding of the epic tradition.</p>
+        </div>
+      </div>
+      <div class="journey-row">
+        <div class="journey-card">
+          <span class="journey-num">01</span>
+          <h3>Pre-Assessment</h3>
+          <p>A quick 15-question check-in to see what you already know.</p>
+        </div>
+        <div class="journey-card">
+          <span class="journey-num">02</span>
+          <h3>Multimedia Lesson</h3>
+          <p>Read, listen, and watch validated content across four short sections.</p>
+        </div>
+        <div class="journey-card">
+          <span class="journey-num">03</span>
+          <h3>Post-Assessment</h3>
+          <p>The same 15 questions again, to see how your understanding has grown.</p>
+        </div>
+        <div class="journey-card">
+          <span class="journey-num">04</span>
+          <h3>Your Results</h3>
+          <p>A clear before-and-after comparison, plus your personal learning analytics.</p>
+        </div>
+      </div>
+    </div>
+
+    <footer class="home-footer">
+      <div class="home-footer-inner">
+        <div class="brand"><svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><circle cx="20" cy="20" r="18" fill="currentColor" opacity="0.12"></circle><path d="M8 24c4-10 10-15 15-15s6 6 3 11-11 4-13-2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"></path></svg>SugiLearn</div>
+        <small>All narrative and cultural content shown here is placeholder pending community validation.</small>
+      </div>
+    </footer>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- 2. PRE-ASSESSMENT -->
+  <!-- ============================================================ -->
+  <section class="screen" id="screen-pre-assessment">
+    <header class="learner-topbar">
+      <div class="brand"><span class="brand-mark"><svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><circle cx="20" cy="20" r="18" fill="currentColor" opacity="0.12"></circle><path d="M8 24c4-10 10-15 15-15s6 6 3 11-11 4-13-2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"></path></svg></span>SugiLearn</div>
+      <div class="thread-progress" data-thread-progress></div>
+    </header>
+    <div class="assessment-wrap" id="assessment-pre">
+      <div class="assessment-head">
+        <div class="assessment-kicker"><span>Question 1 of 15</span><span class="step-count"></span></div>
+        <div class="progress-track"><div class="progress-fill" style="width:6.6%"></div></div>
+      </div>
+      <div class="question-card">
+        <span class="question-eyebrow">Pre-Assessment</span>
+        <h2 class="question-text"></h2>
+        <div class="choice-list"></div>
+      </div>
+      <div class="assessment-nav">
+        <button class="btn btn-outline btn-prev" id="pre-prev">← Previous</button>
+        <span class="step-count"></span>
+        <button class="btn btn-primary btn-next" id="pre-next">Next</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- 3 & 4. MULTIMEDIA LESSON (image / audio / 2D animation states) -->
+  <!-- ============================================================ -->
+  <section class="screen" id="screen-lesson">
+    <header class="learner-topbar">
+      <div class="brand"><span class="brand-mark"><svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><circle cx="20" cy="20" r="18" fill="currentColor" opacity="0.12"></circle><path d="M8 24c4-10 10-15 15-15s6 6 3 11-11 4-13-2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"></path></svg></span>SugiLearn</div>
+      <div class="thread-progress" data-thread-progress></div>
+    </header>
+
+    <div class="lesson-shell">
+      <div class="lesson-media-col">
+        <div class="media-stage" id="media-stage">
+          <span class="media-badge" id="media-badge-text">[Approved Illustration]</span>
+          <div class="media-caption-overlay">
+            <div class="cap-icon" id="media-caption-icon"></div>
+            <p id="media-caption-text">Placeholder for a culturally validated illustration.</p>
+          </div>
+        </div>
+
+        <!-- Audio player (shown when section type = audio) -->
+        <div class="audio-player" id="audio-player-block" style="display:none;">
+          <button class="audio-play-btn" id="audio-play-btn"><span id="audio-play-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M8 5v14l11-7z"></path></svg></span></button>
+          <div class="audio-track">
+            <div class="audio-track-top"><span>Approved narration excerpt</span><span>1:24 / 3:52</span></div>
+            <div class="audio-bar"><div class="audio-bar-fill" id="audio-bar-fill"></div></div>
+          </div>
+        </div>
+
+        <!-- 2D animation controls (shown when section type = animation) -->
+        <div class="anim-controls" id="anim-controls-block" style="display:none;">
+          <button class="btn btn-icon btn-outline" id="anim-play-btn"><span id="anim-play-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M8 5v14l11-7z"></path></svg></span></button>
+          <button class="btn btn-icon btn-outline" id="anim-replay-btn" title="Replay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16"><path d="M3 12a9 9 0 1 0 3-6.7"></path><path d="M3 4v5h5"></path></svg></button>
+          <div class="anim-progress-track"><div class="anim-progress-fill" id="anim-progress-fill"></div></div>
+          <span class="anim-time" id="anim-time">0:00 / 1:48</span>
+        </div>
+
+        <div class="lesson-text-block">
+          <span class="lesson-section-label" id="lesson-section-label">Section 1 · Orientation</span>
+          <h1 class="lesson-title" id="lesson-title">Discovering the Sugidanon</h1>
+          <p class="lesson-body-text" id="lesson-body-text"></p>
+          <div class="lesson-content-tag"><span class="placeholder-tag">Validated Sugidanon Content — pending</span></div>
+        </div>
+
+        <div class="lesson-nav">
+          <button class="btn btn-outline" id="lesson-prev-btn">← Previous</button>
+          <span class="step-count" id="lesson-progress-label" style="font-family:var(--f-mono);font-size:12.5px;color:var(--charcoal-35);"></span>
+          <button class="btn btn-primary" id="lesson-next-btn">Next Section</button>
+        </div>
+      </div>
+
+      <aside class="lesson-sidebar">
+        <div class="sidebar-card">
+          <h4>Lesson progress</h4>
+          <div class="progress-track" style="margin-bottom:18px;"><div class="progress-fill" id="lesson-progress-fill" style="width:25%"></div></div>
+          <div class="section-nav-list" id="lesson-section-nav"></div>
+          <div class="media-type-icons">
+            <span class="media-type-chip">Image</span>
+            <span class="media-type-chip">Audio</span>
+            <span class="media-type-chip">Animation</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- 5. LESSON COMPLETE -->
+  <!-- ============================================================ -->
+  <section class="screen" id="screen-lesson-complete">
+    <header class="learner-topbar">
+      <div class="brand"><span class="brand-mark"><svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><circle cx="20" cy="20" r="18" fill="currentColor" opacity="0.12"></circle><path d="M8 24c4-10 10-15 15-15s6 6 3 11-11 4-13-2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"></path></svg></span>SugiLearn</div>
+      <div class="thread-progress" data-thread-progress></div>
+    </header>
+    <div class="complete-screen">
+      <div class="complete-card">
+        <div class="complete-badge"><svg viewBox="0 0 24 24" fill="none" stroke="var(--forest)" stroke-width="2" width="40" height="40"><path d="M5 13l4 4L19 7"></path></svg></div>
+        <h1>Lesson complete.</h1>
+        <p>You've read, listened to, and watched every section of this lesson. Next, retake the 15-question check-in to see how your understanding has grown.</p>
+        <div class="complete-actions">
+          <button class="btn btn-outline" data-nav="lesson">Review the lesson again</button>
+          <button class="btn btn-terracotta" data-nav="post-assessment">Continue to Post-Assessment →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- 6. POST-ASSESSMENT -->
+  <!-- ============================================================ -->
+  <section class="screen" id="screen-post-assessment">
+    <header class="learner-topbar">
+      <div class="brand"><span class="brand-mark"><svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><circle cx="20" cy="20" r="18" fill="currentColor" opacity="0.12"></circle><path d="M8 24c4-10 10-15 15-15s6 6 3 11-11 4-13-2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"></path></svg></span>SugiLearn</div>
+      <div class="thread-progress" data-thread-progress></div>
+    </header>
+    <div class="assessment-wrap" id="assessment-post">
+      <div class="assessment-head">
+        <div class="assessment-kicker"><span>Question 1 of 15</span><span class="step-count"></span></div>
+        <div class="progress-track"><div class="progress-fill" style="width:6.6%"></div></div>
+      </div>
+      <div class="question-card">
+        <span class="question-eyebrow">Post-Assessment</span>
+        <h2 class="question-text"></h2>
+        <div class="choice-list"></div>
+      </div>
+      <div class="assessment-nav">
+        <button class="btn btn-outline btn-prev" id="post-prev">← Previous</button>
+        <span class="step-count"></span>
+        <button class="btn btn-primary btn-next" id="post-next">Next</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- 7. RESULTS -->
+  <!-- ============================================================ -->
+  <section class="screen" id="screen-results">
+    <header class="learner-topbar">
+      <div class="brand"><span class="brand-mark"><svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><circle cx="20" cy="20" r="18" fill="currentColor" opacity="0.12"></circle><path d="M8 24c4-10 10-15 15-15s6 6 3 11-11 4-13-2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"></path></svg></span>SugiLearn</div>
+      <div class="thread-progress" data-thread-progress></div>
+    </header>
+    <div class="results-wrap">
+      <div class="results-head">
+        <span>Assessment Complete</span>
+        <h1>Here's how your understanding grew.</h1>
+      </div>
+      <div class="score-grid">
+        <div class="score-card"><div class="label">Pre-Assessment</div><div class="value" id="result-pre-score">0/15</div><div class="sub">before the lesson</div></div>
+        <div class="score-card gain"><div class="label">Learning Gain</div><div class="value" id="result-gain">+0</div><div class="sub">points improved</div></div>
+        <div class="score-card"><div class="label">Post-Assessment</div><div class="value" id="result-post-score">0/15</div><div class="sub">after the lesson</div></div>
+      </div>
+      <div class="chart-card">
+        <h3>Score comparison</h3>
+        <div class="bar-chart-row" style="justify-content:center;gap:60px;">
+          <div class="bar-group" style="max-width:120px;">
+            <div class="bar-col"><div class="bar pre" style="width:44px;height:0%;position:relative;" id="result-bar-pre"><span id="result-bar-pre-val" style="position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-family:var(--f-mono);font-size:12px;color:var(--charcoal-60);"></span></div></div>
+            <div class="g-label">Pre-Assessment</div>
+          </div>
+          <div class="bar-group" style="max-width:120px;">
+            <div class="bar-col"><div class="bar post" style="width:44px;height:0%;position:relative;" id="result-bar-post"><span id="result-bar-post-val" style="position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-family:var(--f-mono);font-size:12px;color:var(--charcoal-60);"></span></div></div>
+            <div class="g-label">Post-Assessment</div>
+          </div>
+        </div>
+      </div>
+      <div class="results-actions">
+        <button class="btn btn-outline" data-nav="lesson">Review the lesson</button>
+        <button class="btn btn-primary" data-nav="analytics">View my learning analytics →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- 8. LEARNER ANALYTICS -->
+  <!-- ============================================================ -->
+  <section class="screen" id="screen-analytics">
+    <header class="learner-topbar">
+      <div class="brand"><span class="brand-mark"><svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><circle cx="20" cy="20" r="18" fill="currentColor" opacity="0.12"></circle><path d="M8 24c4-10 10-15 15-15s6 6 3 11-11 4-13-2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"></path></svg></span>SugiLearn</div>
+      <div class="thread-progress" data-thread-progress></div>
+    </header>
+    <div class="analytics-wrap">
+      <div class="results-head" style="text-align:left;margin-bottom:30px;">
+        <span>Learning Analytics</span>
+        <h1 style="font-size:32px;">Your progress at a glance</h1>
+      </div>
+      <div class="analytics-grid">
+        <div class="metric-card"><div class="label">Pre-Assessment</div><div class="value" id="an-pre">0/15</div></div>
+        <div class="metric-card"><div class="label">Post-Assessment</div><div class="value" id="an-post">0/15</div></div>
+        <div class="metric-card"><div class="label">Learning Gain</div><div class="value" id="an-gain">+0 pts</div></div>
+        <div class="metric-card"><div class="label">Lesson Completion</div><div class="value" id="an-completion">100%</div></div>
+      </div>
+      <div class="two-col-charts">
+        <div class="chart-card">
+          <h3>Score comparison</h3>
+          <div class="bar-chart-row" style="justify-content:center;gap:60px;">
+            <div class="bar-group" style="max-width:100px;"><div class="bar-col"><div class="bar pre" style="width:40px;" id="an-bar-pre"></div></div><div class="g-label">Pre</div></div>
+            <div class="bar-group" style="max-width:100px;"><div class="bar-col"><div class="bar post" style="width:40px;" id="an-bar-post"></div></div><div class="g-label">Post</div></div>
+          </div>
+          <div class="legend-row">
+            <div class="legend-item"><span class="legend-swatch" style="background:var(--sage);"></span>Pre-Assessment</div>
+            <div class="legend-item"><span class="legend-swatch" style="background:var(--terracotta);"></span>Post-Assessment</div>
+          </div>
+        </div>
+        <div class="chart-card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;">
+          <h3>Learning gain</h3>
+          <div id="an-ring" style="width:150px;height:150px;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+            <div style="width:112px;height:112px;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;flex-direction:column;">
+              <span id="an-ring-label" style="font-family:var(--f-display);font-size:26px;color:var(--forest);font-weight:600;">0%</span>
+              <span style="font-family:var(--f-mono);font-size:10px;color:var(--charcoal-35);">of total gain</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="results-actions" style="margin-top:32px;">
+        <button class="btn btn-outline" data-nav="home">Back to Home</button>
+        <button class="btn btn-primary" data-nav="lesson">Revisit the lesson</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- 9. ADMIN LOGIN -->
+  <!-- ============================================================ -->
+  <section class="screen" id="screen-admin-login">
+    <div class="admin-login-wrap">
+      <div class="admin-login-card">
+        <div class="brand" style="color:var(--forest);"><svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><circle cx="20" cy="20" r="18" fill="currentColor" opacity="0.12"></circle><path d="M8 24c4-10 10-15 15-15s6 6 3 11-11 4-13-2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"></path></svg>SugiLearn</div>
+        <p class="sub">Content &amp; Analytics Administration</p>
+        <form id="admin-login-form">
+          <div class="field"><label>Email address</label><input type="email" placeholder="admin@sugilearn.org" required></div>
+          <div class="field"><label>Password</label><input type="password" placeholder="••••••••••" required></div>
+          <button class="btn btn-primary" type="submit">Sign in to Dashboard</button>
+        </form>
+        <p class="login-hint">Prototype only — any credentials will sign you in.</p>
+      </div>
+    </div>
+    <a class="back-to-site" data-nav="home" style="position:relative;top:-56px;color:rgba(255,255,255,.7);">← Back to learner site</a>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- ADMIN SHELL SCREENS (10, 11, 13, 15, 16 as tabs; 12 & 14 as sub-views) -->
+  <!-- ============================================================ -->
+
+  <!-- 10. ADMIN DASHBOARD -->
+  <section class="screen" id="screen-admin-dashboard">
+    <div class="admin-shell">
+      <admin-sidebar-slot data-active="dashboard"></admin-sidebar-slot>
+      <main class="admin-main">
+        <div class="admin-topbar">
+          <div><h1>Dashboard</h1><p>An overview of learner activity across SugiLearn.</p></div>
+        </div>
+        <div class="kpi-row">
+          <div class="kpi-card"><div class="label">Total Learners</div><div class="value">248</div><div class="trend">↑ 12 this week</div></div>
+          <div class="kpi-card"><div class="label">Completed Lessons</div><div class="value">193</div><div class="trend">78% completion</div></div>
+          <div class="kpi-card"><div class="label">Avg. Pre-Assessment</div><div class="value">6.1/15</div><div class="trend down">↓ baseline</div></div>
+          <div class="kpi-card"><div class="label">Avg. Post-Assessment</div><div class="value">12.4/15</div><div class="trend">↑ strong recall</div></div>
+          <div class="kpi-card"><div class="label">Learning Gain</div><div class="value">+6.3</div><div class="trend">↑ avg. improvement</div></div>
+        </div>
+        <div class="admin-charts-row">
+          <div class="chart-card">
+            <h3>Pre vs. post scores — recent learners</h3>
+            <div class="bar-chart-row" id="admin-bar-chart"></div>
+            <div class="legend-row">
+              <div class="legend-item"><span class="legend-swatch" style="background:var(--sage);"></span>Pre-Assessment</div>
+              <div class="legend-item"><span class="legend-swatch" style="background:var(--terracotta);"></span>Post-Assessment</div>
+            </div>
+          </div>
+          <div class="chart-card">
+            <h3>Content pipeline</h3>
+            <div style="display:flex;flex-direction:column;gap:14px;margin-top:6px;">
+              <div style="display:flex;justify-content:space-between;font-size:13.5px;"><span>Approved</span><strong style="font-family:var(--f-mono);color:var(--forest);">3</strong></div>
+              <div style="display:flex;justify-content:space-between;font-size:13.5px;"><span>For Review</span><strong style="font-family:var(--f-mono);color:var(--ochre);">2</strong></div>
+              <div style="display:flex;justify-content:space-between;font-size:13.5px;"><span>Draft</span><strong style="font-family:var(--f-mono);color:var(--charcoal-60);">1</strong></div>
+              <div style="display:flex;justify-content:space-between;font-size:13.5px;"><span>Needs Revision</span><strong style="font-family:var(--f-mono);color:var(--danger);">1</strong></div>
+            </div>
+            <button class="btn btn-outline btn-sm" style="margin-top:20px;width:100%;" data-nav="admin-review">Go to review queue →</button>
+          </div>
+        </div>
+      </main>
+    </div>
+  </section>
+
+  <!-- 11. LEARNING CONTENT MANAGEMENT -->
+  <section class="screen" id="screen-admin-content">
+    <div class="admin-shell">
+      <admin-sidebar-slot data-active="content"></admin-sidebar-slot>
+      <main class="admin-main">
+        <div class="admin-topbar">
+          <div><h1>Learning Content Management</h1><p>All lesson modules across the SugiLearn library.</p></div>
+          <button class="btn btn-terracotta" data-nav="admin-editor">+ New Lesson</button>
+        </div>
+        <div class="toolbar">
+          <div class="search-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16" style="color:var(--charcoal-35);flex-shrink:0;"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg><input type="text" placeholder="Search lessons…"></div>
+          <div class="filter-chips">
+            <button class="filter-chip content-filter-chip active" data-filter="all">All</button>
+            <button class="filter-chip content-filter-chip" data-filter="draft">Draft</button>
+            <button class="filter-chip content-filter-chip" data-filter="review">For Review</button>
+            <button class="filter-chip content-filter-chip" data-filter="approved">Approved</button>
+          </div>
+        </div>
+        <div class="list-table">
+          <div class="list-row head"><div>Lesson</div><div>Status</div><div>Sections</div><div>Updated</div><div></div></div>
+          <div id="content-list-rows"></div>
+        </div>
+      </main>
+    </div>
+  </section>
+
+  <!-- 12. MULTIMEDIA CONTENT EDITOR -->
+  <section class="screen" id="screen-admin-editor">
+    <div class="admin-shell">
+      <admin-sidebar-slot data-active="content"></admin-sidebar-slot>
+      <main class="admin-main">
+        <div class="admin-topbar">
+          <div><h1>Multimedia Content Editor</h1><p>Discovering the Sugidanon — Orientation Module</p></div>
+          <div style="display:flex;gap:10px;"><button class="btn btn-outline" data-nav="admin-content">Cancel</button><button class="btn btn-primary">Save Draft</button></div>
+        </div>
+        <div class="editor-shell">
+          <div>
+            <div class="editor-field-group">
+              <label class="editor-label">Lesson title</label>
+              <input class="editor-input" value="Discovering the Sugidanon — Orientation Module">
+            </div>
+
+            <div class="section-editor-card">
+              <div class="section-editor-head">
+                <div class="tag-row"><span class="qedit-num" style="width:28px;height:28px;font-size:12px;">1</span><strong>Introduction text</strong></div>
+                <div class="reorder-btns">
+                  <button class="icon-btn" style="width:26px;height:26px;" title="Move up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M18 15l-6-6-6 6"></path></svg></button>
+                  <button class="icon-btn" style="width:26px;height:26px;" title="Move down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M6 9l6 6 6-6"></path></svg></button>
+                </div>
+              </div>
+              <div class="media-type-tabs">
+                <span class="media-type-tab active">Text</span>
+                <span class="media-type-tab">Illustration</span>
+                <span class="media-type-tab">Audio</span>
+                <span class="media-type-tab">Animation</span>
+              </div>
+              <div class="editor-field-group">
+                <label class="editor-label">Section title</label>
+                <input class="editor-input" value="Discovering the Sugidanon">
+              </div>
+              <div class="editor-field-group">
+                <label class="editor-label">Body text</label>
+                <textarea class="editor-textarea">This opening section introduces learners to the Panay Bukidnon Sugidanon tradition at a general level. All narrative specifics, character names, and imagery will come from culturally validated sources.</textarea>
+              </div>
+            </div>
+
+            <div class="section-editor-card">
+              <div class="section-editor-head">
+                <div class="tag-row"><span class="qedit-num" style="width:28px;height:28px;font-size:12px;">2</span><strong>Illustration</strong></div>
+                <div class="reorder-btns">
+                  <button class="icon-btn" style="width:26px;height:26px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M18 15l-6-6-6 6"></path></svg></button>
+                  <button class="icon-btn" style="width:26px;height:26px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M6 9l6 6 6-6"></path></svg></button>
+                </div>
+              </div>
+              <div class="media-type-tabs">
+                <span class="media-type-tab">Text</span>
+                <span class="media-type-tab active">Illustration</span>
+                <span class="media-type-tab">Audio</span>
+                <span class="media-type-tab">Animation</span>
+              </div>
+              <div class="upload-slot">
+                [Approved Illustration]
+                <span>Upload requires cultural review sign-off before publishing</span>
+              </div>
+            </div>
+
+            <div class="section-editor-card">
+              <div class="section-editor-head">
+                <div class="tag-row"><span class="qedit-num" style="width:28px;height:28px;font-size:12px;">3</span><strong>Audio narration</strong></div>
+                <div class="reorder-btns">
+                  <button class="icon-btn" style="width:26px;height:26px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M18 15l-6-6-6 6"></path></svg></button>
+                  <button class="icon-btn" style="width:26px;height:26px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M6 9l6 6 6-6"></path></svg></button>
+                </div>
+              </div>
+              <div class="media-type-tabs">
+                <span class="media-type-tab">Text</span>
+                <span class="media-type-tab">Illustration</span>
+                <span class="media-type-tab active">Audio</span>
+                <span class="media-type-tab">Animation</span>
+              </div>
+              <div class="upload-slot">
+                [Approved Audio]
+                <span>MP3/WAV · validated recordings only</span>
+              </div>
+            </div>
+
+            <button class="btn btn-outline" id="editor-add-section" style="width:100%;justify-content:center;">+ Add Section</button>
+          </div>
+
+          <aside class="preview-panel">
+            <div class="preview-frame">
+              <div class="preview-label">Learner Preview</div>
+              <div class="preview-frame-inner">
+                <div style="padding:22px;">
+                  <span class="lesson-section-label">Section 1 · Orientation</span>
+                  <h3 style="font-family:var(--f-display);font-size:19px;color:var(--forest);margin-top:6px;">Discovering the Sugidanon</h3>
+                  <div style="margin-top:12px;aspect-ratio:16/10;border-radius:12px;background:linear-gradient(135deg,var(--forest),var(--forest-dark));display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--f-mono);font-size:11px;">[Approved Illustration]</div>
+                  <p style="font-size:12.5px;color:var(--charcoal-60);margin-top:12px;line-height:1.6;">This opening section introduces learners to the Panay Bukidnon Sugidanon tradition at a general level…</p>
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-outline btn-sm" style="width:100%;margin-top:14px;" data-nav="lesson">Open full learner preview →</button>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </section>
+
+  <!-- 13. ASSESSMENT MANAGEMENT -->
+  <section class="screen" id="screen-admin-assessments">
+    <div class="admin-shell">
+      <admin-sidebar-slot data-active="assessments"></admin-sidebar-slot>
+      <main class="admin-main">
+        <div class="admin-topbar">
+          <div><h1>Assessment Management</h1><p>Manage the 15-question Pre- and Post-Assessment banks.</p></div>
+        </div>
+        <div class="two-col-charts" style="grid-template-columns:1fr 1fr;align-items:start;">
+          <div>
+            <div class="toolbar" style="margin-bottom:12px;"><h3 style="font-family:var(--f-display);font-size:17px;color:var(--forest);">Pre-Assessment <span style="font-family:var(--f-mono);font-size:12px;color:var(--charcoal-35);">15 questions</span></h3></div>
+            <div class="list-table" id="qlist-pre"></div>
+          </div>
+          <div>
+            <div class="toolbar" style="margin-bottom:12px;"><h3 style="font-family:var(--f-display);font-size:17px;color:var(--forest);">Post-Assessment <span style="font-family:var(--f-mono);font-size:12px;color:var(--charcoal-35);">15 questions</span></h3></div>
+            <div class="list-table" id="qlist-post"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </section>
+
+  <!-- 14. QUESTION EDITOR -->
+  <section class="screen" id="screen-admin-question-editor">
+    <div class="admin-shell">
+      <admin-sidebar-slot data-active="assessments"></admin-sidebar-slot>
+      <main class="admin-main">
+        <div class="admin-topbar">
+          <div><h1>Question Editor</h1><p>Pre-Assessment · Question 1 of 15</p></div>
+          <div style="display:flex;gap:10px;"><button class="btn btn-outline" data-nav="admin-assessments">Cancel</button><button class="btn btn-primary">Save Question</button></div>
+        </div>
+        <div class="admin-card" style="padding:30px 32px;max-width:720px;">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:22px;">
+            <span class="qedit-num">1</span>
+            <span class="editor-label" style="margin:0;">Question number</span>
+          </div>
+          <div class="editor-field-group">
+            <label class="editor-label">Question text</label>
+            <textarea class="editor-textarea">Regarding the general meaning of the term "Sugidanon", which statement best reflects what the lesson explains?</textarea>
+          </div>
+          <div class="editor-field-group">
+            <label class="editor-label">Answer choices — select the correct one</label>
+            <div class="qedit-choice-row"><span class="qedit-radio correct"></span><input class="editor-input" value="It is explained directly within the validated lesson content."></div>
+            <div class="qedit-choice-row"><span class="qedit-radio"></span><input class="editor-input" value="It is unrelated to the Sugidanon learning material."></div>
+            <div class="qedit-choice-row"><span class="qedit-radio"></span><input class="editor-input" value="It can only be verified by learners themselves."></div>
+            <div class="qedit-choice-row"><span class="qedit-radio"></span><input class="editor-input" value="It is intentionally left undefined in the lesson."></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </section>
+
+  <!-- 15. APPROVED CONTENT REVIEW -->
+  <section class="screen" id="screen-admin-review">
+    <div class="admin-shell">
+      <admin-sidebar-slot data-active="review"></admin-sidebar-slot>
+      <main class="admin-main">
+        <div class="admin-topbar">
+          <div><h1>Approved Content Review</h1><p>Track lessons through cultural validation before they publish to learners.</p></div>
+        </div>
+        <div class="review-tabs">
+          <button class="review-tab" data-tab="draft">Draft <span class="count">0</span></button>
+          <button class="review-tab active" data-tab="review">For Review <span class="count">0</span></button>
+          <button class="review-tab" data-tab="approved">Approved <span class="count">0</span></button>
+          <button class="review-tab" data-tab="revision">Needs Revision <span class="count">0</span></button>
+        </div>
+        <div class="review-grid" id="review-grid"></div>
+      </main>
+    </div>
+  </section>
+
+  <!-- 16. ADMIN ANALYTICS -->
+  <section class="screen" id="screen-admin-analytics">
+    <div class="admin-shell">
+      <admin-sidebar-slot data-active="analytics"></admin-sidebar-slot>
+      <main class="admin-main">
+        <div class="admin-topbar">
+          <div><h1>Analytics</h1><p>Aggregate performance across all learners.</p></div>
+        </div>
+        <div class="kpi-row" style="grid-template-columns:repeat(4,1fr);">
+          <div class="kpi-card"><div class="label">Avg. Pre-Assessment</div><div class="value">6.1/15</div></div>
+          <div class="kpi-card"><div class="label">Avg. Post-Assessment</div><div class="value">12.4/15</div></div>
+          <div class="kpi-card"><div class="label">Avg. Learning Gain</div><div class="value">+6.3</div></div>
+          <div class="kpi-card"><div class="label">Lesson Completion Rate</div><div class="value">78%</div></div>
+        </div>
+        <div class="admin-charts-row">
+          <div class="chart-card">
+            <h3>Pre vs. post scores by learner (sample)</h3>
+            <div class="bar-chart-row" id="admin-analytics-bar-chart"></div>
+            <div class="legend-row">
+              <div class="legend-item"><span class="legend-swatch" style="background:var(--sage);"></span>Pre-Assessment</div>
+              <div class="legend-item"><span class="legend-swatch" style="background:var(--terracotta);"></span>Post-Assessment</div>
+            </div>
+          </div>
+          <div class="chart-card">
+            <h3>Completion statistics</h3>
+            <div style="display:flex;flex-direction:column;gap:16px;margin-top:8px;">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span>Started lesson</span><strong style="font-family:var(--f-mono);">248</strong></div>
+                <div class="progress-track"><div class="progress-fill" style="width:100%;"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span>Completed lesson</span><strong style="font-family:var(--f-mono);">193</strong></div>
+                <div class="progress-track"><div class="progress-fill" style="width:78%;"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span>Completed post-assessment</span><strong style="font-family:var(--f-mono);">171</strong></div>
+                <div class="progress-track"><div class="progress-fill" style="width:69%;"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chart-card" style="margin-top:18px;">
+          <h3>Question performance — percent answered correctly (Post-Assessment)</h3>
+          <div style="display:flex;align-items:flex-end;gap:6px;height:150px;" id="question-perf-chart"></div>
+        </div>
+      </main>
+    </div>
+  </section>
+
+</div>
+
+<script src="app.js"></script>
+<script>
+/* ---------------------------------------------------------------------- *
+ * Template helpers evaluated at build time are not available in plain
+ * HTML, so the small inline "${...}" placeholders above are replaced here
+ * once the DOM is ready — keeps icons/markup out of the main HTML body.
+ * ---------------------------------------------------------------------- */
+</script>
+</body>
+</html>

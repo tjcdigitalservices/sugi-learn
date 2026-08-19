@@ -1,0 +1,160 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem;
+
+    /* SugiLearn branding kit */
+    --sl-navy: #0b1d3a;
+    --sl-navy-deep: #071428;
+    --sl-gold: #d1a53a;
+    --sl-gold-bright: #e7b24a;
+    --sl-gold-soft: #f0d48a;
+    --sl-cream: #f7efe4;
+    --sl-cream-deep: #fbf6ef;
+    --sl-ink: #2c2416;
+    --sl-ink-muted: #8b5b4c;
+    --sl-wave: #d1a53a;
+    --sl-forest: #2e5e4e;
+    --sl-sage: #6b8f6b;
+    --sl-stone: #5c7fa6;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display), ui-serif, Georgia, "Times New Roman", serif;
+  }
+
+  .font-body {
+    font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  }
+
+  .bg-sl-cream {
+    background-color: var(--sl-cream);
+  }
+
+  .bg-sl-navy {
+    background-color: var(--sl-navy);
+  }
+
+  .bg-sl-gold {
+    background-color: var(--sl-gold);
+  }
+
+  .text-sl-navy {
+    color: var(--sl-navy);
+  }
+
+  .text-sl-gold {
+    color: var(--sl-gold);
+  }
+
+  .text-sl-ink {
+    color: var(--sl-ink);
+  }
+
+  .text-sl-ink-muted {
+    color: var(--sl-ink-muted);
+  }
+
+  .text-sl-forest {
+    color: var(--sl-forest);
+  }
+
+  .text-sl-stone {
+    color: var(--sl-stone);
+  }
+
+  .border-sl-gold {
+    border-color: var(--sl-gold);
+  }
+
+  .sl-btn-gold {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-[var(--sl-navy)] transition;
+    background: linear-gradient(180deg, var(--sl-gold-bright) 0%, var(--sl-gold) 100%);
+    box-shadow: 0 2px 8px rgba(11, 29, 58, 0.18);
+  }
+
+  .sl-btn-gold:hover {
+    filter: brightness(1.05);
+  }
+
+  .sl-btn-gold:focus-visible {
+    outline: 2px solid var(--sl-gold-bright);
+    outline-offset: 2px;
+  }
+
+  .sl-btn-gold:disabled {
+    @apply cursor-not-allowed opacity-60;
+  }
+
+  .sl-card {
+    @apply overflow-hidden rounded-2xl border border-[color:rgba(44,36,22,0.08)] shadow-lg;
+    background-color: var(--sl-cream);
+  }
+
+  .sl-input {
+    @apply w-full rounded-xl border border-[color:rgba(44,36,22,0.15)] bg-white px-4 py-3 text-sm text-[var(--sl-ink)] shadow-sm outline-none transition;
+  }
+
+  .sl-input:focus {
+    border-color: var(--sl-gold);
+    box-shadow: 0 0 0 3px rgba(209, 165, 58, 0.25);
+  }
+}
+
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+
+  .learner-assessment-report,
+  .learner-assessment-report * {
+    visibility: visible !important;
+  }
+
+  .learner-assessment-report {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
+  .print\:hidden {
+    display: none !important;
+  }
+}

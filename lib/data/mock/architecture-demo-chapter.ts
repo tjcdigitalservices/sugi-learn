@@ -1,0 +1,94 @@
+import type { Chapter } from "@/types/chapter";
+
+/**
+ * Minimal chapter record demonstrating the section-type architecture.
+ * Contains no client story content — placeholders only.
+ */
+export const ARCHITECTURE_DEMO_CHAPTER: Chapter = {
+  id: "architecture-demo",
+  number: 0,
+  title: "Architecture Demo",
+  subtitle: "Internal M1 reference — not learner content",
+  summary: null,
+  reviewStatus: "draft",
+  hasPublishedContent: false,
+  isActive: true,
+  sections: [
+    {
+      id: "demo-intro",
+      kind: "introduction",
+      title: "Introduction",
+      sortOrder: 1,
+      reviewStatus: "draft",
+      body: "[Pending Client Confirmation — introduction content will be supplied from approved sources.]",
+    },
+    {
+      id: "demo-illustration",
+      kind: "illustration",
+      title: "Illustration Section",
+      sortOrder: 2,
+      reviewStatus: "draft",
+      mediaAssetId: "demo-illustration",
+    },
+    {
+      id: "demo-audio",
+      kind: "audio",
+      title: "Audio Section",
+      sortOrder: 3,
+      reviewStatus: "draft",
+      mediaAssetId: "demo-audio",
+      transcript: null,
+    },
+    {
+      id: "demo-animation",
+      kind: "animation",
+      title: "Animation Section",
+      sortOrder: 4,
+      reviewStatus: "draft",
+      mediaAssetId: "demo-animation",
+    },
+    {
+      id: "demo-completion",
+      kind: "completion",
+      title: "Chapter Completion",
+      sortOrder: 5,
+      reviewStatus: "draft",
+      message: null,
+    },
+  ],
+  characters: [],
+  learningPoints: [],
+  media: [
+    {
+      id: "demo-illustration",
+      kind: "illustration",
+      storagePath: null,
+      altText: null,
+      caption: "[Approved Illustration — pending]",
+      title: null,
+      durationSeconds: null,
+      reviewStatus: "draft",
+    },
+    {
+      id: "demo-audio",
+      kind: "audio",
+      storagePath: null,
+      altText: null,
+      caption: "[Approved Audio — pending]",
+      title: null,
+      durationSeconds: null,
+      reviewStatus: "draft",
+    },
+    {
+      id: "demo-animation",
+      kind: "animation",
+      storagePath: null,
+      altText: null,
+      caption: "[Approved 2D Animation — pending]",
+      title: null,
+      durationSeconds: null,
+      reviewStatus: "draft",
+    },
+  ],
+  assessmentReferences: [],
+};
