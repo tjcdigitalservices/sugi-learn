@@ -135,6 +135,7 @@ async function seedKind(kind) {
     id: q.id,
     assessment_id: assessmentId,
     prompt: q.prompt,
+    prompt_hiligaynon: q.promptHiligaynon?.trim() || null,
     sort_order: index + 1,
     review_status: "approved",
     chapter_id: null,
@@ -147,11 +148,13 @@ async function seedKind(kind) {
 
   const optionRows = [];
   assessment.questions.forEach((q, qIndex) => {
+    const hilOptions = q.optionsHiligaynon ?? [];
     q.options.forEach((label, oIndex) => {
       optionRows.push({
         id: optionId(kind, qIndex, oIndex),
         question_id: q.id,
         label,
+        label_hiligaynon: hilOptions[oIndex]?.trim() || null,
         sort_order: oIndex + 1,
         is_correct: oIndex === q.correctIndex,
       });
@@ -169,7 +172,7 @@ async function seedKind(kind) {
 }
 
 async function main() {
-  console.log("Seeding official SugiLearn assessments…\n");
+  console.log("Seeding official Sugidanon assessments…\n");
   await seedKind("pre");
   await seedKind("post");
   console.log("\nDone.");

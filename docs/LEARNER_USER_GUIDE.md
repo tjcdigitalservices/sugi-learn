@@ -1,15 +1,15 @@
-# SugiLearn — Learner User Guide
+# Sugidanon — Learner User Guide
 
-**Audience:** Learners using SugiLearn  
+**Audience:** Learners using Sugidanon  
 **Last updated:** 2026-08-15
 
-A simple guide to using SugiLearn. Ask your instructor if you need login details.
+A simple guide to using Sugidanon. Ask your instructor if you need login details.
 
 ---
 
 ## 1. Login
 
-1. Open the SugiLearn website address provided by your instructor.
+1. Open the Sugidanon website address provided by your instructor.
 2. Go to **Login**.
 3. Enter your email and password.
 4. You will arrive at your **Home** page.

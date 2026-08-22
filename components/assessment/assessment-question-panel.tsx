@@ -2,6 +2,11 @@
 
 import { ArrowRight } from "lucide-react";
 
+import {
+  resolveAssessmentOptionLabel,
+  resolveAssessmentPrompt,
+  type AssessmentLanguage,
+} from "@/lib/assessment/language";
 import { HeritageWave } from "@/components/brand/heritage-wave";
 import { cn } from "@/lib/utils";
 import type { LearnerAssessmentQuestion } from "@/types/assessment";
@@ -24,6 +29,8 @@ interface AssessmentQuestionPanelProps {
   submitError?: string | null;
   previewMode?: boolean;
   correctOptionId?: string | null;
+  language?: AssessmentLanguage;
+  onLanguageChange?: (language: AssessmentLanguage) => void;
 }
 
 export function AssessmentQuestionPanel({
@@ -42,8 +49,11 @@ export function AssessmentQuestionPanel({
   submitError = null,
   previewMode = false,
   correctOptionId = null,
+  language = "en",
+  onLanguageChange,
 }: AssessmentQuestionPanelProps) {
   const groupName = `question-${question.id}`;
+  const displayPrompt = resolveAssessmentPrompt(question, language);
 
   return (
     <article
@@ -51,9 +61,45 @@ export function AssessmentQuestionPanel({
       className="sl-card relative mx-auto w-full max-w-2xl"
     >
       <div className="space-y-6 px-5 py-7 sm:px-8">
-        <p className="text-center text-sm font-medium text-sl-ink-muted" aria-live="polite">
-          Question {questionNumber} of {totalQuestions}
-        </p>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="text-sm font-medium text-sl-ink-muted" aria-live="polite">
+            Question {questionNumber} of {totalQuestions}
+          </p>
+          {onLanguageChange ? (
+            <div
+              className="inline-flex rounded-full border border-[color:rgba(44,36,22,0.15)] bg-white p-0.5 text-xs font-medium"
+              role="group"
+              aria-label="Assessment language"
+            >
+              <button
+                type="button"
+                onClick={() => onLanguageChange("en")}
+                className={cn(
+                  "rounded-full px-3 py-1.5 transition",
+                  language === "en"
+                    ? "bg-sl-navy text-white"
+                    : "text-sl-ink-muted hover:text-sl-navy",
+                )}
+                aria-pressed={language === "en"}
+              >
+                English
+              </button>
+              <button
+                type="button"
+                onClick={() => onLanguageChange("hil")}
+                className={cn(
+                  "rounded-full px-3 py-1.5 transition",
+                  language === "hil"
+                    ? "bg-sl-navy text-white"
+                    : "text-sl-ink-muted hover:text-sl-navy",
+                )}
+                aria-pressed={language === "hil"}
+              >
+                Hiligaynon
+              </button>
+            </div>
+          ) : null}
+        </div>
 
         <div className="flex items-center justify-center gap-3">
           <div className="h-px flex-1 bg-[color:rgba(44,36,22,0.12)]" />
@@ -82,7 +128,7 @@ export function AssessmentQuestionPanel({
           id={`${groupName}-prompt`}
           className="font-display text-2xl font-semibold leading-snug tracking-tight text-sl-navy sm:text-3xl"
         >
-          {question.prompt}
+          {displayPrompt}
         </h1>
 
         <fieldset className="space-y-3">
@@ -90,6 +136,7 @@ export function AssessmentQuestionPanel({
           {question.options.map((option) => {
             const isSelected = selectedOptionId === option.id;
             const isCorrect = previewMode && correctOptionId === option.id;
+            const displayLabel = resolveAssessmentOptionLabel(option, language);
             return (
               <label
                 key={option.id}
@@ -111,7 +158,7 @@ export function AssessmentQuestionPanel({
                   className="mt-0.5 size-4 shrink-0 accent-[var(--sl-gold)]"
                 />
                 <span className="leading-relaxed text-sl-ink">
-                  {option.label}
+                  {displayLabel}
                   {isCorrect ? (
                     <span className="ml-2 text-xs font-medium text-emerald-700">
                       (Correct answer)

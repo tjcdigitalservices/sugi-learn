@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 
+import { resolveChapterCoverUrl } from "@/lib/chapter/cover";
 import { CHAPTER_CATALOG } from "@/lib/constants/chapters";
 import {
   bootstrapSugidanonChapter,
@@ -46,6 +47,7 @@ interface MutableChapterState {
   subtitle: string | null;
   reviewStatus: ReviewStatus;
   summary: string | null;
+  coverMediaAssetId: string | null;
   sections: ChapterSection[];
   characterOrder: string[];
   learningPoints: LearningPoint[];
@@ -82,9 +84,27 @@ function getCatalogEntry(chapterId: string) {
       reviewStatus: state?.reviewStatus ?? ("draft" as ReviewStatus),
       isActive: meta.isActive,
       hasPublishedContent: false,
+      coverMediaAssetId: state?.coverMediaAssetId ?? null,
+      coverUrl: resolveChapterCoverUrl({
+        chapterNumber: meta.number,
+        chapterSlug: chapterId,
+        coverStoragePath: null,
+      }),
     };
   }
   throw new Error("Chapter not found.");
+}
+
+function catalogCoverMediaId(chapterId: string): string | null {
+  const catalog = CHAPTER_CATALOG.find((chapter) => chapter.id === chapterId);
+  return catalog?.coverMediaAssetId ?? null;
+}
+
+function resolveCoverStoragePath(coverMediaAssetId: string | null): string | null {
+  if (!coverMediaAssetId) {
+    return null;
+  }
+  return mockMediaStore.get(coverMediaAssetId)?.storagePath ?? null;
 }
 
 function ensureChapterState(chapterId: string): MutableChapterState {
@@ -98,6 +118,7 @@ function ensureChapterState(chapterId: string): MutableChapterState {
       subtitle: bootstrap.subtitle,
       reviewStatus: bootstrap.reviewStatus,
       summary: bootstrap.summary,
+      coverMediaAssetId: catalogCoverMediaId(TIKUM_KADLUM_ID),
       sections: bootstrap.sections,
       characterOrder: bootstrap.characterOrder,
       learningPoints: bootstrap.learningPoints,
@@ -117,6 +138,7 @@ function ensureChapterState(chapterId: string): MutableChapterState {
         subtitle: bootstrap.subtitle,
         reviewStatus: bootstrap.reviewStatus,
         summary: bootstrap.summary,
+        coverMediaAssetId: catalogCoverMediaId(chapterId),
         sections: bootstrap.sections,
         characterOrder: bootstrap.characterOrder,
         learningPoints: bootstrap.learningPoints,
@@ -133,6 +155,7 @@ function ensureChapterState(chapterId: string): MutableChapterState {
       subtitle: catalog.subtitle,
       reviewStatus: catalog.reviewStatus,
       summary: null,
+      coverMediaAssetId: catalog.coverMediaAssetId ?? null,
       sections: [],
       characterOrder: [],
       learningPoints: [],
@@ -158,6 +181,12 @@ function buildChapterRecord(chapterId: string): Chapter {
     reviewStatus: state.reviewStatus,
     isActive: dynamicChapterMeta.get(chapterId)?.isActive ?? catalog.isActive ?? true,
     hasPublishedContent: approvedSectionCount > 0,
+    coverMediaAssetId: state.coverMediaAssetId,
+    coverUrl: resolveChapterCoverUrl({
+      chapterNumber: catalog.number,
+      chapterSlug: catalog.id,
+      coverStoragePath: resolveCoverStoragePath(state.coverMediaAssetId),
+    }),
     summary: state.summary,
     sections: [...state.sections].sort((a, b) => a.sortOrder - b.sortOrder),
     characters: state.characterOrder
@@ -167,6 +196,7 @@ function buildChapterRecord(chapterId: string): Chapter {
     media: getMockMediaAssets().filter(
       (asset) =>
         mockMediaStoreGetChapterSlug(asset.id) === chapterId ||
+        asset.id === state.coverMediaAssetId ||
         state.sections.some(
           (section) =>
             "mediaAssetId" in section &&
@@ -343,6 +373,12 @@ export class MockChapterManagementRepository
           reviewStatus: state.reviewStatus,
           isActive: meta?.isActive ?? chapter.isActive ?? true,
           hasPublishedContent: approvedSectionCount > 0,
+          coverMediaAssetId: state.coverMediaAssetId,
+          coverUrl: resolveChapterCoverUrl({
+            chapterNumber: chapter.number,
+            chapterSlug: chapter.id,
+            coverStoragePath: resolveCoverStoragePath(state.coverMediaAssetId),
+          }),
           updatedAt: state.updatedAt,
           sectionCount: state.sections.length,
           dbId: meta?.dbId ?? chapter.id,
@@ -366,6 +402,9 @@ export class MockChapterManagementRepository
     state.subtitle = input.subtitle;
     state.summary = input.summary;
     state.reviewStatus = input.reviewStatus;
+    if (input.coverMediaAssetId !== undefined) {
+      state.coverMediaAssetId = input.coverMediaAssetId;
+    }
     state.updatedAt = new Date().toISOString();
     return buildChapterRecord(chapterId);
   }
@@ -574,6 +613,7 @@ export class MockChapterManagementRepository
       subtitle: input.subtitle?.trim() || null,
       reviewStatus: "draft",
       summary: input.summary?.trim() || null,
+      coverMediaAssetId: null,
       sections: [],
       characterOrder: [],
       learningPoints: [],

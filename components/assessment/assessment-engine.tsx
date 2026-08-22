@@ -1,11 +1,15 @@
 "use client";
 
-import { useCallback, useMemo, useState, useTransition } from "react";
+import { useCallback, useEffect, useMemo, useState, useTransition } from "react";
 
 import {
   submitPreAssessmentAction,
   type AssessmentActionResult,
 } from "@/lib/assessment/actions";
+import {
+  ASSESSMENT_LANGUAGE_STORAGE_KEY,
+  type AssessmentLanguage,
+} from "@/lib/assessment/language";
 import type {
   Assessment,
   AssessmentAttemptSummary,
@@ -30,6 +34,18 @@ interface AssessmentEngineProps {
   ) => Promise<AssessmentActionResult<AssessmentSubmissionResult>>;
 }
 
+function readStoredLanguage(): AssessmentLanguage {
+  if (typeof window === "undefined") {
+    return "en";
+  }
+  try {
+    const raw = localStorage.getItem(ASSESSMENT_LANGUAGE_STORAGE_KEY);
+    return raw === "hil" ? "hil" : "en";
+  } catch {
+    return "en";
+  }
+}
+
 export function AssessmentEngine({
   assessment,
   questions,
@@ -45,6 +61,7 @@ export function AssessmentEngine({
     ? previewQuestions.map((question) => ({
         id: question.id,
         prompt: question.prompt,
+        promptHiligaynon: question.promptHiligaynon,
         options: question.options,
         sortOrder: question.sortOrder,
       }))
@@ -62,6 +79,7 @@ export function AssessmentEngine({
     return new Map(previewQuestions.map((question) => [question.id, question]));
   }, [isPreview, previewQuestions]);
 
+  const [language, setLanguage] = useState<AssessmentLanguage>("en");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [validationError, setValidationError] = useState<string | null>(null);
@@ -79,74 +97,82 @@ export function AssessmentEngine({
         }
       : null,
   );
-  const [hasSubmitted, setHasSubmitted] = useState(Boolean(initialCompletedAttempt));
+
+  useEffect(() => {
+    setLanguage(readStoredLanguage());
+  }, []);
+
+  function setAssessmentLanguage(next: AssessmentLanguage) {
+    setLanguage(next);
+    try {
+      localStorage.setItem(ASSESSMENT_LANGUAGE_STORAGE_KEY, next);
+    } catch {
+      // Ignore private-mode storage failures.
+    }
+  }
 
   const totalQuestions = sortedQuestions.length;
   const currentQuestion = sortedQuestions[currentIndex];
   const isFirst = currentIndex === 0;
   const isLast = currentIndex === totalQuestions - 1;
 
-  const selectAnswer = useCallback(
-    (questionId: string, optionId: string) => {
-      setAnswers((previous) => ({ ...previous, [questionId]: optionId }));
-      setValidationError(null);
-      setSubmitError(null);
-    },
-    [],
-  );
-
-  const goPrevious = useCallback(() => {
-    setCurrentIndex((index) => Math.max(0, index - 1));
+  const selectAnswer = useCallback((questionId: string, optionId: string) => {
+    setAnswers((previous) => ({ ...previous, [questionId]: optionId }));
     setValidationError(null);
   }, []);
 
-  const goNext = useCallback(() => {
+  function goPrevious() {
+    setValidationError(null);
+    setCurrentIndex((value) => Math.max(0, value - 1));
+  }
+
+  function goNext() {
     if (!currentQuestion) {
       return;
     }
-
-    if (!isPreview && !answers[currentQuestion.id]) {
+    if (!answers[currentQuestion.id]) {
       setValidationError("Please select an answer before continuing.");
       return;
     }
-
     setValidationError(null);
-    setCurrentIndex((index) => Math.min(totalQuestions - 1, index + 1));
-  }, [answers, currentQuestion, isPreview, totalQuestions]);
+    setCurrentIndex((value) => Math.min(totalQuestions - 1, value + 1));
+  }
 
-  const handleSubmit = useCallback(() => {
-    if (isPreview) {
+  function handleSubmit() {
+    if (!currentQuestion) {
+      return;
+    }
+    if (!answers[currentQuestion.id]) {
+      setValidationError("Please select an answer before submitting.");
       return;
     }
 
     const unanswered = sortedQuestions.filter((question) => !answers[question.id]);
     if (unanswered.length > 0) {
       setValidationError(
-        `Please answer all questions before submitting. ${unanswered.length} question(s) remain unanswered.`,
+        `Please answer all questions before submitting (${unanswered.length} remaining).`,
       );
-      return;
-    }
-
-    if (hasSubmitted || isSubmitting) {
       return;
     }
 
     setValidationError(null);
     setSubmitError(null);
 
+    if (isPreview) {
+      return;
+    }
+
     startSubmitTransition(async () => {
-      const response = await submitAction(answers);
-      if (!response.success) {
-        setSubmitError(response.error);
+      const actionResult = await submitAction(answers);
+      if (!actionResult.success) {
+        setSubmitError(actionResult.error);
         return;
       }
-
-      setResult(response.data);
-      setHasSubmitted(true);
+      setResult(actionResult.data);
     });
-  }, [answers, hasSubmitted, isPreview, isSubmitting, sortedQuestions, submitAction]);
+  }
 
-  if (result) {
+  if (result && !isPreview) {
     const resolvedContinueHref =
       continueHref.startsWith("/learn/results") && result.attemptId
         ? `/learn/results/${result.attemptId}`
@@ -184,6 +210,8 @@ export function AssessmentEngine({
       submitError={submitError}
       previewMode={isPreview}
       correctOptionId={previewById.get(currentQuestion.id)?.correctOptionId ?? null}
+      language={language}
+      onLanguageChange={setAssessmentLanguage}
     />
   );
 }

@@ -46,7 +46,7 @@ async function exportCsv(
 export async function exportLearnerProgressCsvAction(
   filters: AnalyticsFilters = {},
 ): Promise<AnalyticsExportResult> {
-  return exportCsv(filters, buildLearnerProgressCsv, "sugilearn-learner-progress.csv");
+  return exportCsv(filters, buildLearnerProgressCsv, "sugidanon-learner-progress.csv");
 }
 
 export async function exportAssessmentResultsCsvAction(
@@ -55,7 +55,7 @@ export async function exportAssessmentResultsCsvAction(
   return exportCsv(
     filters,
     buildAssessmentResultsCsv,
-    "sugilearn-assessment-results.csv",
+    "sugidanon-assessment-results.csv",
   );
 }
 
@@ -65,6 +65,6 @@ export async function exportChapterCompletionCsvAction(
   return exportCsv(
     filters,
     buildChapterCompletionCsv,
-    "sugilearn-chapter-completion.csv",
+    "sugidanon-chapter-completion.csv",
   );
 }

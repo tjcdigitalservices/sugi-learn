@@ -1,4 +1,6 @@
-import { ChapterJourneyList } from "@/components/learner/chapter-journey-list";
+import { redirect } from "next/navigation";
+
+import { ChapterCoverGrid } from "@/components/learner/chapter-cover-grid";
 import { ContinueLearningButton } from "@/components/learner/continue-learning-button";
 import { OverallProgress } from "@/components/learner/overall-progress";
 import { PageHeader } from "@/components/shared/page-header";
@@ -11,11 +13,15 @@ export default async function ChaptersPage() {
   const learnerId = await getCurrentLearnerId();
   const journey = await getLearnerJourneySummary(learnerId);
 
+  if (!journey.preAssessmentCompleted) {
+    redirect("/learn/assessment/pre");
+  }
+
   return (
-    <div className="mx-auto max-w-4xl space-y-8">
+    <div className="mx-auto max-w-6xl space-y-8 pb-10">
       <PageHeader
-        title={`${journey.totalChapters} Chapter${journey.totalChapters === 1 ? "" : "s"}`}
-        description="Your progress is saved as you go."
+        title="Sugidanon (Epics) of Panay"
+        description="Watch each chapter’s 2D animation. Finish a video to unlock the next chapter."
       />
 
       <OverallProgress
@@ -29,16 +35,15 @@ export default async function ChaptersPage() {
           <ContinueLearningButton chapterId={journey.continueChapterId} />
         ) : journey.allChaptersCompleted ? null : (
           <ContinueLearningButton
-            chapterId={journey.chapters[0]?.id ?? null}
+            chapterId={
+              journey.chapters.find((chapter) => chapter.isUnlocked)?.id ?? null
+            }
             label="Start Learning"
           />
         )}
       </div>
 
-      <ChapterJourneyList
-        chapters={journey.chapters}
-        continueChapterId={journey.continueChapterId}
-      />
+      <ChapterCoverGrid chapters={journey.chapters} />
     </div>
   );
 }

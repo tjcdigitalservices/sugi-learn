@@ -2,11 +2,7 @@ import { AssessmentEmptyState } from "@/components/assessment/assessment-empty-s
 import { AssessmentEngine } from "@/components/assessment/assessment-engine";
 import { submitPreAssessmentAction } from "@/lib/assessment/actions";
 import { isAssessmentLearnerReady } from "@/lib/domain/assessment-availability";
-import {
-  getCurrentLearnerId,
-  getLearnerJourneySummary,
-  resolveContinueChapterId,
-} from "@/lib/domain/learner-progress";
+import { getCurrentLearnerId } from "@/lib/domain/learner-progress";
 import { getPreAssessmentSession } from "@/lib/domain/pre-assessment";
 
 export default async function PreAssessmentPage() {
@@ -32,22 +28,13 @@ export default async function PreAssessmentPage() {
     );
   }
 
-  const journey = await getLearnerJourneySummary(learnerId);
-  const continueChapterId =
-    resolveContinueChapterId(journey.chapters) ?? journey.chapters[0]?.id ?? null;
-  const continueHref = continueChapterId
-    ? `/learn/chapters/${continueChapterId}`
-    : "/learn/chapters";
-
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <AssessmentEngine
         assessment={session.assessment}
         questions={session.questions}
-        continueHref={continueHref}
-        continueLabel={
-          journey.continueChapterId ? "Continue Learning" : "Begin Learning"
-        }
+        continueHref="/learn/chapters"
+        continueLabel="View Chapters"
         initialCompletedAttempt={session.completedAttempt}
         submitAction={submitPreAssessmentAction}
       />

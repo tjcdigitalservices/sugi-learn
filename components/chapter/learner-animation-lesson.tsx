@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { HeritageWave } from "@/components/brand/heritage-wave";
 import { MediaRenderer } from "@/components/chapter/media-renderer";
@@ -12,6 +12,7 @@ import type { Chapter, AnimationSection } from "@/types/chapter";
 import type { ChapterNavigation } from "@/lib/domain/chapter-navigation";
 import type { ChapterProgressStatus } from "@/types/progress";
 import type { MediaAsset } from "@/types/media";
+import { cn } from "@/lib/utils";
 
 interface LearnerAnimationLessonProps {
   chapter: Chapter;
@@ -39,7 +40,12 @@ export function LearnerAnimationLesson({
     ? mediaAssets.find((item) => item.id === animationSection.mediaAssetId)
     : undefined;
 
-  function handleComplete() {
+  const previousChapterId = navigation.previous?.id ?? null;
+
+  function markComplete() {
+    if (completed || isPending) {
+      return;
+    }
     setError(null);
     startTransition(async () => {
       const result = await completeChapterAction(chapter.id);
@@ -63,25 +69,22 @@ export function LearnerAnimationLesson({
       </Link>
 
       <article className="sl-card relative overflow-hidden">
-        <div className="space-y-5 px-5 py-6 sm:px-8">
+        <div className="space-y-5 px-4 py-5 sm:px-8 sm:py-6">
           <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-sl-ink-muted">
             <p>
               Chapter {chapter.number}: {chapter.title}
             </p>
             <p>
-              Lesson {navigation.position} of {navigation.total}
+              {navigation.position} of {navigation.total}
             </p>
           </div>
-
-          <h1 className="font-display text-2xl font-semibold tracking-tight text-sl-navy sm:text-3xl">
-            {animationSection?.title ?? "2D Animation"}
-          </h1>
 
           {animationSection ? (
             <MediaRenderer
               asset={asset}
               kind="animation"
               emptyMessage="Animation not available yet. An approved 2D animation video has not been published for this chapter."
+              onEnded={markComplete}
             />
           ) : (
             <div className="rounded-xl border border-dashed border-[color:rgba(44,36,22,0.2)] bg-white/60 px-6 py-12 text-center">
@@ -95,50 +98,71 @@ export function LearnerAnimationLesson({
             </div>
           )}
 
-          <div className="space-y-3 border-t border-[color:rgba(44,36,22,0.08)] pt-5">
-            {completed ? (
-              <div className="space-y-3" role="status">
-                <p className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
-                  Chapter complete. Your progress has been saved.
-                </p>
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <Link
-                    href="/learn"
-                    className="inline-flex items-center rounded-full border border-[color:rgba(44,36,22,0.15)] px-5 py-3 text-sm font-medium text-sl-ink transition hover:bg-white"
-                  >
-                    Return to home
-                  </Link>
-                  {nextChapterId ? (
-                    <Link
-                      href={`/learn/chapters/${nextChapterId}`}
-                      className="sl-btn-gold"
-                    >
-                      Continue to next chapter
-                    </Link>
-                  ) : (
-                    <Link href="/learn/assessment/post" className="sl-btn-gold">
-                      Take the Post-Test
-                    </Link>
-                  )}
-                </div>
-              </div>
-            ) : animationSection && asset?.storagePath ? (
-              <>
-                {error ? (
-                  <p className="rounded-xl border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">
-                    {error}
-                  </p>
-                ) : null}
-                <button
-                  type="button"
-                  className="sl-btn-gold"
-                  onClick={handleComplete}
-                  disabled={isPending}
-                >
-                  {isPending ? "Saving…" : "I've finished this chapter"}
-                </button>
-              </>
-            ) : null}
+          {error ? (
+            <p className="rounded-xl border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">
+              {error}
+            </p>
+          ) : null}
+
+          {completed ? (
+            <p
+              className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900"
+              role="status"
+            >
+              Chapter complete. Your progress has been saved.
+            </p>
+          ) : null}
+
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[color:rgba(44,36,22,0.08)] pt-5">
+            {previousChapterId ? (
+              <Link
+                href={`/learn/chapters/${previousChapterId}`}
+                className="inline-flex items-center gap-2 rounded-full border border-[color:rgba(44,36,22,0.15)] bg-white px-4 py-2.5 text-sm font-medium text-sl-ink transition hover:bg-[var(--sl-cream-deep)]"
+              >
+                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                Previous
+              </Link>
+            ) : (
+              <button
+                type="button"
+                disabled
+                className="inline-flex cursor-not-allowed items-center gap-2 rounded-full border border-[color:rgba(44,36,22,0.1)] px-4 py-2.5 text-sm font-medium text-sl-ink-muted opacity-40"
+              >
+                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                Previous
+              </button>
+            )}
+
+            {nextChapterId ? (
+              <Link
+                href={`/learn/chapters/${nextChapterId}`}
+                aria-disabled={!completed}
+                tabIndex={completed ? undefined : -1}
+                className={cn(
+                  "inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition",
+                  completed
+                    ? "sl-btn-gold"
+                    : "pointer-events-none cursor-not-allowed border border-[color:rgba(44,36,22,0.1)] bg-[color:rgba(44,36,22,0.06)] text-sl-ink-muted opacity-50",
+                )}
+              >
+                {isPending ? "Saving…" : "Next Chapter"}
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            ) : completed ? (
+              <Link href="/learn/assessment/post" className="sl-btn-gold">
+                Take the Post-Test
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            ) : (
+              <button
+                type="button"
+                disabled
+                className="inline-flex cursor-not-allowed items-center gap-2 rounded-full border border-[color:rgba(44,36,22,0.1)] px-4 py-2.5 text-sm font-medium text-sl-ink-muted opacity-40"
+              >
+                Next Chapter
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </button>
+            )}
           </div>
         </div>
 

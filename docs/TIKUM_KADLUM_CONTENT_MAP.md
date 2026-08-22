@@ -3,7 +3,7 @@
 **Source document:** `docs/sources/Tikum-Kadlum-Sugidanon-Source.docx`  
 **Last updated:** 2026-08-15 (M10)
 
-This map records what the client-provided source document supplies for each of the 13 SugiLearn chapters. **Chapter order follows the client document and existing project catalog — not Sugidanon Book numbers.**
+This map records what the client-provided source document supplies for each of the 13 Sugidanon chapters. **Chapter order follows the client document and existing project catalog — not Sugidanon Book numbers.**
 
 Legend:
 

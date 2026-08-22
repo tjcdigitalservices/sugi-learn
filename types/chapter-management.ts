@@ -18,6 +18,8 @@ export interface UpdateChapterMetadataInput {
   subtitle: string | null;
   summary: string | null;
   reviewStatus: ReviewStatus;
+  /** Set to assign a cover; null clears; omit to leave unchanged. */
+  coverMediaAssetId?: string | null;
 }
 
 export interface CreateSectionInput {

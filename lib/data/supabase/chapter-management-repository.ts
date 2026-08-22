@@ -414,8 +414,28 @@ export class SupabaseChapterManagementRepository
       }
     }
 
+    const coverIds = chapters
+      .map((chapter) => chapter.cover_media_asset_id)
+      .filter((id): id is string => Boolean(id));
+    const coverPathByAssetId = new Map<string, string | null>();
+    if (coverIds.length > 0) {
+      const { data: coverAssets } = await supabase
+        .from("media_assets")
+        .select("id, storage_path")
+        .in("id", coverIds);
+      for (const asset of coverAssets ?? []) {
+        coverPathByAssetId.set(asset.id, asset.storage_path);
+      }
+    }
+
     return chapters.map((chapter) => ({
-      ...mapChapterSummary(chapter, approvedCounts.get(chapter.id) ?? 0),
+      ...mapChapterSummary(
+        chapter,
+        approvedCounts.get(chapter.id) ?? 0,
+        chapter.cover_media_asset_id
+          ? (coverPathByAssetId.get(chapter.cover_media_asset_id) ?? null)
+          : null,
+      ),
       updatedAt: chapter.updated_at,
       sectionCount: sectionCounts.get(chapter.id) ?? 0,
       dbId: chapter.id,
@@ -440,6 +460,9 @@ export class SupabaseChapterManagementRepository
         subtitle: input.subtitle,
         summary: input.summary,
         review_status: input.reviewStatus,
+        ...(input.coverMediaAssetId !== undefined
+          ? { cover_media_asset_id: input.coverMediaAssetId }
+          : {}),
       })
       .eq("slug", chapterId);
 

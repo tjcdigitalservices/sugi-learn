@@ -1,4 +1,4 @@
--- SugiLearn M2: Foundation schema
+-- Sugidanon M2: Foundation schema
 -- Enums, tables, indexes, triggers, profile bootstrap
 
 -- ---------------------------------------------------------------------------

@@ -1,6 +1,7 @@
 /**
  * Resolves a media asset storage path to a renderable URL.
  * Public Supabase Storage bucket; learner visibility is gated by media_assets RLS.
+ * Paths starting with `/` are treated as app public assets.
  */
 export function resolveMediaUrl(storagePath: string | null): string | null {
   if (!storagePath?.trim()) {
@@ -10,6 +11,10 @@ export function resolveMediaUrl(storagePath: string | null): string | null {
   const trimmed = storagePath.trim();
 
   if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+    return trimmed;
+  }
+
+  if (trimmed.startsWith("/")) {
     return trimmed;
   }
 

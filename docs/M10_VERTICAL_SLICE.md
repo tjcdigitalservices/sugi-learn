@@ -3,7 +3,7 @@
 **Status:** Complete (M10)  
 **Last updated:** 2026-08-15
 
-First real-content vertical slice for **Chapter 1 — Tikum Kadlum**, proving the full SugiLearn architecture from client source through CMS, database, ChapterEngine, learner experience, and progress.
+First real-content vertical slice for **Chapter 1 — Tikum Kadlum**, proving the full Sugidanon architecture from client source through CMS, database, ChapterEngine, learner experience, and progress.
 
 ---
 

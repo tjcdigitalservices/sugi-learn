@@ -64,6 +64,7 @@ export interface Database {
           summary: string | null;
           review_status: ReviewStatus;
           is_active: boolean;
+          cover_media_asset_id: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -76,6 +77,7 @@ export interface Database {
           summary?: string | null;
           review_status?: ReviewStatus;
           is_active?: boolean;
+          cover_media_asset_id?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -88,6 +90,7 @@ export interface Database {
           summary?: string | null;
           review_status?: ReviewStatus;
           is_active?: boolean;
+          cover_media_asset_id?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -339,7 +342,9 @@ export interface Database {
           assessment_id: string;
           chapter_id: string | null;
           prompt: string;
+          prompt_hiligaynon: string | null;
           explanation: string | null;
+          explanation_hiligaynon: string | null;
           source_reference: string | null;
           sort_order: number;
           review_status: ReviewStatus;
@@ -351,7 +356,9 @@ export interface Database {
           assessment_id: string;
           chapter_id?: string | null;
           prompt: string;
+          prompt_hiligaynon?: string | null;
           explanation?: string | null;
+          explanation_hiligaynon?: string | null;
           source_reference?: string | null;
           sort_order: number;
           review_status?: ReviewStatus;
@@ -363,7 +370,9 @@ export interface Database {
           assessment_id?: string;
           chapter_id?: string | null;
           prompt?: string;
+          prompt_hiligaynon?: string | null;
           explanation?: string | null;
+          explanation_hiligaynon?: string | null;
           source_reference?: string | null;
           sort_order?: number;
           review_status?: ReviewStatus;
@@ -377,6 +386,7 @@ export interface Database {
           id: string;
           question_id: string;
           label: string;
+          label_hiligaynon: string | null;
           sort_order: number;
           is_correct: boolean;
           explanation: string | null;
@@ -385,6 +395,7 @@ export interface Database {
           id?: string;
           question_id: string;
           label: string;
+          label_hiligaynon?: string | null;
           sort_order: number;
           is_correct?: boolean;
           explanation?: string | null;
@@ -393,6 +404,7 @@ export interface Database {
           id?: string;
           question_id?: string;
           label?: string;
+          label_hiligaynon?: string | null;
           sort_order?: number;
           is_correct?: boolean;
           explanation?: string | null;

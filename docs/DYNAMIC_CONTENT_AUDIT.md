@@ -2,13 +2,13 @@
 
 **Date:** 2026-08-15  
 **Status:** Complete  
-**Scope:** Verify SugiLearn treats the 13 Sugidanon stories as initial content, not a system limit.
+**Scope:** Verify Sugidanon treats the 13 Sugidanon stories as initial content, not a system limit.
 
 ---
 
 ## Executive Summary
 
-SugiLearn is **dynamically scalable** for admin-managed chapters. The initial 13 chapters remain seeded content; admins can create, reorder, publish, and archive additional chapters without developer intervention. Core learner flows (journey, navigation, progress, analytics) derive chapter counts from the database at runtime.
+Sugidanon is **dynamically scalable** for admin-managed chapters. The initial 13 chapters remain seeded content; admins can create, reorder, publish, and archive additional chapters without developer intervention. Core learner flows (journey, navigation, progress, analytics) derive chapter counts from the database at runtime.
 
 ---
 
@@ -158,7 +158,7 @@ npm run build — PASS
 
 ## Confirmation
 
-**SugiLearn now treats the current 13 chapters as content, not as a system limit.**
+**Sugidanon now treats the current 13 chapters as content, not as a system limit.**
 
 Admins can manage additional chapters without developer intervention via `/admin/chapters` (create, edit, reorder, archive). The learner journey, progress tracking, and analytics operate on dynamic chapter counts from the database.
 

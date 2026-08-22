@@ -57,8 +57,36 @@ export class SupabaseChapterRepository implements ChapterRepository {
       }
     }
 
+    const coverIds = chapters
+      .map((chapter) => chapter.cover_media_asset_id)
+      .filter((id): id is string => Boolean(id));
+
+    const coverPathByAssetId = new Map<string, string | null>();
+    if (coverIds.length > 0) {
+      const { data: coverAssets, error: coverError } = await supabase
+        .from("media_assets")
+        .select("id, storage_path")
+        .in("id", coverIds);
+
+      if (coverError) {
+        throw new Error(
+          `Failed to load chapter covers: ${coverError.message}`,
+        );
+      }
+
+      for (const asset of coverAssets ?? []) {
+        coverPathByAssetId.set(asset.id, asset.storage_path);
+      }
+    }
+
     return chapters.map((chapter) =>
-      mapChapterSummary(chapter, approvedCounts.get(chapter.id) ?? 0),
+      mapChapterSummary(
+        chapter,
+        approvedCounts.get(chapter.id) ?? 0,
+        chapter.cover_media_asset_id
+          ? (coverPathByAssetId.get(chapter.cover_media_asset_id) ?? null)
+          : null,
+      ),
     );
   }
 

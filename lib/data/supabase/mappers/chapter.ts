@@ -15,6 +15,7 @@ import type {
 import type { MediaAsset } from "@/types/media";
 import type { ReviewStatus } from "@/types/review";
 import { isPublishedReviewStatus } from "@/types/review";
+import { resolveChapterCoverUrl } from "@/lib/chapter/cover";
 
 function mapReviewStatus(status: string): ReviewStatus {
   return status as ReviewStatus;
@@ -23,7 +24,9 @@ function mapReviewStatus(status: string): ReviewStatus {
 export function mapChapterSummary(
   row: ChapterRow,
   approvedSectionCount: number,
+  coverStoragePath: string | null = null,
 ): ChapterSummary {
+  const coverMediaAssetId = row.cover_media_asset_id ?? null;
   return {
     id: row.slug,
     number: row.chapter_number,
@@ -32,6 +35,12 @@ export function mapChapterSummary(
     reviewStatus: mapReviewStatus(row.review_status),
     isActive: row.is_active ?? true,
     hasPublishedContent: approvedSectionCount > 0,
+    coverMediaAssetId,
+    coverUrl: resolveChapterCoverUrl({
+      chapterNumber: row.chapter_number,
+      chapterSlug: row.slug,
+      coverStoragePath: coverMediaAssetId ? coverStoragePath : null,
+    }),
   };
 }
 
@@ -146,12 +155,25 @@ export function mapChapterRecord(params: {
   learningPoints: LearningPointRow[];
   sectionCharacterIds: Map<string, string[]>;
   sectionLearningPointIds: Map<string, string[]>;
+  coverStoragePath?: string | null;
 }): Chapter {
   const approvedSectionCount = params.sections.filter((section) =>
     isPublishedReviewStatus(mapReviewStatus(section.review_status)),
   ).length;
 
-  const summary = mapChapterSummary(params.chapter, approvedSectionCount);
+  const coverId = params.chapter.cover_media_asset_id ?? null;
+  const coverFromMedia =
+    coverId != null
+      ? (params.media.find((asset) => asset.id === coverId)?.storage_path ??
+        params.coverStoragePath ??
+        null)
+      : null;
+
+  const summary = mapChapterSummary(
+    params.chapter,
+    approvedSectionCount,
+    coverFromMedia,
+  );
   const context: SectionMappingContext = {
     sectionCharacterIds: params.sectionCharacterIds,
     sectionLearningPointIds: params.sectionLearningPointIds,

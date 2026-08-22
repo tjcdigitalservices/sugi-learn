@@ -1,4 +1,4 @@
--- SugiLearn M2: Row Level Security policies
+-- Sugidanon M2: Row Level Security policies
 
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.chapters ENABLE ROW LEVEL SECURITY;

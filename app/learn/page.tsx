@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { ChapterJourneyList } from "@/components/learner/chapter-journey-list";
+import { ChapterCoverGrid } from "@/components/learner/chapter-cover-grid";
 import { ContinueLearningButton } from "@/components/learner/continue-learning-button";
 import { OverallProgress } from "@/components/learner/overall-progress";
 import { StartAsDifferentLearnerButton } from "@/components/learner/start-as-different-learner-button";
@@ -31,7 +31,7 @@ export default async function LearnHomePage() {
     postSession.questions,
   );
 
-  const greeting = displayName ? `Welcome back, ${displayName}` : "Welcome to SugiLearn";
+  const greeting = displayName ? `Welcome back, ${displayName}` : "Welcome to Sugidanon";
 
   return (
     <div className="mx-auto max-w-4xl space-y-10">
@@ -43,10 +43,9 @@ export default async function LearnHomePage() {
           {greeting}
         </h1>
         <p className="max-w-2xl text-sm text-sl-ink-muted sm:text-base">
-          Follow the Sugidanon chapter journey ({journey.totalChapters}{" "}
-          {journey.totalChapters === 1 ? "chapter" : "chapters"} available).
-          Each chapter presents a 2D animation lesson. Your progress is saved as
-          you go.
+          Complete the Pre-Test, then watch the Sugidanon chapter animations in
+          order. Finishing a video unlocks the next chapter. When all chapters
+          are done, you can revisit any animation freely.
         </p>
         <StartAsDifferentLearnerButton />
       </header>
@@ -77,7 +76,10 @@ export default async function LearnHomePage() {
             <ContinueLearningButton chapterId={journey.continueChapterId} />
           ) : (
             <ContinueLearningButton
-              chapterId={journey.chapters[0]?.id ?? null}
+              chapterId={
+                journey.chapters.find((chapter) => chapter.isUnlocked)?.id ??
+                null
+              }
               label="Start Learning"
             />
           )}
@@ -134,14 +136,25 @@ export default async function LearnHomePage() {
         <div>
           <h2 className="text-lg font-semibold">Chapter journey</h2>
           <p className="text-sm text-muted-foreground">
-            All chapters remain accessible. Revisit completed chapters at any
-            time.
+            {journey.preAssessmentCompleted
+              ? "Chapters unlock in order after you finish each animation. Once all are complete, every cover stays open for replay."
+              : "Complete the Pre-Test to unlock Chapter 1 and begin the Sugidanon journey."}
           </p>
         </div>
-        <ChapterJourneyList
-          chapters={journey.chapters}
-          continueChapterId={journey.continueChapterId}
-        />
+        {journey.preAssessmentCompleted ? (
+          <ChapterCoverGrid chapters={journey.chapters} />
+        ) : (
+          <div className="rounded-xl border border-dashed border-[color:rgba(44,36,22,0.2)] bg-white/50 px-6 py-10 text-center">
+            <p className="text-sm text-sl-ink-muted">
+              Chapter covers unlock after your Pre-Test.
+            </p>
+            {preAvailable ? (
+              <Link href="/learn/assessment/pre" className="sl-btn-gold mt-4">
+                Take Pre-Test
+              </Link>
+            ) : null}
+          </div>
+        )}
       </section>
     </div>
   );

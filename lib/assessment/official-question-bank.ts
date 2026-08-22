@@ -7,8 +7,10 @@ export const OFFICIAL_POST_ASSESSMENT_ID = bank.post.id;
 type BankQuestion = {
   id: string;
   prompt: string;
+  promptHiligaynon?: string | null;
   correctIndex: number;
   options: string[];
+  optionsHiligaynon?: Array<string | null> | null;
 };
 
 type BankAssessment = {
@@ -29,9 +31,11 @@ function toAssessmentQuestions(
   assessment: BankAssessment,
 ): AssessmentQuestion[] {
   return assessment.questions.map((question, questionIndex) => {
+    const hiligaynonOptions = question.optionsHiligaynon ?? [];
     const options = question.options.map((label, optionIndex) => ({
       id: optionId(assessment.type, questionIndex, optionIndex),
       label,
+      labelHiligaynon: hiligaynonOptions[optionIndex]?.trim() || null,
       sortOrder: optionIndex + 1,
     }));
 
@@ -41,9 +45,11 @@ function toAssessmentQuestions(
       assessmentType: assessment.type,
       chapterId: null,
       prompt: question.prompt,
+      promptHiligaynon: question.promptHiligaynon?.trim() || null,
       options,
       correctOptionId: options[question.correctIndex]!.id,
       explanation: null,
+      explanationHiligaynon: null,
       sourceReference: null,
       reviewStatus: "approved",
       sortOrder: questionIndex + 1,

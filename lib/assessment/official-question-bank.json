@@ -14,6 +14,13 @@
           "An extraordinary dog belonging to Datu Paiburong",
           "A rival of Labaw Donggon",
           "A ritual specialist"
+        ],
+        "promptHiligaynon": "Sin-o si Tikum Kadlum?",
+        "optionsHiligaynon": [
+          "Isa ka gamhanan nga tinuga sa idalom sang duta",
+          "Isa ka pinasahi nga ayam ni Datu Paiburong",
+          "Isa ka kaaway ni Labaw Donggon",
+          "Isa ka babaylan"
         ]
       },
       {
@@ -25,6 +32,13 @@
           "The bamboo transformed into an island",
           "It caused a dispute because the bamboo belonged to Makabagting and Amburukay",
           "Tikum Kadlum became ill"
+        ],
+        "promptHiligaynon": "Ano ang natabo sang gin-utod ni Paiburong ang indi ordinaryo nga kawayan?",
+        "optionsHiligaynon": [
+          "Nakatukib sia sang tago nga manggad",
+          "Ang kawayan nahimo nga isa ka isla",
+          "Nagtuga ini sang banggianay kay ang kawayan ila nanday Makabagting kag Amburukay",
+          "Nagmasakit si Tikum Kadlum"
         ]
       },
       {
@@ -36,6 +50,13 @@
           "In an underworld kingdom",
           "On a magical island",
           "In a sailing vessel"
+        ],
+        "promptHiligaynon": "Paano gintago kag ginpadaku ni Amburukay sanday Matan-ayon kag Saranggaon?",
+        "optionsHiligaynon": [
+          "Sa isa ka bulawan nga kuwarto bilang binukot",
+          "Sa isa ka ginharian sa idalom sang duta",
+          "Sa isa ka engkantado nga isla",
+          "Sa isa ka sakayan"
         ]
       },
       {
@@ -47,6 +68,13 @@
           "Her golden hair",
           "Her magical necklace",
           "Her heirloom vessel"
+        ],
+        "promptHiligaynon": "Ano ang kinahanglan makuha ni Labaw Donggon gikan kay Amburukay?",
+        "optionsHiligaynon": [
+          "Ang iya bulawan nga sakayan",
+          "Ang iya bulawan nga buhok",
+          "Ang iya engkantado nga kulintas",
+          "Ang iya ginpanubli nga biday"
         ]
       },
       {
@@ -58,6 +86,13 @@
           "It marked an agreement promising Matan-ayon to Labaw Donggon",
           "It belonged to Paglambuhan",
           "It was used to enter the underworld"
+        ],
+        "promptHiligaynon": "Ano ang kahulugan sang bulawan nga medalyon sa Derikaryong Pada?",
+        "optionsHiligaynon": [
+          "Nagsimbolo ini sang isa ka armas",
+          "Nagtanda ini sang kasugtanan nga nagapasalig kay Matan-ayon para kay Labaw Donggon",
+          "Iya ini ni Paglambuhan",
+          "Gingamit ini para makasulod sa idalom sang duta"
         ]
       },
       {
@@ -69,6 +104,13 @@
           "He possesses extraordinary innate power as a dalagangan",
           "He controls the underworld",
           "He can transform into a pawikan"
+        ],
+        "promptHiligaynon": "Ano ang nakatuhay kay Balanakon kumpara sa ordinaryo nga bagani?",
+        "optionsHiligaynon": [
+          "May engkantado sia nga biday",
+          "May pinasahi kag kinaiya nga gahum sia bilang dalagangan",
+          "Sia ang nagagahum sa idalom sang duta",
+          "Mahimo sia nga pawikan"
         ]
       },
       {
@@ -80,6 +122,13 @@
           "A giant turtle",
           "A crab",
           "A lion"
+        ],
+        "promptHiligaynon": "Sa Kalampay, ano ang ginliwat ni Masangladon nga maging isla?",
+        "optionsHiligaynon": [
+          "Isa ka punu sang kawayan",
+          "Isa ka daku nga pawikan",
+          "Isa ka alimango",
+          "Isa ka leon"
         ]
       },
       {
@@ -91,6 +140,13 @@
           "He becomes a pawikan",
           "He becomes a giant crab",
           "He becomes a tree"
+        ],
+        "promptHiligaynon": "Ano ang natabo kay Labaw Donggon sa Pahagunong?",
+        "optionsHiligaynon": [
+          "Nahimo sia nga leon",
+          "Nahimo sia nga pawikan",
+          "Nahimo sia nga daku nga alimango",
+          "Nahimo sia nga kahoy"
         ]
       },
       {
@@ -102,6 +158,13 @@
           "Inside a bamboo tree",
           "In an eggshell inside the heart of a lion",
           "Inside an enchanted pillow"
+        ],
+        "promptHiligaynon": "Diin nakatago ang kabuhi o ginhawa ni Sinagnayan?",
+        "optionsHiligaynon": [
+          "Sa sulod sang bulawan nga sakayan",
+          "Sa sulod sang punu sang kawayan",
+          "Sa sulod sang bagol sang itlog sa tagipusuon sang leon",
+          "Sa sulod sang engkantado nga unlan"
         ]
       },
       {
@@ -113,6 +176,13 @@
           "Humadapnon's courtship partner",
           "Sinagnayan's mother",
           "Laon Sina's sister"
+        ],
+        "promptHiligaynon": "Sin-o si Nagmalitong Yawa, nga masami man ginatawag nga Mali?",
+        "optionsHiligaynon": [
+          "Ang iloy ni Labaw Donggon",
+          "Ang kaparis sa pagpangaluyo ni Humadapnon",
+          "Ang iloy ni Sinagnayan",
+          "Ang utod ni Laon Sina"
         ]
       },
       {
@@ -124,6 +194,13 @@
           "A ritual performed by Ginduluman",
           "A magical weapon",
           "A golden chamber"
+        ],
+        "promptHiligaynon": "Ano ang \"tuos\" sa istorya sang Pagbalukat ka Biday?",
+        "optionsHiligaynon": [
+          "Isa ka tanda sang pagpangasawa nga ginasimbolo sang ginpanubli nga biday",
+          "Isa ka ritual nga ginhimo ni Ginduluman",
+          "Isa ka engkantado nga armas",
+          "Isa ka bulawan nga kuwarto"
         ]
       },
       {
@@ -135,6 +212,13 @@
           "Matan-ayon enters the underworld",
           "Paiburong cuts the unusual bamboo",
           "Sinagnayan fights Balanakon"
+        ],
+        "promptHiligaynon": "Ano ang natabo sa istorya sang Hungaw?",
+        "optionsHiligaynon": [
+          "Pormal nga ginkasugtan ang kasal nanday Humadapnon kag Mali",
+          "Nakasulod si Matan-ayon sa idalom sang duta",
+          "Gin-utod ni Paiburong ang indi ordinaryo nga kawayan",
+          "Nakig-away si Sinagnayan kay Balanakon"
         ]
       },
       {
@@ -146,6 +230,13 @@
           "She is carried into the underworld",
           "She dies during the conflict and is later restored to life",
           "She becomes a ritual specialist"
+        ],
+        "promptHiligaynon": "Ano ang natabo kay Mali sa Ginlawan?",
+        "optionsHiligaynon": [
+          "Nahimo sia nga pawikan",
+          "Gindala sia sa idalom sang duta",
+          "Namatay sia sa tion sang inaway kag sa ulihi ginpabalik ang kabuhi",
+          "Nahimo sia nga babaylan"
         ]
       },
       {
@@ -157,6 +248,13 @@
           "To entice Mali outside her enclosure so Humadapnon can see her",
           "To open a passage into the underworld",
           "To restore Matan-ayon's health"
+        ],
+        "promptHiligaynon": "Ano ang katuyoan sang kahoy nga alayaw sa Alayaw?",
+        "optionsHiligaynon": [
+          "Para protektahan si Humadapnon gikan kay Sinagnayan",
+          "Para ganyaton si Mali nga magguwa sa iya kuwarto para makita sia ni Humadapnon",
+          "Para mag-abli sang daan pakadto sa idalom sang duta",
+          "Para iuli ang pag-ayo sang lawas ni Matan-ayon"
         ]
       },
       {
@@ -168,6 +266,13 @@
           "She has no connection to ritual knowledge",
           "She uses deception and magic and is connected to the inheritance of ritual knowledge through her maternal family",
           "She is the owner of the heirloom boat"
+        ],
+        "promptHiligaynon": "Ano ang ginapahayag ni Nagbuhis nahanungod kay Mali?",
+        "optionsHiligaynon": [
+          "Isa lang sia ka pasibo nga karakter sa istorya ni Humadapnon",
+          "Wala sia sang kaangtanan sa kinaagman sa ritual",
+          "Nagagamit sia sang pagpanglinlang kag salamangka kag may kaangtanan sa panublion sang kinaagman sa ritual paagi sa pamilya sang iya iloy",
+          "Sia ang tag-iya sang ginpanubli nga biday"
         ]
       }
     ]
@@ -176,7 +281,7 @@
     "id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2",
     "type": "post",
     "title": "Post-Assessment",
-    "instructions": "Measure understanding after completing the SugiLearn learning experience. Choose the best answer for each question. 1 point per question.",
+    "instructions": "Measure understanding after completing the Sugidanon learning experience. Choose the best answer for each question. 1 point per question.",
     "questions": [
       {
         "id": "c1000000-0000-4000-8000-000000000001",
@@ -187,6 +292,13 @@
           "The bamboo was a sacred object owned by Makabagting and Amburukay",
           "The bamboo contained a hidden treasure",
           "The bamboo was needed to build a boat"
+        ],
+        "promptHiligaynon": "Ngaa man ang pag-utod ni Paiburong sa indi ordinaryo nga kawayan nagtuga sang banggianay?",
+        "optionsHiligaynon": [
+          "Ang kawayan iya sang iya utod",
+          "Ang kawayan isa ka sagrado nga gamit nanday Makabagting kag Amburukay",
+          "May tago nga manggad ang kawayan",
+          "Ginakinahanglan ang kawayan para maghimo sang biday"
         ]
       },
       {
@@ -198,6 +310,13 @@
           "She raised them as her own daughters in a golden chamber as binukot",
           "She sent them to Labaw Donggon",
           "She trained them to become warriors"
+        ],
+        "promptHiligaynon": "Ano ang indi ordinaryo sa pagtratar ni Amburukay kanday Matan-ayon kag Saranggaon?",
+        "optionsHiligaynon": [
+          "Ginpriso niya sila sa idalom sang duta",
+          "Ginpadaku niya sila pareho sang iya kaugalingon nga mga babaye nga anak sa isa ka bulawan nga kuwarto bilang binukot",
+          "Ginpadala niya sila kay Labaw Donggon",
+          "Gin-giyahan niya sila para maging mga bagani"
         ]
       },
       {
@@ -209,6 +328,13 @@
           "Physical strength always solves conflicts",
           "Marriage is unrelated to family obligations",
           "Magical objects have no importance"
+        ],
+        "promptHiligaynon": "Ano ang ginapakita sang istorya ni Amburukay nahanungod sa mga ginhimo ni Labaw Donggon?",
+        "optionsHiligaynon": [
+          "Ang pagkuha sang luyag sang isa ka tawo makatuga sang obligasyon kag kahinatnan",
+          "Ang pisikal nga kusog pirme nga nagasolbar sang banggianay",
+          "Ang kasal wala sang labot sa obligasyon sa pamilya",
+          "Ang mga engkantado nga gamit wala sang importansya"
         ]
       },
       {
@@ -220,6 +346,13 @@
           "It was the condition through which a suitor could prove his right to marry Matan-ayon",
           "It belonged to Sinagnayan",
           "It was used during a ritual ceremony"
+        ],
+        "promptHiligaynon": "Sa Derikaryong Pada, ngaa man importante ang pagbawi sang ginpanubli nga biday?",
+        "optionsHiligaynon": [
+          "Kinahanglan ini para makasulod sa idalom sang duta",
+          "Ini ang kondisyon diin ang isa ka nagapangasawa makapamatuod sang iya katungod nga makasal kay Matan-ayon",
+          "Iya ini ni Sinagnayan",
+          "Gingamit ini sa tion sang selebrasyon sang ritual"
         ]
       },
       {
@@ -231,6 +364,13 @@
           "Extraordinary power makes negotiation unnecessary",
           "Some conflicts require an authoritative intermediary rather than force alone",
           "Rivalries are always resolved through marriage"
+        ],
+        "promptHiligaynon": "Ano ang ginapakita sang banggianay nahanungod kay Balanakon?",
+        "optionsHiligaynon": [
+          "Ang tagsa ka banggianay masolbar paagi sa mas daku nga pisikal nga kusog",
+          "Ang pinasahi nga gahum nagahimo sa negosasyon nga indi na kinahanglan",
+          "Ang pila ka banggianay nagakinahanglan sang may awtoridad nga tagpatunga sa baylo nga kusog lang",
+          "Ang mga pag-agaway pirme nga nagatapos sa kasal"
         ]
       },
       {
@@ -242,6 +382,13 @@
           "She unknowingly entered the transformed crab-island while gathering fruit",
           "Labaw Donggon sent her there",
           "She was searching for Sinagnayan"
+        ],
+        "promptHiligaynon": "Ngaa man gindala si Matan-ayon pakadto sa idalom sang duta sa Kalampay?",
+        "optionsHiligaynon": [
+          "Hungod sia nga naglakbay didto para makigkita kay Masangladon",
+          "Wala sia nakahibalo nga nakasulod sia sa nagbaylo nga alimango-isla samtang nagatipon sang bunga sang kahoy",
+          "Ginpadala sia didto ni Labaw Donggon",
+          "Nagapangita sia kay Sinagnayan"
         ]
       },
       {
@@ -253,6 +400,13 @@
           "Heroes always win through combat",
           "The underworld has no rules",
           "Matan-ayon can resolve every conflict herself"
+        ],
+        "promptHiligaynon": "Ano ang ginapakita sang naagihan ni Labaw Donggon kay Masangladon?",
+        "optionsHiligaynon": [
+          "Bisan ang gamhanan nga bagani kinahanglan magrespeto sa iban nga sakop kag gahum",
+          "Ang mga bagani pirme nagadaog sa away",
+          "Ang idalom sang duta wala sang mga kaangtanan nga kasugtanan",
+          "Masolbar ni Matan-ayon ang tagsa ka banggianay sa iya kaugalingon"
         ]
       },
       {
@@ -264,6 +418,13 @@
           "She transformed herself into a man and entered the conflict",
           "She escaped into the underworld",
           "She asked Sinagnayan for help"
+        ],
+        "promptHiligaynon": "Paano nagdesisyon si Matan-ayon sang nag-entra si Pahagunong sa banggianay?",
+        "optionsHiligaynon": [
+          "Nagpabilin sia nga pasibo kag naghulat kay Labaw Donggon",
+          "Ginbaylo niya ang iya kaugalingon nga maging lalaki kag nag-entra sa banggianay",
+          "Nagpalagyo sia pakadto sa idalom sang duta",
+          "Nangayo sia sang bulig kay Sinagnayan"
         ]
       },
       {
@@ -275,6 +436,13 @@
           "Matan-ayon defeated him with magic",
           "Knowledge about his hidden life-force, disguise, cooperation, and strategy made his defeat possible",
           "Balanakon defeated him"
+        ],
+        "promptHiligaynon": "Paano napierde sa ulihi si Sinagnayan?",
+        "optionsHiligaynon": [
+          "Gin-pierde sia ni Labaw Donggon paagi sa kusog lang",
+          "Gin-pierde sia ni Matan-ayon paagi sa salamangka",
+          "Ang kinaagman nahanungod sa iya tago nga kabuhi, pagpakunokuno, pagbuligay, kag taktika ang nakapahimo sang iya kapierdihan",
+          "Gin-pierde sia ni Balanakon"
         ]
       },
       {
@@ -286,6 +454,13 @@
           "She actively uses disguise, ritual, magic, strategy, and rescue throughout the story",
           "She appears only during the wedding",
           "She is primarily an antagonist to Humadapnon"
+        ],
+        "promptHiligaynon": "Diin nga pahayag ang labing maayo nga nagahulagway kay Mali/Nagmalitong Yawa?",
+        "optionsHiligaynon": [
+          "Sia isa sa mga una nga pasibo nga karakter nga nagahulat kay Humadapnon",
+          "Aktibo sia nga nagagamit sang pagpakunokuno, ritual, salamangka, taktika, kag pagluwas sa bilog nga istorya",
+          "Nagaguwa lang sia sa tion sang kasal",
+          "Sia ang una nga kaaway ni Humadapnon"
         ]
       },
       {
@@ -297,6 +472,13 @@
           "A mark of engagement represented by an heirloom boat",
           "A weapon used by Paglambuhan",
           "A ceremony for entering the underworld"
+        ],
+        "promptHiligaynon": "Ano ang ginarepresentar sang \"tuos\" sa Pagbalukat ka Biday?",
+        "optionsHiligaynon": [
+          "Isa ka silot sa paglapas sang promisa",
+          "Tanda sang pagpangasawa nga ginasimbolo sang ginpanubli nga biday",
+          "Armas nga gin-gamit ni Paglambuhan",
+          "Isa ka selebrasyon sa pagsulod sa idalom sang duta"
         ]
       },
       {
@@ -308,6 +490,13 @@
           "It explains how Tikum Kadlum was born",
           "It describes Matan-ayon's journey into the underworld",
           "It focuses on Balanakon's powers"
+        ],
+        "promptHiligaynon": "Ano ang kahulugan sang istorya sang Hungaw?",
+        "optionsHiligaynon": [
+          "Nagatutok ini sa pormal nga kasal nga nagasakup sang bilog nga pamilya, pag-asikaso sang bisita, kag relasyon sa katilingban",
+          "Nagasaysay ini kun paano ginbun-ag si Tikum Kadlum",
+          "Nagahulagway ini sang paglakbay ni Matan-ayon sa idalom sang duta",
+          "Nagatutok ini sa mga gahum ni Balanakon"
         ]
       },
       {
@@ -319,6 +508,13 @@
           "Honour, loyalty, justice, and marital obligations can have consequences even after supernatural rescue",
           "Marriage eliminates all conflict",
           "Humadapnon's actions have no consequences"
+        ],
+        "promptHiligaynon": "Ano ang importante nga ideya nga ginaatubang paagi sa kamatayon kag pagbalik sang kabuhi ni Mali sa Ginlawan?",
+        "optionsHiligaynon": [
+          "Ang engkantado nga gahum pirme nagapasalig sang malipayon nga katapusan",
+          "Ang dungog, katutom, hustisya, kag obligasyon sa pag-asawahay may mga kahinatnan bisan sa ulihi sang engkantado nga pagluwas",
+          "Ang kasal nagadula sang tanan nga banggianay",
+          "Ang mga ginhimo ni Humadapnon wala sang kahinatnan"
         ]
       },
       {
@@ -330,6 +526,13 @@
           "To provide food for Humadapnon",
           "To entice Mali out of her enclosure so Humadapnon could see her",
           "To open a passage to the underworld"
+        ],
+        "promptHiligaynon": "Ngaa man naglaygay si Laon Sina sang pagtanum sang kahoy nga alayaw?",
+        "optionsHiligaynon": [
+          "Para protektahan ang pamilya ni Mali",
+          "Para maghatag sang pagkaon kay Humadapnon",
+          "Para ganyaton si Mali nga magguwa sa iya kuwarto para makita sia ni Humadapnon",
+          "Para mag-abli sang daan pakadto sa idalom sang duta"
         ]
       },
       {
@@ -341,6 +544,13 @@
           "Mali is connected to the inheritance of ritual knowledge and authority through her maternal family",
           "Only Humadapnon can possess supernatural knowledge",
           "Ritual knowledge is unrelated to family"
+        ],
+        "promptHiligaynon": "Ano ang ginapahayag ni Nagbuhis nahanungod kay Mali kag sa pagpasa sang kinaagman?",
+        "optionsHiligaynon": [
+          "Si Mali lubos nga ginpahigad gikan sa kinaagman sa ritual",
+          "Si Mali may kaangtanan sa panublion sang kinaagman sa ritual kag awtoridad paagi sa pamilya sang iya iloy",
+          "Si Humadapnon lang ang makapanag-iya sang engkantado nga kinaagman",
+          "Ang kinaagman sa ritual wala sang labot sa pamilya"
         ]
       }
     ]

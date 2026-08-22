@@ -1,10 +1,10 @@
-# SugiLearn
+# Sugidanon
 
 A multimedia learning system for the Panay Bukidnon Sugidanon.
 
 ## Project Overview
 
-SugiLearn is a responsive web-based learning platform presenting selected Sugidanon material as a structured multimedia learning experience.
+Sugidanon is a responsive web-based learning platform presenting selected Sugidanon material as a structured multimedia learning experience.
 
 ### 13 Chapters
 
@@ -28,7 +28,7 @@ The four Humadapnon entries represent four volumes of the longer Humadapnon epic
 
 ## Product Goal
 
-SugiLearn should allow:
+Sugidanon should allow:
 - learners to complete a pre-assessment
 - learners to progress through 13 multimedia chapters
 - learners to read/explore story content
@@ -41,7 +41,7 @@ SugiLearn should allow:
 
 ## Core Principle
 
-**SugiLearn is content-driven.**
+**Sugidanon is content-driven.**
 
 The application should not depend on content being hardcoded into Next.js components.
 
@@ -120,7 +120,7 @@ Questions should be stored as data and traceable to their source/chapter.
 
 ## Source and Content Policy
 
-Client-provided source materials are the primary basis for SugiLearn content.
+Client-provided source materials are the primary basis for Sugidanon content.
 
 The Aswang Project's "Summary of the Sugidanon (Epics) of Central Panay" is also a project reference.
 

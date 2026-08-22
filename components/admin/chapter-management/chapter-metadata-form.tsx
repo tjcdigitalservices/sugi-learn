@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 
 import {
   buttonPrimaryClassName,
@@ -10,7 +10,11 @@ import {
   formControlClassName,
 } from "@/components/admin/chapter-management/form-primitives";
 import { REVIEW_STATUS_OPTIONS } from "@/lib/chapter-management/constants";
-import { saveChapterMetadataAction } from "@/lib/chapter-management/actions";
+import {
+  clearChapterCoverAction,
+  saveChapterMetadataAction,
+  setChapterCoverAction,
+} from "@/lib/chapter-management/actions";
 import type { Chapter } from "@/types/chapter";
 import type { ReviewStatus } from "@/types/review";
 
@@ -32,6 +36,8 @@ export function ChapterMetadataForm({
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [coverPending, startCoverTransition] = useTransition();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const isDirty =
     title !== chapter.title ||
@@ -92,13 +98,51 @@ export function ChapterMetadataForm({
     });
   }
 
+  function handleCoverUpload(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) {
+      return;
+    }
+
+    setError(null);
+    setSuccess(null);
+
+    const formData = new FormData();
+    formData.set("file", file);
+
+    startCoverTransition(async () => {
+      const result = await setChapterCoverAction(chapter.id, formData);
+      if (!result.success) {
+        setError(result.error);
+        return;
+      }
+      setSuccess("Chapter cover updated.");
+      onSaved(result.data);
+    });
+  }
+
+  function handleClearCover() {
+    setError(null);
+    setSuccess(null);
+    startCoverTransition(async () => {
+      const result = await clearChapterCoverAction(chapter.id);
+      if (!result.success) {
+        setError(result.error);
+        return;
+      }
+      setSuccess("Chapter cover removed. The default cover will be used if available.");
+      onSaved(result.data);
+    });
+  }
+
   return (
     <form onSubmit={handleSubmit} className="max-w-3xl space-y-6">
       <div>
         <h2 className="text-lg font-semibold">Chapter metadata</h2>
         <p className="text-sm text-muted-foreground">
-          Edit chapter title, short description, summary, and review status. Do
-          not replace official titles with unvalidated story content.
+          Edit chapter title, short description, summary, cover image, and review
+          status. Do not replace official titles with unvalidated story content.
         </p>
       </div>
 
@@ -144,6 +188,49 @@ export function ChapterMetadataForm({
         />
       </FormField>
 
+      <div className="space-y-3">
+        <p className="text-sm font-medium">Chapter cover</p>
+        <p className="text-xs text-muted-foreground">
+          Shown on the learner Chapters grid. Upload to replace, or remove to
+          fall back to the seeded cover.
+        </p>
+        <div className="overflow-hidden rounded-xl border bg-muted/20">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={chapter.coverUrl ?? undefined}
+            alt={`Cover for ${chapter.title}`}
+            className="aspect-video w-full max-w-md object-cover"
+          />
+        </div>
+        <div className="flex flex-wrap gap-3">
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            className="sr-only"
+            onChange={handleCoverUpload}
+          />
+          <button
+            type="button"
+            className={buttonSecondaryClassName}
+            disabled={coverPending || isPending}
+            onClick={() => fileInputRef.current?.click()}
+          >
+            {coverPending ? "Uploading…" : chapter.coverMediaAssetId ? "Replace cover" : "Upload cover"}
+          </button>
+          {chapter.coverMediaAssetId ? (
+            <button
+              type="button"
+              className={buttonSecondaryClassName}
+              disabled={coverPending || isPending}
+              onClick={handleClearCover}
+            >
+              Remove cover
+            </button>
+          ) : null}
+        </div>
+      </div>
+
       <FormField label="Status" htmlFor="chapter-status">
         <select
           id="chapter-status"
@@ -167,7 +254,7 @@ export function ChapterMetadataForm({
         <button
           type="submit"
           className={buttonPrimaryClassName}
-          disabled={isPending || !isDirty}
+          disabled={isPending || coverPending || !isDirty}
         >
           {isPending ? "Saving…" : "Save changes"}
         </button>
@@ -175,7 +262,7 @@ export function ChapterMetadataForm({
           type="button"
           className={buttonSecondaryClassName}
           onClick={handleCancel}
-          disabled={isPending || !isDirty}
+          disabled={isPending || coverPending || !isDirty}
         >
           Cancel
         </button>

@@ -2,15 +2,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BookOpen, Lock, Users } from "lucide-react";
 
-import { HeritageWave, SugiLearnMark } from "@/components/brand/heritage-wave";
+import { HeritageWave, SugidanonMark } from "@/components/brand/heritage-wave";
 import { StartPreTestButton } from "@/components/learner/start-pre-test-button";
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-sl-cream font-body text-sl-ink">
       <header className="relative z-20 bg-sl-navy">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
-          <SugiLearnMark light showTagline={false} />
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-2.5 sm:px-6">
+          <SugidanonMark light showTagline={false} />
           <div className="flex items-center gap-5 sm:gap-6">
             <a
               href="#about"
@@ -31,10 +31,10 @@ export default function HomePage() {
       <section className="relative isolate min-h-[min(92vh,880px)] overflow-hidden">
         <Image
           src="/images/landing-hero.png"
-          alt="Traditional Panay landscape at sunset with a learner reading overlooking the islands"
+          alt="A person in traditional dress overlooking a coastal village, sailboats, and mountains at sunset"
           fill
           priority
-          className="object-cover object-[center_35%]"
+          className="object-cover object-[center_45%]"
           sizes="100vw"
         />
         <div

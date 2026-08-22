@@ -29,7 +29,7 @@ function generateSeed(kind) {
   const optionPrefix = kind === "pre" ? "b2000000-0000-4000-8000-" : "c2000000-0000-4000-8000-";
   const lines = [];
 
-  lines.push(`-- Official SugiLearn ${assessment.title} content (client PDF question bank).`);
+  lines.push(`-- Official Sugidanon ${assessment.title} content (client PDF question bank).`);
   lines.push(`-- Source of truth for initial content: lib/assessment/official-question-bank.json`);
   lines.push(`-- Regenerate: node scripts/generate-official-assessment-seeds.mjs`);
   lines.push(`-- Safe for staging/production. Admins may edit further in /admin/assessments.`);
@@ -82,6 +82,7 @@ function generateSeed(kind) {
   lines.push("  id,");
   lines.push("  assessment_id,");
   lines.push("  prompt,");
+  lines.push("  prompt_hiligaynon,");
   lines.push("  sort_order,");
   lines.push("  review_status");
   lines.push(")");
@@ -89,31 +90,37 @@ function generateSeed(kind) {
   lines.push("  v.id,");
   lines.push("  a.id,");
   lines.push("  v.prompt,");
+  lines.push("  v.prompt_hiligaynon,");
   lines.push("  v.sort_order,");
   lines.push("  'approved'");
   lines.push("FROM (");
   lines.push("  VALUES");
 
   const questionValues = assessment.questions.map((q, index) => {
-    return `    (${sqlString(q.id)}::uuid, ${sqlString(q.prompt)}, ${index + 1})`;
+    const hil = q.promptHiligaynon?.trim() ? sqlString(q.promptHiligaynon.trim()) : "NULL";
+    return `    (${sqlString(q.id)}::uuid, ${sqlString(q.prompt)}, ${hil}, ${index + 1})`;
   });
   lines.push(questionValues.join(",\n"));
-  lines.push(") AS v(id, prompt, sort_order)");
+  lines.push(") AS v(id, prompt, prompt_hiligaynon, sort_order)");
   lines.push("CROSS JOIN public.assessments a");
   lines.push(`WHERE a.type = ${sqlString(assessment.type)};`);
   lines.push("");
 
   lines.push(
-    "INSERT INTO public.question_options (id, question_id, label, sort_order, is_correct)",
+    "INSERT INTO public.question_options (id, question_id, label, label_hiligaynon, sort_order, is_correct)",
   );
   lines.push("VALUES");
 
   const optionRows = [];
   assessment.questions.forEach((q, qIndex) => {
+    const hilOptions = q.optionsHiligaynon ?? [];
     q.options.forEach((label, oIndex) => {
       const id = optionId(optionPrefix, qIndex, oIndex);
+      const hilLabel = hilOptions[oIndex]?.trim()
+        ? sqlString(hilOptions[oIndex].trim())
+        : "NULL";
       optionRows.push(
-        `  (${sqlString(id)}, ${sqlString(q.id)}, ${sqlString(label)}, ${oIndex + 1}, ${
+        `  (${sqlString(id)}, ${sqlString(q.id)}, ${sqlString(label)}, ${hilLabel}, ${oIndex + 1}, ${
           oIndex === q.correctIndex ? "true" : "false"
         })`,
       );

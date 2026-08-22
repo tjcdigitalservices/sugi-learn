@@ -20,6 +20,7 @@ export function QuestionCreateForm({
   onCreated,
 }: QuestionCreateFormProps) {
   const [prompt, setPrompt] = useState("");
+  const [promptHiligaynon, setPromptHiligaynon] = useState("");
   const [expanded, setExpanded] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -31,10 +32,21 @@ export function QuestionCreateForm({
     startTransition(async () => {
       const result = await createQuestionAction(assessmentId, {
         prompt,
+        promptHiligaynon: promptHiligaynon.trim() ? promptHiligaynon.trim() : null,
         reviewStatus: "draft",
         options: [
-          { label: "[Draft option 1]", sortOrder: 0, isCorrect: true },
-          { label: "[Draft option 2]", sortOrder: 1, isCorrect: false },
+          {
+            label: "[Draft option 1]",
+            labelHiligaynon: null,
+            sortOrder: 0,
+            isCorrect: true,
+          },
+          {
+            label: "[Draft option 2]",
+            labelHiligaynon: null,
+            sortOrder: 1,
+            isCorrect: false,
+          },
         ],
       });
 
@@ -44,6 +56,7 @@ export function QuestionCreateForm({
       }
 
       setPrompt("");
+      setPromptHiligaynon("");
       setExpanded(false);
       onCreated();
     });
@@ -74,13 +87,27 @@ export function QuestionCreateForm({
         </p>
       </div>
 
-      <FormField label="Question text" htmlFor="new-question-prompt">
+      <FormField label="Question text (English)" htmlFor="new-question-prompt">
         <textarea
           id="new-question-prompt"
           value={prompt}
           onChange={(event) => setPrompt(event.target.value)}
           rows={3}
           required
+          className={formControlClassName}
+        />
+      </FormField>
+
+      <FormField
+        label="Question text (Hiligaynon)"
+        htmlFor="new-question-prompt-hil"
+        hint="Optional. You can also add Hiligaynon after creating the question."
+      >
+        <textarea
+          id="new-question-prompt-hil"
+          value={promptHiligaynon}
+          onChange={(event) => setPromptHiligaynon(event.target.value)}
+          rows={3}
           className={formControlClassName}
         />
       </FormField>
@@ -96,6 +123,7 @@ export function QuestionCreateForm({
           onClick={() => {
             setExpanded(false);
             setPrompt("");
+            setPromptHiligaynon("");
             setError(null);
           }}
           disabled={isPending}

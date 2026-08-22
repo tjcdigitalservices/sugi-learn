@@ -5,7 +5,7 @@ import Link from "next/link";
 import { X } from "lucide-react";
 
 import { AdminNavLinks } from "@/components/admin/admin-nav-links";
-import { SugiLearnMark } from "@/components/brand/heritage-wave";
+import { SugidanonMark } from "@/components/brand/heritage-wave";
 import { SignOutButton } from "@/components/auth/sign-out-button";
 import { cn } from "@/lib/utils";
 
@@ -65,9 +65,9 @@ export function AdminMobileNav({
           open ? "translate-x-0" : "-translate-x-full",
         )}
       >
-        <div className="flex items-center justify-between border-b border-white/10 px-4 py-4">
+        <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
           <div>
-            <SugiLearnMark light showTagline={false} size="sm" />
+            <SugidanonMark light showTagline={false} size="sm" />
             <p className="mt-1 text-xs text-white/65">Administrator</p>
           </div>
           <button

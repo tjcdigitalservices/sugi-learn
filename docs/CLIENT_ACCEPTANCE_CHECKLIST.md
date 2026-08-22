@@ -1,6 +1,6 @@
-# SugiLearn — Client Acceptance Checklist
+# Sugidanon — Client Acceptance Checklist
 
-**Project:** SugiLearn — Panay Bukidnon Sugidanon Learning System  
+**Project:** Sugidanon — Panay Bukidnon Sugidanon Learning System  
 **Date:** 2026-08-15  
 **Version:** M19 Handover
 

@@ -13,6 +13,8 @@ export const CHAPTER_CATALOG: readonly ChapterSummary[] = [
     reviewStatus: "draft",
     isActive: true,
     hasPublishedContent: false,
+    coverMediaAssetId: null,
+    coverUrl: "/chapter-covers/01-tikum-kadlum.png",
   },
   {
     id: "amburukay",
@@ -22,6 +24,8 @@ export const CHAPTER_CATALOG: readonly ChapterSummary[] = [
     reviewStatus: "draft",
     isActive: true,
     hasPublishedContent: false,
+    coverMediaAssetId: null,
+    coverUrl: "/chapter-covers/02-amburukay.png",
   },
   {
     id: "derikaryong-pada",
@@ -31,6 +35,8 @@ export const CHAPTER_CATALOG: readonly ChapterSummary[] = [
     reviewStatus: "draft",
     isActive: true,
     hasPublishedContent: false,
+    coverMediaAssetId: null,
+    coverUrl: "/chapter-covers/03-derikaryong-pada.png",
   },
   {
     id: "balanakon",
@@ -40,6 +46,8 @@ export const CHAPTER_CATALOG: readonly ChapterSummary[] = [
     reviewStatus: "draft",
     isActive: true,
     hasPublishedContent: false,
+    coverMediaAssetId: null,
+    coverUrl: "/chapter-covers/04-balanakon.png",
   },
   {
     id: "kalampay",
@@ -49,6 +57,8 @@ export const CHAPTER_CATALOG: readonly ChapterSummary[] = [
     reviewStatus: "draft",
     isActive: true,
     hasPublishedContent: false,
+    coverMediaAssetId: null,
+    coverUrl: "/chapter-covers/05-kalampay.png",
   },
   {
     id: "pahagunong",
@@ -58,6 +68,8 @@ export const CHAPTER_CATALOG: readonly ChapterSummary[] = [
     reviewStatus: "draft",
     isActive: true,
     hasPublishedContent: false,
+    coverMediaAssetId: null,
+    coverUrl: "/chapter-covers/06-pahagunong.png",
   },
   {
     id: "sinagnayan",
@@ -67,6 +79,8 @@ export const CHAPTER_CATALOG: readonly ChapterSummary[] = [
     reviewStatus: "draft",
     isActive: true,
     hasPublishedContent: false,
+    coverMediaAssetId: null,
+    coverUrl: "/chapter-covers/07-sinagnayan.png",
   },
   {
     id: "humadapnon-tarangban",
@@ -76,6 +90,8 @@ export const CHAPTER_CATALOG: readonly ChapterSummary[] = [
     reviewStatus: "draft",
     isActive: true,
     hasPublishedContent: false,
+    coverMediaAssetId: null,
+    coverUrl: "/chapter-covers/08-humadapnon-tarangban.png",
   },
   {
     id: "humadapnon-pagbalukat-ka-biday",
@@ -85,6 +101,8 @@ export const CHAPTER_CATALOG: readonly ChapterSummary[] = [
     reviewStatus: "draft",
     isActive: true,
     hasPublishedContent: false,
+    coverMediaAssetId: null,
+    coverUrl: "/chapter-covers/09-humadapnon-pagbalukat-ka-biday.png",
   },
   {
     id: "humadapnon-hungaw",
@@ -94,6 +112,8 @@ export const CHAPTER_CATALOG: readonly ChapterSummary[] = [
     reviewStatus: "draft",
     isActive: true,
     hasPublishedContent: false,
+    coverMediaAssetId: null,
+    coverUrl: "/chapter-covers/10-humadapnon-hungaw.png",
   },
   {
     id: "humadapnon-ginlawan",
@@ -103,6 +123,8 @@ export const CHAPTER_CATALOG: readonly ChapterSummary[] = [
     reviewStatus: "draft",
     isActive: true,
     hasPublishedContent: false,
+    coverMediaAssetId: null,
+    coverUrl: "/chapter-covers/11-humadapnon-ginlawan.png",
   },
   {
     id: "alayaw",
@@ -112,6 +134,8 @@ export const CHAPTER_CATALOG: readonly ChapterSummary[] = [
     reviewStatus: "draft",
     isActive: true,
     hasPublishedContent: false,
+    coverMediaAssetId: null,
+    coverUrl: "/chapter-covers/12-alayaw.png",
   },
   {
     id: "nagbuhis",
@@ -121,6 +145,8 @@ export const CHAPTER_CATALOG: readonly ChapterSummary[] = [
     reviewStatus: "draft",
     isActive: true,
     hasPublishedContent: false,
+    coverMediaAssetId: null,
+    coverUrl: "/chapter-covers/13-nagbuhis.png",
   },
 ] as const;
 

@@ -1,7 +1,7 @@
-# SugiLearn — LLM / Agent Development Guide
+# Sugidanon — LLM / Agent Development Guide
 
 ## Project Purpose
-SugiLearn is a multimedia learning system for the Panay Bukidnon Sugidanon.
+Sugidanon is a multimedia learning system for the Panay Bukidnon Sugidanon.
 
 The system is organized into 13 chapters based on the 13 published Sugidanon volumes:
 1. Tikum Kadlum
@@ -21,7 +21,7 @@ The system is organized into 13 chapters based on the 13 published Sugidanon vol
 The four Humadapnon entries represent four volumes of the longer Humadapnon epic.
 
 ## Core Architecture Rule
-Build SugiLearn as a **content-driven platform**, not 13 hardcoded pages.
+Build Sugidanon as a **content-driven platform**, not 13 hardcoded pages.
 
 Preferred flow:
 
@@ -254,7 +254,7 @@ Remaining chapters may initially exist as records marked `Pending Source Content
 Maintain:
 - `README.md`
 - `AGENTS.md`
-- `docs/SugiLearn_Project_Specification.md`
+- `docs/Sugidanon_Project_Specification.md`
 
 ## Non-Negotiable Rules
 1. Do not invent client content.
@@ -266,4 +266,4 @@ Maintain:
 7. Do not create work outside agreed multimedia scope without approval.
 8. Do not assume missing client requirements.
 9. Mark unknown requirements as `Pending Client Confirmation`.
-10. Keep SugiLearn maintainable by a small team using AI-assisted development.
+10. Keep Sugidanon maintainable by a small team using AI-assisted development.

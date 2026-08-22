@@ -22,13 +22,16 @@ export interface UpdateAssessmentMetadataInput {
 export interface QuestionOptionInput {
   id?: string;
   label: string;
+  labelHiligaynon?: string | null;
   sortOrder: number;
   isCorrect: boolean;
 }
 
 export interface CreateQuestionInput {
   prompt: string;
+  promptHiligaynon?: string | null;
   explanation?: string | null;
+  explanationHiligaynon?: string | null;
   sourceReference?: string | null;
   /** Chapter slug, or null for no association. */
   chapterId?: string | null;

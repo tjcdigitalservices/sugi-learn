@@ -1,8 +1,8 @@
-# SugiLearn — Production Deployment Guide
+# Sugidanon — Production Deployment Guide
 
 **Last updated:** 2026-08-15 (M18)
 
-This guide describes how to deploy SugiLearn to a production or staging environment.
+This guide describes how to deploy Sugidanon to a production or staging environment.
 
 **Architecture:**
 

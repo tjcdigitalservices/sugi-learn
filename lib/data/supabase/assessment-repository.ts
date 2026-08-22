@@ -138,13 +138,16 @@ async function mapQuestionsForAssessment(
         ? (chapterSlugById.get(question.chapter_id) ?? null)
         : null,
       prompt: question.prompt,
+      promptHiligaynon: question.prompt_hiligaynon ?? null,
       options: questionOptions.map((option) => ({
         id: option.id,
         label: option.label,
+        labelHiligaynon: option.label_hiligaynon ?? null,
         sortOrder: option.sort_order,
       })),
       correctOptionId: correctOption?.id ?? "",
       explanation: question.explanation,
+      explanationHiligaynon: question.explanation_hiligaynon ?? null,
       sourceReference: question.source_reference,
       reviewStatus: question.review_status as ReviewStatus,
       sortOrder: question.sort_order,
@@ -702,7 +705,9 @@ export class SupabaseAssessmentRepository implements AssessmentRepository {
       .insert({
         assessment_id: assessmentId,
         prompt: input.prompt.trim(),
+        prompt_hiligaynon: input.promptHiligaynon?.trim() || null,
         explanation: input.explanation?.trim() || null,
+        explanation_hiligaynon: input.explanationHiligaynon?.trim() || null,
         source_reference: input.sourceReference?.trim() || null,
         chapter_id: chapterUuid,
         sort_order: sortOrder,
@@ -746,7 +751,9 @@ export class SupabaseAssessmentRepository implements AssessmentRepository {
       .from("questions")
       .update({
         prompt: input.prompt.trim(),
+        prompt_hiligaynon: input.promptHiligaynon?.trim() || null,
         explanation: input.explanation?.trim() || null,
+        explanation_hiligaynon: input.explanationHiligaynon?.trim() || null,
         source_reference: input.sourceReference?.trim() || null,
         chapter_id: chapterUuid,
         review_status: input.reviewStatus ?? "draft",
@@ -789,6 +796,7 @@ export class SupabaseAssessmentRepository implements AssessmentRepository {
     const rows = options.map((option, index) => ({
       question_id: questionId,
       label: option.label.trim(),
+      label_hiligaynon: option.labelHiligaynon?.trim() || null,
       sort_order: option.sortOrder ?? index,
       is_correct: option.isCorrect,
     }));

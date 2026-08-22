@@ -33,7 +33,7 @@ import { isPublishedReviewStatus } from "@/types/review";
 import { isLocalMockDevelopment } from "@/lib/runtime/environment";
 
 /**
- * Official SugiLearn assessment content for mock mode (no Supabase).
+ * Official Sugidanon assessment content for mock mode (no Supabase).
  * Sourced from lib/assessment/official-question-bank.json
  */
 const DEV_PRE_ASSESSMENT_ID = OFFICIAL_PRE_ASSESSMENT_ID;
@@ -174,6 +174,7 @@ function buildQuestionFromInput(
   const options = input.options.map((option, index) => ({
     id: option.id ?? `${questionId}-opt-${index + 1}`,
     label: option.label.trim(),
+    labelHiligaynon: option.labelHiligaynon?.trim() || null,
     sortOrder: option.sortOrder ?? index,
   }));
   const correctIndex = input.options.findIndex((option) => option.isCorrect);
@@ -184,9 +185,11 @@ function buildQuestionFromInput(
     assessmentType,
     chapterId: input.chapterId ?? null,
     prompt: input.prompt.trim(),
+    promptHiligaynon: input.promptHiligaynon?.trim() || null,
     options,
     correctOptionId: options[correctIndex]?.id ?? "",
     explanation: input.explanation?.trim() || null,
+    explanationHiligaynon: input.explanationHiligaynon?.trim() || null,
     sourceReference: input.sourceReference?.trim() || null,
     reviewStatus: input.reviewStatus ?? "draft",
     sortOrder,

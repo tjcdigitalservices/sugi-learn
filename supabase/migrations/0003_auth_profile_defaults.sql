@@ -1,4 +1,4 @@
--- SugiLearn M3: Authentication documentation and profile defaults
+-- Sugidanon M3: Authentication documentation and profile defaults
 -- No structural changes to M2 schema; documents secure admin provisioning.
 
 COMMENT ON TABLE public.profiles IS

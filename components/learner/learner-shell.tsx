@@ -1,3 +1,7 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+
 import { LearnerHeader } from "@/components/learner/learner-header";
 
 interface LearnerShellProps {
@@ -6,6 +10,13 @@ interface LearnerShellProps {
 }
 
 export function LearnerShell({ children, userLabel }: LearnerShellProps) {
+  const pathname = usePathname();
+  const isAuthStylePage = pathname.startsWith("/learn/onboarding");
+
+  if (isAuthStylePage) {
+    return <>{children}</>;
+  }
+
   return (
     <div className="flex min-h-screen flex-col bg-sl-cream font-body text-sl-ink">
       <LearnerHeader userLabel={userLabel} />

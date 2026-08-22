@@ -29,7 +29,7 @@ export function AdminShellClient({ children, userLabel }: AdminShellClientProps)
           <Menu className="h-5 w-5" aria-hidden="true" />
         </button>
         <p className="ml-2 font-display text-sm font-semibold text-sl-navy">
-          SugiLearn Admin
+          Sugidanon Admin
         </p>
       </div>
 

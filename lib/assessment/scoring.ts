@@ -9,10 +9,12 @@ export function toLearnerAssessmentQuestions(
   return questions.map((question) => ({
     id: question.id,
     prompt: question.prompt,
+    promptHiligaynon: question.promptHiligaynon,
     sortOrder: question.sortOrder,
     options: question.options.map((option) => ({
       id: option.id,
       label: option.label,
+      labelHiligaynon: option.labelHiligaynon,
       sortOrder: option.sortOrder,
     })),
   }));

@@ -37,6 +37,7 @@ function buildOptionsFromQuestion(question: AssessmentQuestion): QuestionOptionI
   return question.options.map((option) => ({
     id: option.id,
     label: option.label,
+    labelHiligaynon: option.labelHiligaynon,
     sortOrder: option.sortOrder,
     isCorrect: option.id === question.correctOptionId,
   }));
@@ -53,7 +54,13 @@ export function QuestionEditorCard({
 }: QuestionEditorCardProps) {
   const [expanded, setExpanded] = useState(false);
   const [prompt, setPrompt] = useState(question.prompt);
+  const [promptHiligaynon, setPromptHiligaynon] = useState(
+    question.promptHiligaynon ?? "",
+  );
   const [explanation, setExplanation] = useState(question.explanation ?? "");
+  const [explanationHiligaynon, setExplanationHiligaynon] = useState(
+    question.explanationHiligaynon ?? "",
+  );
   const [sourceReference, setSourceReference] = useState(
     question.sourceReference ?? "",
   );
@@ -70,7 +77,9 @@ export function QuestionEditorCard({
 
   useEffect(() => {
     setPrompt(question.prompt);
+    setPromptHiligaynon(question.promptHiligaynon ?? "");
     setExplanation(question.explanation ?? "");
+    setExplanationHiligaynon(question.explanationHiligaynon ?? "");
     setSourceReference(question.sourceReference ?? "");
     setChapterId(question.chapterId ?? "");
     setReviewStatus(question.reviewStatus);
@@ -99,6 +108,7 @@ export function QuestionEditorCard({
       ...previous,
       {
         label: "",
+        labelHiligaynon: "",
         sortOrder: previous.length,
         isCorrect: previous.length === 0,
       },
@@ -148,12 +158,19 @@ export function QuestionEditorCard({
     startTransition(async () => {
       const result = await saveQuestionAction(assessmentId, question.id, {
         prompt,
+        promptHiligaynon: promptHiligaynon.trim() ? promptHiligaynon.trim() : null,
         explanation: explanation.trim() ? explanation.trim() : null,
+        explanationHiligaynon: explanationHiligaynon.trim()
+          ? explanationHiligaynon.trim()
+          : null,
         sourceReference: sourceReference.trim() ? sourceReference.trim() : null,
         chapterId: chapterId || null,
         reviewStatus,
         options: options.map((option, index) => ({
           ...option,
+          labelHiligaynon: option.labelHiligaynon?.trim()
+            ? option.labelHiligaynon.trim()
+            : null,
           sortOrder: index,
         })),
       });
@@ -240,7 +257,7 @@ export function QuestionEditorCard({
 
       {expanded ? (
         <form onSubmit={handleSave} className="space-y-5 border-t px-4 py-5">
-          <FormField label="Question text" htmlFor={`prompt-${question.id}`}>
+          <FormField label="Question text (English)" htmlFor={`prompt-${question.id}`}>
             <textarea
               id={`prompt-${question.id}`}
               value={prompt}
@@ -252,7 +269,21 @@ export function QuestionEditorCard({
           </FormField>
 
           <FormField
-            label="Explanation"
+            label="Question text (Hiligaynon)"
+            htmlFor={`prompt-hil-${question.id}`}
+            hint="Optional. Learners can toggle to Hiligaynon when this is filled in."
+          >
+            <textarea
+              id={`prompt-hil-${question.id}`}
+              value={promptHiligaynon}
+              onChange={(event) => setPromptHiligaynon(event.target.value)}
+              rows={3}
+              className={formControlClassName}
+            />
+          </FormField>
+
+          <FormField
+            label="Explanation (English)"
             htmlFor={`explanation-${question.id}`}
             hint="Optional explanation shown after submission when supported."
           >
@@ -260,6 +291,20 @@ export function QuestionEditorCard({
               id={`explanation-${question.id}`}
               value={explanation}
               onChange={(event) => setExplanation(event.target.value)}
+              rows={2}
+              className={formControlClassName}
+            />
+          </FormField>
+
+          <FormField
+            label="Explanation (Hiligaynon)"
+            htmlFor={`explanation-hil-${question.id}`}
+            hint="Optional Hiligaynon explanation for when review explanations are shown."
+          >
+            <textarea
+              id={`explanation-hil-${question.id}`}
+              value={explanationHiligaynon}
+              onChange={(event) => setExplanationHiligaynon(event.target.value)}
               rows={2}
               className={formControlClassName}
             />
@@ -316,34 +361,46 @@ export function QuestionEditorCard({
             {options.map((option, index) => (
               <div
                 key={option.id ?? `new-${index}`}
-                className="flex flex-col gap-2 rounded-md border p-3 sm:flex-row sm:items-center"
+                className="space-y-2 rounded-md border p-3"
               >
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                  <input
+                    type="radio"
+                    name={`correct-${question.id}`}
+                    checked={option.isCorrect}
+                    onChange={() => markCorrect(index)}
+                    aria-label={`Mark option ${index + 1} as correct`}
+                    className="size-4 accent-primary"
+                  />
+                  <input
+                    value={option.label}
+                    onChange={(event) =>
+                      updateOption(index, { label: event.target.value })
+                    }
+                    placeholder={`Option ${index + 1} (English)`}
+                    className={`${formControlClassName} flex-1`}
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeOption(index)}
+                    disabled={options.length <= 2 || isPending}
+                    className={buttonDangerClassName}
+                    aria-label={`Remove option ${index + 1}`}
+                  >
+                    <Trash2 className="h-4 w-4" aria-hidden="true" />
+                  </button>
+                </div>
                 <input
-                  type="radio"
-                  name={`correct-${question.id}`}
-                  checked={option.isCorrect}
-                  onChange={() => markCorrect(index)}
-                  aria-label={`Mark option ${index + 1} as correct`}
-                  className="size-4 accent-primary"
-                />
-                <input
-                  value={option.label}
+                  value={option.labelHiligaynon ?? ""}
                   onChange={(event) =>
-                    updateOption(index, { label: event.target.value })
+                    updateOption(index, {
+                      labelHiligaynon: event.target.value,
+                    })
                   }
-                  placeholder={`Option ${index + 1}`}
-                  className={`${formControlClassName} flex-1`}
-                  required
+                  placeholder={`Option ${index + 1} (Hiligaynon, optional)`}
+                  className={`${formControlClassName} sm:ml-6`}
                 />
-                <button
-                  type="button"
-                  onClick={() => removeOption(index)}
-                  disabled={options.length <= 2 || isPending}
-                  className={buttonDangerClassName}
-                  aria-label={`Remove option ${index + 1}`}
-                >
-                  <Trash2 className="h-4 w-4" aria-hidden="true" />
-                </button>
               </div>
             ))}
             <button

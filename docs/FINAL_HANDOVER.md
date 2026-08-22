@@ -1,4 +1,4 @@
-# SugiLearn — Final Handover
+# Sugidanon — Final Handover
 
 **Date:** 2026-08-15  
 **Milestone:** M19 — Production Launch & Final Handover  
@@ -8,7 +8,7 @@
 
 ## Project
 
-**SugiLearn** is a multimedia learning web application for the Panay Bukidnon Sugidanon. It presents 13 chapters with pre/post assessments, learner progress tracking, and an administrator content management system.
+**Sugidanon** is a multimedia learning web application for the Panay Bukidnon Sugidanon. It presents 13 chapters with pre/post assessments, learner progress tracking, and an administrator content management system.
 
 Implementation milestones **M0 through M18** are complete. M19 completes the handover package.
 

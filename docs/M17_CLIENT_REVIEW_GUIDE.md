@@ -3,13 +3,13 @@
 **Audience:** Client reviewers, cultural advisors, and project stakeholders  
 **Last updated:** 2026-08-15
 
-This guide explains how to review SugiLearn during User Acceptance Testing (UAT). It focuses on what you can review and how to provide feedback — not technical implementation details.
+This guide explains how to review Sugidanon during User Acceptance Testing (UAT). It focuses on what you can review and how to provide feedback — not technical implementation details.
 
 ---
 
 ## 1. Accessing the System
 
-SugiLearn is a web application with two areas:
+Sugidanon is a web application with two areas:
 
 | Area | URL path | Who uses it |
 |------|----------|-------------|
@@ -238,7 +238,7 @@ The following are intentionally hidden from learners:
 
 ## Questions?
 
-Contact your SugiLearn project team with:
+Contact your Sugidanon project team with:
 
 - Screenshot or page URL
 - Account role used (admin or learner)

@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { ArrowRight, Lock } from "lucide-react";
+import { ArrowRight, Eye, EyeOff, Lock, User } from "lucide-react";
 
-import { HeritageWave } from "@/components/brand/heritage-wave";
+import { HeritageAuthCard } from "@/components/auth/heritage-auth-shell";
 import {
   defaultPostLoginPath,
   resolvePostLoginPath,
@@ -27,8 +27,8 @@ function safeNextPath(value: string | null): string | null {
 }
 
 export function LoginForm({
-  title = "Administrator sign-in",
-  description = "Use your administrator email and password.",
+  title = "Welcome to Sugidanon",
+  description = "Continue your learning journey through the Sugidanon Epic Story. Administrator sign-in.",
 }: LoginFormProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -36,6 +36,7 @@ export function LoginForm({
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -89,21 +90,24 @@ export function LoginForm({
   }
 
   return (
-    <div className="sl-card relative mx-auto w-full max-w-md">
-      <div className="relative space-y-6 px-6 py-8 sm:px-8">
-        <div className="space-y-2 text-center sm:text-left">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sl-gold">
-            Administrator
-          </p>
-          <h1 className="font-display text-3xl font-semibold tracking-tight text-sl-navy">
-            {title}
-          </h1>
-          <p className="text-sm leading-relaxed text-sl-ink-muted">{description}</p>
-        </div>
+    <HeritageAuthCard>
+      <div className="space-y-2 text-center">
+        <h1 className="font-display text-3xl font-semibold tracking-tight text-white drop-shadow-sm">
+          {title}
+        </h1>
+        <p className="text-sm leading-relaxed text-white/85">{description}</p>
+      </div>
 
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          <label className="block space-y-1.5 text-sm" htmlFor="email">
-            <span className="font-medium text-sl-ink">Email</span>
+      <div className="flex items-center gap-3" aria-hidden="true">
+        <div className="h-px flex-1 bg-white/30" />
+        <div className="h-2 w-2 rotate-45 bg-sl-gold" />
+        <div className="h-px flex-1 bg-white/30" />
+      </div>
+
+      <form className="space-y-4" onSubmit={handleSubmit}>
+        <label className="block space-y-1.5 text-sm" htmlFor="email">
+          <span className="font-medium text-white">Email</span>
+          <span className="flex items-center gap-3 rounded-xl border border-white/40 bg-white/95 px-4 py-3 shadow-sm transition focus-within:border-sl-gold focus-within:shadow-[0_0_0_3px_rgba(209,165,58,0.25)]">
             <input
               id="email"
               name="email"
@@ -112,58 +116,85 @@ export function LoginForm({
               required
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              className="sl-input"
-              placeholder="admin@sugilearn.com"
+              className="min-w-0 flex-1 border-0 bg-transparent p-0 text-sm text-sl-ink outline-none placeholder:text-sl-ink-muted/70"
+              placeholder="Enter your email"
               disabled={isLoading}
             />
-          </label>
+            <User
+              className="h-4 w-4 shrink-0 text-sl-ink-muted"
+              aria-hidden="true"
+            />
+          </span>
+        </label>
 
-          <label className="block space-y-1.5 text-sm" htmlFor="password">
-            <span className="font-medium text-sl-ink">Password</span>
+        <label className="block space-y-1.5 text-sm" htmlFor="password">
+          <span className="font-medium text-white">Password</span>
+          <span className="flex items-center gap-3 rounded-xl border border-white/40 bg-white/95 px-4 py-3 shadow-sm transition focus-within:border-sl-gold focus-within:shadow-[0_0_0_3px_rgba(209,165,58,0.25)]">
             <input
               id="password"
               name="password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               autoComplete="current-password"
               required
               value={password}
               onChange={(event) => setPassword(event.target.value)}
-              className="sl-input"
+              className="min-w-0 flex-1 border-0 bg-transparent p-0 text-sm text-sl-ink outline-none placeholder:text-sl-ink-muted/70"
+              placeholder="Enter your password"
               disabled={isLoading}
             />
-          </label>
-
-          {error ? (
-            <p
-              className="rounded-xl border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive"
-              role="alert"
+            <button
+              type="button"
+              onClick={() => setShowPassword((value) => !value)}
+              className="shrink-0 text-sl-ink-muted transition hover:text-sl-navy"
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              disabled={isLoading}
             >
-              {error}
-            </p>
-          ) : null}
-
-          <button type="submit" disabled={isLoading} className="sl-btn-gold w-full">
-            {isLoading ? "Signing in…" : "Sign in"}
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
-          </button>
-        </form>
-
-        <p className="flex items-start justify-center gap-2 text-center text-xs text-sl-ink-muted">
-          <Lock className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-          <span>
-            Administrator accounts are provisioned by the project owner. Learners
-            start from the home page with name only.{" "}
-            <Link
-              href="/"
-              className="font-medium text-sl-navy underline underline-offset-4"
-            >
-              Back to home
-            </Link>
+              {showPassword ? (
+                <EyeOff className="h-4 w-4" aria-hidden="true" />
+              ) : (
+                <Eye className="h-4 w-4" aria-hidden="true" />
+              )}
+            </button>
           </span>
-        </p>
-      </div>
+        </label>
 
-      <HeritageWave className="h-14" />
-    </div>
+        {error ? (
+          <p
+            className="rounded-xl border border-destructive/40 bg-destructive/15 px-4 py-3 text-sm text-white"
+            role="alert"
+          >
+            {error}
+          </p>
+        ) : null}
+
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="sl-btn-gold w-full rounded-xl py-3.5 text-sm font-semibold shadow-md"
+        >
+          {isLoading ? "Signing in…" : "Sign In"}
+          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+        </button>
+      </form>
+
+      <p className="text-center text-xs text-white/75">
+        <span className="opacity-80">Forgot password?</span>{" "}
+        <span className="font-medium opacity-70">Coming soon</span>
+      </p>
+
+      <p className="flex items-start justify-center gap-2 text-center text-xs text-white/80">
+        <Lock className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+        <span>
+          Administrator accounts are provisioned by the project owner. Learners
+          start from the home page.{" "}
+          <Link
+            href="/"
+            className="font-medium text-sl-gold-soft underline underline-offset-4"
+          >
+            Back to home
+          </Link>
+        </span>
+      </p>
+    </HeritageAuthCard>
   );
 }

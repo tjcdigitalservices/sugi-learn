@@ -13,6 +13,10 @@ export interface ChapterSummary {
   isActive: boolean;
   /** Whether learner-facing content is available. */
   hasPublishedContent: boolean;
+  /** Admin-assigned cover media asset id (nullable). */
+  coverMediaAssetId: string | null;
+  /** Resolved cover image URL for learner/admin UI (nullable). */
+  coverUrl: string | null;
 }
 
 /** Full chapter record for the chapter engine. */

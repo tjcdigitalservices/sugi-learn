@@ -1,9 +1,9 @@
-# SugiLearn — Architecture
+# Sugidanon — Architecture
 
 **Version:** M15 (Analytics & Admin Reporting)  
 **Last updated:** 2026-08-15
 
-This document describes the production architecture for SugiLearn. It is written for human developers and AI coding agents.
+This document describes the production architecture for Sugidanon. It is written for human developers and AI coding agents.
 
 ---
 
@@ -21,7 +21,7 @@ This document describes the production architecture for SugiLearn. It is written
 └─────────────────────────────────────────────────────────┘
 ```
 
-**Core principle:** SugiLearn is **content-driven**. One reusable **Chapter Engine** renders any chapter from data. No `Chapter1.tsx`, `Chapter2.tsx`, etc.
+**Core principle:** Sugidanon is **content-driven**. One reusable **Chapter Engine** renders any chapter from data. No `Chapter1.tsx`, `Chapter2.tsx`, etc.
 
 ---
 
@@ -316,7 +316,7 @@ See `docs/AUTHENTICATION.md` for auth architecture.
 
 ## Related Documentation
 
-- `docs/SugiLearn_Project_Specification.md` — product specification
+- `docs/Sugidanon_Project_Specification.md` — product specification
 - `docs/PROTOTYPE_REFERENCE.md` — prototype analysis
 - `docs/LEARNER_JOURNEY.md` — M7 learner home, progress, Continue Learning
 - `docs/PRE_ASSESSMENT.md` — M8 pre-assessment engine, scoring, security

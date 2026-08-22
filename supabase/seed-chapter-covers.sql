@@ -1,0 +1,13 @@
+-- Chapter covers are seeded as static files under:
+--   public/chapter-covers/01-tikum-kadlum.png … 13-nagbuhis.png
+--
+-- Learner UI resolves covers via resolveChapterCoverUrl():
+--   1) chapters.cover_media_asset_id → media_assets.storage_path (admin upload)
+--   2) fallback to /chapter-covers/{nn}-{slug}.png
+--
+-- Admins can add / replace / remove covers in Chapter metadata
+-- (setChapterCoverAction / clearChapterCoverAction). Removing clears
+-- cover_media_asset_id and falls back to the public seed image.
+--
+-- Migration 0009_chapter_cover.sql adds cover_media_asset_id.
+-- No DB rows are required for the default covers to appear.

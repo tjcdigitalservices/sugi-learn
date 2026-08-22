@@ -1,9 +1,9 @@
-# SugiLearn — Chapter Engine
+# Sugidanon — Chapter Engine
 
 **Version:** M6  
 **Last updated:** 2026-08-15
 
-The Chapter Engine is SugiLearn's data-driven renderer for all 13 chapters through a single route and component tree.
+The Chapter Engine is Sugidanon's data-driven renderer for all 13 chapters through a single route and component tree.
 
 ---
 

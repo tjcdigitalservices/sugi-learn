@@ -7,6 +7,8 @@ export type AssessmentType = (typeof ASSESSMENT_TYPES)[number];
 export interface QuestionOption {
   id: string;
   label: string;
+  /** Optional Hiligaynon label; falls back to English when empty. */
+  labelHiligaynon: string | null;
   sortOrder: number;
 }
 
@@ -14,6 +16,7 @@ export interface QuestionOption {
 export interface LearnerAssessmentQuestion {
   id: string;
   prompt: string;
+  promptHiligaynon: string | null;
   options: QuestionOption[];
   sortOrder: number;
 }
@@ -24,10 +27,12 @@ export interface AssessmentQuestion {
   assessmentType: AssessmentType;
   chapterId: string | null;
   prompt: string;
+  promptHiligaynon: string | null;
   options: QuestionOption[];
   /** Server-side only — not sent to the browser. */
   correctOptionId: string;
   explanation: string | null;
+  explanationHiligaynon: string | null;
   sourceReference: string | null;
   reviewStatus: ReviewStatus;
   sortOrder: number;

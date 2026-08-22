@@ -2,17 +2,18 @@ import "server-only";
 
 import { getCurrentAuth, requireUser } from "@/lib/auth/session";
 import { assertChapterCompletable } from "@/lib/domain/chapter-completion";
+import { withChapterUnlockState } from "@/lib/domain/chapter-unlock";
 import { getRepositories } from "@/lib/data";
 import { listChapterSummaries } from "@/lib/domain/chapters";
 import { filterChaptersForLearnerJourney } from "@/lib/domain/chapter-visibility";
 import { hasSupabaseConfig } from "@/lib/supabase/service";
-import type { ChapterSummary } from "@/types/chapter";
 import type {
   ChapterJourneyItem,
   ChapterProgressRecord,
   ChapterProgressStatus,
   LearnerJourneySummary,
 } from "@/types/progress";
+import type { ChapterSummary } from "@/types/chapter";
 
 export const MOCK_LEARNER_ID = "mock-learner";
 
@@ -45,12 +46,13 @@ function resolveStatus(
 export function buildChapterJourneyItems(
   chapters: ChapterSummary[],
   records: ChapterProgressRecord[],
+  preAssessmentCompleted = false,
 ): ChapterJourneyItem[] {
   const recordsByChapter = new Map(
     records.map((record) => [record.chapterId, record]),
   );
 
-  return chapters.map((chapter) => {
+  const baseItems: ChapterJourneyItem[] = chapters.map((chapter) => {
     const record = recordsByChapter.get(chapter.id);
     return {
       id: chapter.id,
@@ -62,8 +64,13 @@ export function buildChapterJourneyItems(
       startedAt: record?.startedAt ?? null,
       completedAt: record?.completedAt ?? null,
       updatedAt: record?.updatedAt ?? null,
+      coverUrl: chapter.coverUrl,
+      isUnlocked: false,
+      isLocked: true,
     };
   });
+
+  return withChapterUnlockState(baseItems, preAssessmentCompleted);
 }
 
 export function resolveContinueChapterId(
@@ -74,7 +81,14 @@ export function resolveContinueChapterId(
     return null;
   }
 
-  const inProgress = catalogChapters
+  const unlockedIncomplete = catalogChapters.filter(
+    (chapter) =>
+      chapter.isUnlocked &&
+      chapter.status !== "completed" &&
+      chapter.hasPublishedContent,
+  );
+
+  const inProgress = unlockedIncomplete
     .filter((chapter) => chapter.status === "in_progress")
     .sort((a, b) => (b.updatedAt ?? "").localeCompare(a.updatedAt ?? ""));
 
@@ -82,7 +96,7 @@ export function resolveContinueChapterId(
     return inProgress[0].id;
   }
 
-  const notStarted = catalogChapters.find(
+  const notStarted = unlockedIncomplete.find(
     (chapter) => chapter.status === "not_started",
   );
   if (notStarted) {
@@ -120,7 +134,12 @@ export async function getLearnerJourneySummary(
   ]);
 
   const catalogChapters = filterChaptersForLearnerJourney(chapters, records);
-  const journeyItems = buildChapterJourneyItems(catalogChapters, records);
+  const preAssessmentCompleted = Boolean(preAttempt);
+  const journeyItems = buildChapterJourneyItems(
+    catalogChapters,
+    records,
+    preAssessmentCompleted,
+  );
   const completedCount = journeyItems.filter(
     (chapter) => chapter.status === "completed",
   ).length;
@@ -136,7 +155,7 @@ export async function getLearnerJourneySummary(
     continueChapterId: resolveContinueChapterId(journeyItems),
     allChaptersCompleted:
       journeyItems.length > 0 && completedCount === journeyItems.length,
-    preAssessmentCompleted: Boolean(preAttempt),
+    preAssessmentCompleted,
     postAssessmentCompleted: Boolean(postAttempt),
     lastActivityAt: aggregate?.lastActivityAt ?? null,
   };

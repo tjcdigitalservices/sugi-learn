@@ -106,7 +106,7 @@ export function ResultsReportActions({ view }: ResultsReportActionsProps) {
 
     try {
       const blob = await buildPdf();
-      downloadBlob(blob, "SugiLearn-Assessment-Report.pdf");
+      downloadBlob(blob, "Sugidanon-Assessment-Report.pdf");
     } catch (cause) {
       console.error("Print PDF failed:", cause);
       setError("Unable to create the PDF. Please try again.");
@@ -121,7 +121,7 @@ export function ResultsReportActions({ view }: ResultsReportActionsProps) {
 
     try {
       const blob = await buildPdf();
-      const filename = "SugiLearn-Assessment-Report.pdf";
+      const filename = "Sugidanon-Assessment-Report.pdf";
       const file = new File([blob], filename, { type: "application/pdf" });
 
       if (
@@ -132,8 +132,8 @@ export function ResultsReportActions({ view }: ResultsReportActionsProps) {
         try {
           await navigator.share({
             files: [file],
-            title: "SugiLearn Assessment Report",
-            text: "My SugiLearn learner assessment report",
+            title: "Sugidanon Assessment Report",
+            text: "My Sugidanon learner assessment report",
           });
           return;
         } catch (shareError) {

@@ -13,6 +13,8 @@ export const ARCHITECTURE_DEMO_CHAPTER: Chapter = {
   reviewStatus: "draft",
   hasPublishedContent: false,
   isActive: true,
+  coverMediaAssetId: null,
+  coverUrl: null,
   sections: [
     {
       id: "demo-intro",

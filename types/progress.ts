@@ -34,6 +34,9 @@ export interface ChapterJourneyItem {
   startedAt: string | null;
   completedAt: string | null;
   updatedAt: string | null;
+  coverUrl: string | null;
+  isUnlocked: boolean;
+  isLocked: boolean;
 }
 
 /** Aggregated learner journey for home and progress pages. */

@@ -24,6 +24,8 @@ export class MockChapterRepository implements ChapterRepository {
       reviewStatus: item.reviewStatus,
       isActive: item.isActive,
       hasPublishedContent: item.hasPublishedContent,
+      coverMediaAssetId: item.coverMediaAssetId,
+      coverUrl: item.coverUrl,
     }));
   }
 

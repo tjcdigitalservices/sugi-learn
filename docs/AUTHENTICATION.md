@@ -1,4 +1,4 @@
-# SugiLearn — Authentication
+# Sugidanon — Authentication
 
 **Version:** M3  
 **Last updated:** 2026-08-15
@@ -7,7 +7,7 @@
 
 ## Overview
 
-SugiLearn uses **Supabase Auth** for credentials and **application profiles** (`public.profiles`) for roles.
+Sugidanon uses **Supabase Auth** for credentials and **application profiles** (`public.profiles`) for roles.
 
 ```
 Supabase Auth (credentials, sessions)

@@ -25,7 +25,7 @@ function read(path) {
   return readFileSync(join(root, path), "utf8");
 }
 
-console.log("SugiLearn M3 — auth/security verification\n");
+console.log("Sugidanon M3 — auth/security verification\n");
 
 const serviceSource = read("lib/supabase/service.ts");
 if (serviceSource.includes('import "server-only"')) {

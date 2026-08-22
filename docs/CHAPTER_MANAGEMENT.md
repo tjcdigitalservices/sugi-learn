@@ -1,4 +1,4 @@
-# SugiLearn — Chapter Management
+# Sugidanon — Chapter Management
 
 **Version:** M5  
 **Last updated:** 2026-08-15

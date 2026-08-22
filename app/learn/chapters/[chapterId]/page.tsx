@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 import { AssessmentAccessBlockedState } from "@/components/assessment/assessment-access-blocked-state";
 import { ChapterEngine } from "@/components/chapter/chapter-engine";
@@ -11,6 +11,7 @@ import {
   ensureChapterStarted,
   getChapterProgressForLearner,
   getCurrentLearnerId,
+  getLearnerJourneySummary,
 } from "@/lib/domain/learner-progress";
 import type { ChapterProgressStatus } from "@/types/progress";
 
@@ -26,6 +27,16 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
   }
 
   const learnerId = await getCurrentLearnerId();
+  const journey = await getLearnerJourneySummary(learnerId);
+
+  if (!journey.preAssessmentCompleted) {
+    redirect("/learn/assessment/pre");
+  }
+
+  const journeyChapter = journey.chapters.find((item) => item.id === chapterId);
+  if (journeyChapter?.isLocked) {
+    redirect("/learn/chapters");
+  }
 
   let chapter;
   try {
@@ -76,7 +87,6 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
       }
     } catch (error) {
       console.error("Chapter progress sync failed:", error);
-      // Still render the chapter; progress can catch up on the next visit.
       progressStatus = "not_started";
     }
   }

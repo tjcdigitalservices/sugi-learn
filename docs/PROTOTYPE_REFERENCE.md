@@ -1,4 +1,4 @@
-# SugiLearn — Prototype Reference Analysis
+# Sugidanon — Prototype Reference Analysis
 
 **Source:** `reference/claude-prototype/` (Claude-generated HTML/CSS/JS SPA)  
 **Analysis date:** 2026-08-15  

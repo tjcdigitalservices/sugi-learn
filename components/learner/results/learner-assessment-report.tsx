@@ -36,7 +36,7 @@ export const LearnerAssessmentReport = forwardRef<
           <div className="flex items-center gap-3">
             {/* eslint-disable-next-line @next/next/no-img-element -- plain img so PDF capture (html2canvas) can read pixels */}
             <img
-              src="/brand/sugilearn-icon.png"
+              src="/brand/sugidanon-icon.png"
               alt=""
               width={52}
               height={52}
@@ -44,7 +44,7 @@ export const LearnerAssessmentReport = forwardRef<
             />
             <div>
               <p className="font-display text-xl font-semibold text-sl-navy">
-                SugiLearn
+                Sugidanon
               </p>
               <p className="text-xs tracking-wide text-sl-ink-muted">
                 Stories Today. Heritage Always.

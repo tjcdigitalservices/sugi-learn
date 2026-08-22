@@ -1,5 +1,6 @@
 "use server";
 
+import { randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
 
 import { requireAdmin } from "@/lib/auth/session";
@@ -31,6 +32,21 @@ import {
   updateLearningPoint,
   updateSection,
 } from "@/lib/domain/chapter-management";
+import {
+  countMediaByKind,
+  createMediaAssetRecord,
+} from "@/lib/domain/media-management";
+import {
+  buildMockDataUrl,
+  buildStorageObjectPath,
+  readUploadBuffer,
+  uploadMediaFile,
+} from "@/lib/media/storage";
+import {
+  validateMediaFile,
+  validateScopeLimit,
+} from "@/lib/media/validation";
+import { hasSupabaseConfig } from "@/lib/supabase/service";
 import type { Chapter, ChapterSection, LearningPoint } from "@/types/chapter";
 import type {
   ChapterManagementActionResult,
@@ -383,6 +399,112 @@ export async function reloadChapterAction(
     if (!chapter) {
       return { success: false, error: "Chapter not found." };
     }
+    return { success: true, data: chapter };
+  } catch (error) {
+    return { success: false, error: safeError(error) };
+  }
+}
+
+export async function setChapterCoverAction(
+  chapterId: string,
+  formData: FormData,
+): Promise<ChapterManagementActionResult<Chapter>> {
+  await requireAdmin();
+
+  const file = formData.get("file");
+  if (!(file instanceof File) || file.size === 0) {
+    return { success: false, error: "A cover image file is required." };
+  }
+
+  const fileError = validateMediaFile("illustration", file);
+  if (fileError) {
+    return { success: false, error: fileError };
+  }
+
+  try {
+    const existing = await getChapterForAdmin(chapterId);
+    if (!existing) {
+      return { success: false, error: "Chapter not found." };
+    }
+
+    const currentCount = await countMediaByKind("illustration");
+    const scopeError = validateScopeLimit("illustration", currentCount);
+    if (scopeError && !existing.coverMediaAssetId) {
+      return { success: false, error: scopeError };
+    }
+
+    const assetId = randomUUID();
+    let storagePath: string | null = null;
+
+    if (hasSupabaseConfig()) {
+      storagePath = buildStorageObjectPath({
+        chapterSlug: chapterId,
+        kind: "illustration",
+        assetId,
+        filename: file.name,
+      });
+      const buffer = await readUploadBuffer(file);
+      await uploadMediaFile({
+        storagePath,
+        file: buffer,
+        contentType: file.type || "image/png",
+      });
+    } else {
+      storagePath = await buildMockDataUrl(file);
+    }
+
+    await createMediaAssetRecord(
+      {
+        id: assetId,
+        kind: "illustration",
+        title: `${existing.title} — Cover`,
+        description: "Chapter cover image",
+        altText: `Cover for ${existing.title}`,
+        chapterSlug: chapterId,
+        sectionId: null,
+        sourceReference: null,
+        reviewStatus: "approved",
+      },
+      storagePath,
+    );
+
+    const chapter = await updateChapterMetadata(chapterId, {
+      title: existing.title,
+      subtitle: existing.subtitle,
+      summary: existing.summary,
+      reviewStatus: existing.reviewStatus,
+      coverMediaAssetId: assetId,
+    });
+
+    revalidateChapter(chapterId);
+    revalidateLearnerPaths();
+    return { success: true, data: chapter };
+  } catch (error) {
+    return { success: false, error: safeError(error) };
+  }
+}
+
+export async function clearChapterCoverAction(
+  chapterId: string,
+): Promise<ChapterManagementActionResult<Chapter>> {
+  await requireAdmin();
+
+  try {
+    const existing = await getChapterForAdmin(chapterId);
+    if (!existing) {
+      return { success: false, error: "Chapter not found." };
+    }
+
+    const chapter = await updateChapterMetadata(chapterId, {
+      title: existing.title,
+      subtitle: existing.subtitle,
+      summary: existing.summary,
+      reviewStatus: existing.reviewStatus,
+      coverMediaAssetId: null,
+    });
+
+    revalidateChapter(chapterId);
+    revalidateLearnerPaths();
     return { success: true, data: chapter };
   } catch (error) {
     return { success: false, error: safeError(error) };

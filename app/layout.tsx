@@ -16,7 +16,7 @@ const body = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "SugiLearn",
+  title: "Sugidanon",
   description:
     "Stories Today, Heritage Always. An interactive learning journey through the Sugidanon of Panay.",
   icons: {
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     ],
     apple: [{ url: "/apple-icon.png", type: "image/png", sizes: "180x180" }],
   },
-  applicationName: "SugiLearn",
+  applicationName: "Sugidanon",
 };
 
 export default function RootLayout({

@@ -19,6 +19,8 @@ export default async function AdminMediaPage() {
         reviewStatus: item.reviewStatus,
         isActive: item.isActive,
         hasPublishedContent: item.hasPublishedContent,
+        coverMediaAssetId: item.coverMediaAssetId,
+        coverUrl: item.coverUrl,
       })),
     );
   } catch {

@@ -1,4 +1,4 @@
-# SugiLearn — Project Audit
+# Sugidanon — Project Audit
 
 **Audit date:** 2026-08-15  
 **Milestone:** M0 — Project Foundation
@@ -16,7 +16,7 @@
 | **Application code** | Not present |
 | **Interactive HTML prototype** | Referenced in README/AGENTS.md but **not present in this repository** |
 | **Documentation** | `README.md`, `AGENTS.md` |
-| **Specification** | `docs/SugiLearn_Project_Specification.md` referenced in AGENTS.md but not yet present |
+| **Specification** | `docs/Sugidanon_Project_Specification.md` referenced in AGENTS.md but not yet present |
 
 ### Files present at audit (pre-M0)
 

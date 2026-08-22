@@ -47,43 +47,69 @@ export function HeritageWave({
   );
 }
 
-export function SugiLearnMark({
+export function SugidanonMark({
   className,
   light = false,
   showTagline = true,
   size = "md",
+  stacked = false,
 }: {
   className?: string;
   light?: boolean;
   showTagline?: boolean;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "xl";
+  /** Icon above wordmark (auth hero). */
+  stacked?: boolean;
 }) {
-  const iconSize = size === "lg" ? 57 : size === "sm" ? 36 : 47;
+  const iconSize =
+    size === "xl" ? 128 : size === "lg" ? 72 : size === "sm" ? 50 : 66;
 
   return (
-    <span className={cn("inline-flex items-center gap-2.5", className)}>
+    <span
+      className={cn(
+        "inline-flex",
+        stacked
+          ? "flex-col items-center gap-3 text-center"
+          : "items-center gap-2.5",
+        className,
+      )}
+    >
       <Image
-        src="/brand/sugilearn-icon.png"
+        src="/brand/sugidanon-icon.png"
         alt=""
         width={iconSize}
         height={iconSize}
         className="shrink-0 rounded-full"
         priority
       />
-      <span className="flex min-w-0 flex-col leading-tight">
+      <span
+        className={cn(
+          "flex min-w-0 flex-col leading-tight",
+          stacked && "items-center",
+        )}
+      >
         <span
           className={cn(
             "font-display font-semibold tracking-tight",
-            size === "lg" ? "text-2xl" : size === "sm" ? "text-base" : "text-lg",
+            size === "xl"
+              ? "text-4xl sm:text-5xl"
+              : size === "lg"
+                ? "text-2xl"
+                : size === "sm"
+                  ? "text-lg"
+                  : "text-xl",
             light ? "text-white" : "text-sl-navy",
           )}
         >
-          SugiLearn
+          Sugidanon
         </span>
         {showTagline ? (
           <span
             className={cn(
-              "text-[10px] font-medium uppercase tracking-[0.12em]",
+              "font-medium",
+              stacked
+                ? "mt-1 text-xs italic tracking-wide sm:text-sm"
+                : "text-[10px] uppercase tracking-[0.12em]",
               light ? "text-sl-gold-soft" : "text-sl-gold",
             )}
           >
@@ -94,3 +120,4 @@ export function SugiLearnMark({
     </span>
   );
 }
+

@@ -1,3 +1,5 @@
+"use client";
+
 import { resolveMediaUrl } from "@/lib/media/resolve-media-url";
 import type { MediaAsset } from "@/types/media";
 
@@ -8,6 +10,7 @@ interface MediaRendererProps {
   kind: MediaAsset["kind"];
   emptyMessage: string;
   transcript?: string | null;
+  onEnded?: () => void;
 }
 
 export function MediaRenderer({
@@ -15,6 +18,7 @@ export function MediaRenderer({
   kind,
   emptyMessage,
   transcript,
+  onEnded,
 }: MediaRendererProps) {
   if (!asset) {
     return <SectionEmptyState message={emptyMessage} />;
@@ -91,15 +95,11 @@ export function MediaRenderer({
             preload="metadata"
             className="aspect-video w-full rounded-lg border bg-black/5"
             aria-label={asset.caption ?? "Chapter animation"}
+            onEnded={onEnded}
           >
             <source src={mediaUrl} />
             Your browser does not support the video element.
           </video>
-          {asset.caption ? (
-            <figcaption className="text-sm text-muted-foreground">
-              {asset.caption}
-            </figcaption>
-          ) : null}
         </figure>
       );
 

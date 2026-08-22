@@ -1,7 +1,7 @@
 # M16 — Full System QA & Content Validation Report
 
 **Date:** 2026-08-15  
-**Scope:** M0–M15 existing SugiLearn system  
+**Scope:** M0–M15 existing Sugidanon system  
 **Type:** QA, validation, stabilization (no new major features)
 
 ---

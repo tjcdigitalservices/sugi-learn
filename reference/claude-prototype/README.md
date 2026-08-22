@@ -1,6 +1,6 @@
-# SugiLearn — Clickable Prototype
+# Sugidanon — Clickable Prototype
 
-A frontend-only HTML/CSS/JS prototype of SugiLearn, a multimedia learning
+A frontend-only HTML/CSS/JS prototype of Sugidanon, a multimedia learning
 system for the Panay Bukidnon Sugidanon. No build step, no backend —
 just static files.
 
@@ -9,7 +9,7 @@ just static files.
 2. Open `index.html` directly in a browser, **or** for the most reliable
    experience serve it locally, e.g.:
    ```
-   cd sugilearn-prototype
+   cd sugidanon-prototype
    python3 -m http.server 8000
    ```
    then visit http://localhost:8000
@@ -39,7 +39,7 @@ Content Review (Draft / For Review / Approved / Needs Revision) →
 Admin Analytics.
 
 ## Note on source material
-No separate SugiLearn functional-specification file was actually attached
+No separate Sugidanon functional-specification file was actually attached
 to the request that produced this prototype — only the descriptive brief
 itself came through. This build treats that brief as the source of truth;
 if a formal spec exists, re-check this prototype against it.

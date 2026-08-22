@@ -1,7 +1,7 @@
 import "server-only";
 
 /**
- * Documented environment variables for SugiLearn production deployments.
+ * Documented environment variables for Sugidanon production deployments.
  * Values are never logged by this module.
  */
 

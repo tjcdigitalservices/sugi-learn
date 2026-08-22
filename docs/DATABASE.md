@@ -1,9 +1,9 @@
-# SugiLearn — Database
+# Sugidanon — Database
 
 **Version:** M2  
 **Last updated:** 2026-08-15
 
-PostgreSQL schema for SugiLearn, managed via Supabase migrations in `supabase/migrations/`.
+PostgreSQL schema for Sugidanon, managed via Supabase migrations in `supabase/migrations/`.
 
 ---
 
@@ -260,4 +260,4 @@ M2 maintains hand-written types in `types/database.ts` aligned with migrations.
 ## Related Documentation
 
 - `docs/ARCHITECTURE.md`
-- `docs/SugiLearn_Project_Specification.md`
+- `docs/Sugidanon_Project_Specification.md`

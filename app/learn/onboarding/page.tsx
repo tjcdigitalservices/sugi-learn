@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 
+import { HeritageAuthShell } from "@/components/auth/heritage-auth-shell";
 import { LearnerOnboardingForm } from "@/components/learner/learner-onboarding-form";
 import { requireUser } from "@/lib/auth/session";
 import { learnerNeedsOnboarding } from "@/lib/learner/onboarding";
@@ -16,8 +17,8 @@ export default async function LearnerOnboardingPage() {
   }
 
   return (
-    <div className="mx-auto flex min-h-[70vh] max-w-2xl items-center justify-center px-2 py-4">
+    <HeritageAuthShell>
       <LearnerOnboardingForm />
-    </div>
+    </HeritageAuthShell>
   );
 }

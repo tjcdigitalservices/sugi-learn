@@ -1,5 +1,5 @@
 /* ==========================================================================
-   SugiLearn — Prototype application logic
+   Sugidanon — Prototype application logic
    Frontend-only. No backend, no persistence beyond the current session.
    ========================================================================== */
 
@@ -551,7 +551,7 @@ function mountAdminSidebars(){
     const aside = document.createElement("aside");
     aside.className = "admin-sidebar";
     aside.innerHTML = `
-      <div class="brand"><span class="brand-mark" style="width:28px;height:28px;">${document.querySelector(".brand-mark")?.innerHTML || ""}</span>SugiLearn</div>
+      <div class="brand"><span class="brand-mark" style="width:28px;height:28px;">${document.querySelector(".brand-mark")?.innerHTML || ""}</span>Sugidanon</div>
       <nav class="admin-nav">
         ${ADMIN_NAV.map(item => `<a class="admin-nav-item ${item.key === active ? "active" : ""}" data-admin-nav="${item.key}">${item.icon}<span>${item.label}</span></a>`).join("")}
       </nav>

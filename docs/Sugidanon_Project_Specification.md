@@ -1,4 +1,4 @@
-# SugiLearn — Project Specification
+# Sugidanon — Project Specification
 
 **Version:** M1  
 **Last updated:** 2026-08-15
@@ -7,7 +7,7 @@
 
 ## 1. Project Purpose
 
-SugiLearn is a multimedia learning system for the **Panay Bukidnon Sugidanon** — presenting selected epic material as a structured, culturally reviewed learning experience.
+Sugidanon is a multimedia learning system for the **Panay Bukidnon Sugidanon** — presenting selected epic material as a structured, culturally reviewed learning experience.
 
 ---
 

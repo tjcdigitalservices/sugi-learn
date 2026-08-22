@@ -4,13 +4,13 @@
 **Section:** Opening entry — *Tikum Kadlum: Sugidanon (Epics) of Panay Book I*  
 **Authors (as supplied):** Magos, Alicia P. et al.
 
-This map links SugiLearn Chapter 1 CMS content to the client source. The source is a **summary**, not the full epic text. SugiLearn presents **educational adaptation/summary content** — not original epic dialogue.
+This map links Sugidanon Chapter 1 CMS content to the client source. The source is a **summary**, not the full epic text. Sugidanon presents **educational adaptation/summary content** — not original epic dialogue.
 
 ---
 
 ## Chapter metadata
 
-| SugiLearn field | Source basis | CMS / DB |
+| Sugidanon field | Source basis | CMS / DB |
 |-----------------|--------------|----------|
 | Title: Tikum Kadlum | Source heading | `chapters.title` |
 | Subtitle: Sugidanon (Epics) of Panay Book I | Source heading | `chapters.subtitle` |
