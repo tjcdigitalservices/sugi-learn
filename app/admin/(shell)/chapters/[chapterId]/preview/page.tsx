@@ -35,7 +35,8 @@ export default async function AdminChapterPreviewPage({
         <p className="font-medium">Admin preview</p>
         <p className="mt-1">
           This preview uses the same Chapter Engine as the learner experience.
-          Draft and unpublished sections are visible here for editorial review.
+          Draft and unpublished sections are visible here for editorial review;
+          learners only see Approved sections.
         </p>
         <Link
           href={`/admin/chapters/${chapterId}`}

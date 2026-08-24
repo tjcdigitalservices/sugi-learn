@@ -16,11 +16,13 @@ export const SECTION_KIND_OPTIONS: {
   { value: "audio", label: "Audio", group: "Media" },
   { value: "animation", label: "Animation", group: "Media" },
   { value: "characters", label: "Characters", group: "References" },
-  { value: "learning_points", label: "Learning points", group: "References" },
   { value: "completion", label: "Completion", group: "Structure" },
 ];
 
 export function formatSectionKind(kind: ChapterSectionKind): string {
+  if (kind === "learning_points") {
+    return "Learning points";
+  }
   return SECTION_KIND_OPTIONS.find((option) => option.value === kind)?.label ?? kind;
 }
 

@@ -1,12 +1,10 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
 
 import {
   buttonDangerClassName,
   buttonPrimaryClassName,
-  buttonSecondaryClassName,
   FormFeedback,
   FormField,
   formControlClassName,
@@ -14,7 +12,6 @@ import {
 import {
   associateCharacterAction,
   removeCharacterAssociationAction,
-  reorderChapterCharactersAction,
 } from "@/lib/chapter-management/actions";
 import type { Character } from "@/types/chapter";
 
@@ -69,28 +66,6 @@ export function ChapterCharactersPanel({
         chapterId,
         characterId,
       );
-      if (!result.success) {
-        setError(result.error);
-        return;
-      }
-      onChanged();
-    });
-  }
-
-  function handleMove(index: number, direction: "up" | "down") {
-    const targetIndex = direction === "up" ? index - 1 : index + 1;
-    if (targetIndex < 0 || targetIndex >= chapterCharacters.length) {
-      return;
-    }
-
-    const nextOrder = chapterCharacters.map((character) => character.id);
-    [nextOrder[index], nextOrder[targetIndex]] = [
-      nextOrder[targetIndex],
-      nextOrder[index],
-    ];
-
-    startTransition(async () => {
-      const result = await reorderChapterCharactersAction(chapterId, nextOrder);
       if (!result.success) {
         setError(result.error);
         return;
@@ -166,7 +141,7 @@ export function ChapterCharactersPanel({
         </div>
       ) : (
         <ul className="divide-y rounded-lg border">
-          {chapterCharacters.map((character, index) => (
+          {chapterCharacters.map((character) => (
             <li
               key={character.id}
               className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between"
@@ -180,26 +155,6 @@ export function ChapterCharactersPanel({
                 ) : null}
               </div>
               <div className="flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  aria-label="Move character up"
-                  className={buttonSecondaryClassName}
-                  onClick={() => handleMove(index, "up")}
-                  disabled={isPending || index === 0}
-                >
-                  <ChevronUp className="h-4 w-4" aria-hidden="true" />
-                </button>
-                <button
-                  type="button"
-                  aria-label="Move character down"
-                  className={buttonSecondaryClassName}
-                  onClick={() => handleMove(index, "down")}
-                  disabled={
-                    isPending || index === chapterCharacters.length - 1
-                  }
-                >
-                  <ChevronDown className="h-4 w-4" aria-hidden="true" />
-                </button>
                 <button
                   type="button"
                   className={buttonDangerClassName}

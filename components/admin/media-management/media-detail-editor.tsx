@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
@@ -258,45 +259,78 @@ export function MediaDetailEditor({
             <p className="text-sm text-muted-foreground">
               Chapter: {asset.chapterTitle ?? asset.chapterSlug}
             </p>
+            <p className="text-sm text-muted-foreground">
+              Media type: {MEDIA_KIND_LABELS[asset.kind]} — only matching
+              section types appear below.
+            </p>
             {asset.isReferenced ? (
               <p className="text-sm">{asset.referenceSummary}</p>
             ) : null}
-            <FormField label="Assign to section" htmlFor="detail-section">
-              <select
-                id="detail-section"
-                value={sectionId}
-                onChange={(event) => setSectionId(event.target.value)}
-                className={formControlClassName}
-                disabled={isPending}
-              >
-                <option value="">Select a section</option>
-                {compatibleSections.map((section) => (
-                  <option key={section.id} value={section.id}>
-                    {section.title}
-                  </option>
-                ))}
-              </select>
-            </FormField>
-            <div className="flex flex-wrap gap-2">
-              <button
-                type="button"
-                className={buttonSecondaryClassName}
-                onClick={handleAssignSection}
-                disabled={isPending || !sectionId}
-              >
-                Assign to section
-              </button>
-              {asset.sectionId ? (
-                <button
-                  type="button"
-                  className={buttonSecondaryClassName}
-                  onClick={handleUnlink}
-                  disabled={isPending}
-                >
-                  Unlink from section
-                </button>
-              ) : null}
-            </div>
+            {compatibleSections.length === 0 ? (
+              <div className="space-y-2 rounded-md border border-dashed border-[color:rgba(44,36,22,0.2)] bg-[color:rgba(44,36,22,0.03)] px-3 py-3 text-sm text-muted-foreground">
+                <p>
+                  No {MEDIA_KIND_LABELS[asset.kind].toLowerCase()} section is
+                  available in this chapter
+                  {chapterSections.length > 0
+                    ? ` (${chapterSections.length} other section${
+                        chapterSections.length === 1 ? "" : "s"
+                      } exist, but none match this media type)`
+                    : " (the chapter has no sections yet)"}
+                  .
+                </p>
+                <p>
+                  Open{" "}
+                  <Link
+                    href={`/admin/chapters/${asset.chapterSlug}`}
+                    className="font-medium text-sl-navy underline underline-offset-4"
+                  >
+                    chapter management
+                  </Link>{" "}
+                  and add a {MEDIA_KIND_LABELS[asset.kind].toLowerCase()}{" "}
+                  section, then return here to assign this file. Chapter covers
+                  are set separately under chapter metadata, not here.
+                </p>
+              </div>
+            ) : (
+              <>
+                <FormField label="Assign to section" htmlFor="detail-section">
+                  <select
+                    id="detail-section"
+                    value={sectionId}
+                    onChange={(event) => setSectionId(event.target.value)}
+                    className={formControlClassName}
+                    disabled={isPending}
+                  >
+                    <option value="">Select a section</option>
+                    {compatibleSections.map((section) => (
+                      <option key={section.id} value={section.id}>
+                        {section.title}
+                      </option>
+                    ))}
+                  </select>
+                </FormField>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    className={buttonSecondaryClassName}
+                    onClick={handleAssignSection}
+                    disabled={isPending || !sectionId}
+                  >
+                    Assign to section
+                  </button>
+                  {asset.sectionId ? (
+                    <button
+                      type="button"
+                      className={buttonSecondaryClassName}
+                      onClick={handleUnlink}
+                      disabled={isPending}
+                    >
+                      Unlink from section
+                    </button>
+                  ) : null}
+                </div>
+              </>
+            )}
           </div>
         ) : (
           <p className="rounded-md border border-dashed px-3 py-2 text-sm text-muted-foreground">

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useTransition } from "react";
-import { ChevronDown, ChevronUp, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 
 import {
   buttonDangerClassName,
@@ -18,7 +18,6 @@ import {
 } from "@/lib/chapter-management/constants";
 import {
   deleteSectionAction,
-  reorderSectionsAction,
   saveSectionAction,
 } from "@/lib/chapter-management/actions";
 import { SectionMediaPicker } from "@/components/admin/media-management/section-media-picker";
@@ -33,9 +32,6 @@ import type { ReviewStatus } from "@/types/review";
 interface SectionEditorCardProps {
   chapterId: string;
   section: ChapterSection;
-  sectionIndex: number;
-  sectionCount: number;
-  allSectionIds: string[];
   characters: Character[];
   learningPoints: LearningPoint[];
   mediaAssets: MediaAsset[];
@@ -45,9 +41,6 @@ interface SectionEditorCardProps {
 export function SectionEditorCard({
   chapterId,
   section,
-  sectionIndex,
-  sectionCount,
-  allSectionIds,
   characters,
   learningPoints,
   mediaAssets,
@@ -161,28 +154,6 @@ export function SectionEditorCard({
     });
   }
 
-  function handleMove(direction: "up" | "down") {
-    const targetIndex = direction === "up" ? sectionIndex - 1 : sectionIndex + 1;
-    if (targetIndex < 0 || targetIndex >= sectionCount) {
-      return;
-    }
-
-    const nextOrder = [...allSectionIds];
-    [nextOrder[sectionIndex], nextOrder[targetIndex]] = [
-      nextOrder[targetIndex],
-      nextOrder[sectionIndex],
-    ];
-
-    startTransition(async () => {
-      const result = await reorderSectionsAction(chapterId, nextOrder);
-      if (!result.success) {
-        setError(result.error);
-        return;
-      }
-      onChanged();
-    });
-  }
-
   function toggleReferenceId(
     current: string[],
     id: string,
@@ -209,24 +180,6 @@ export function SectionEditorCard({
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            aria-label="Move section up"
-            className="rounded-md border p-2 hover:bg-muted disabled:opacity-40"
-            onClick={() => handleMove("up")}
-            disabled={isPending || sectionIndex === 0}
-          >
-            <ChevronUp className="h-4 w-4" aria-hidden="true" />
-          </button>
-          <button
-            type="button"
-            aria-label="Move section down"
-            className="rounded-md border p-2 hover:bg-muted disabled:opacity-40"
-            onClick={() => handleMove("down")}
-            disabled={isPending || sectionIndex === sectionCount - 1}
-          >
-            <ChevronDown className="h-4 w-4" aria-hidden="true" />
-          </button>
           <button
             type="button"
             className={buttonSecondaryClassName}
@@ -367,8 +320,8 @@ export function SectionEditorCard({
             >
               {learningPoints.length === 0 ? (
                 <p className="text-sm text-muted-foreground">
-                  No learning points have been added yet. Add learning points on
-                  the Learning points tab first.
+                  Learning points are no longer used. Delete this section or
+                  change it to another type via a new section.
                 </p>
               ) : (
                 <div className="space-y-2 rounded-md border p-3">

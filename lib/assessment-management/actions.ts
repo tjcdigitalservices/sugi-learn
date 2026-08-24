@@ -13,7 +13,6 @@ import {
   createQuestion,
   deleteQuestion,
   getAssessmentForAdmin,
-  initializeDefaultAssessments,
   listAssessmentsForAdmin,
   reorderQuestions,
   updateAssessmentMetadata,
@@ -59,20 +58,6 @@ function safeError(error: unknown): string {
     }
   }
   return "Something went wrong. Please try again.";
-}
-
-export async function initializeAssessmentsAction(): Promise<
-  AssessmentManagementActionResult<AdminAssessmentDetail[]>
-> {
-  await requireAdmin();
-
-  try {
-    const assessments = await initializeDefaultAssessments();
-    revalidatePath("/admin/assessments");
-    return { success: true, data: assessments };
-  } catch (error) {
-    return { success: false, error: safeError(error) };
-  }
 }
 
 export async function saveAssessmentMetadataAction(

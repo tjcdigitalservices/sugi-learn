@@ -5,13 +5,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { ChapterCharactersPanel } from "@/components/admin/chapter-management/chapter-characters-panel";
-import { ChapterLearningPointsPanel } from "@/components/admin/chapter-management/chapter-learning-points-panel";
 import { ChapterMetadataForm } from "@/components/admin/chapter-management/chapter-metadata-form";
 import { ChapterSectionsPanel } from "@/components/admin/chapter-management/chapter-sections-panel";
 import { ReviewStatusBadge } from "@/components/admin/review-status-badge";
 import type { Chapter, Character } from "@/types/chapter";
 
-type ChapterTab = "overview" | "sections" | "characters" | "learning-points";
+type ChapterTab = "overview" | "sections" | "characters";
 
 interface ChapterManagementEditorProps {
   chapter: Chapter;
@@ -22,7 +21,6 @@ const TABS: { id: ChapterTab; label: string }[] = [
   { id: "overview", label: "Overview" },
   { id: "sections", label: "Sections" },
   { id: "characters", label: "Characters" },
-  { id: "learning-points", label: "Learning points" },
 ];
 
 export function ChapterManagementEditor({
@@ -127,14 +125,6 @@ export function ChapterManagementEditor({
           chapterId={chapter.id}
           chapterCharacters={chapter.characters}
           allCharacters={allCharacters}
-          onChanged={refreshFromServer}
-        />
-      ) : null}
-
-      {activeTab === "learning-points" ? (
-        <ChapterLearningPointsPanel
-          chapterId={chapter.id}
-          learningPoints={chapter.learningPoints}
           onChanged={refreshFromServer}
         />
       ) : null}

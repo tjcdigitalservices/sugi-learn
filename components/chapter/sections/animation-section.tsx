@@ -20,9 +20,6 @@ export function AnimationSectionView({
 
   return (
     <article className="space-y-4">
-      <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
-        {section.title}
-      </h2>
       {context === "preview" && asset ? (
         <AdminMediaPreviewNotice asset={asset} />
       ) : null}

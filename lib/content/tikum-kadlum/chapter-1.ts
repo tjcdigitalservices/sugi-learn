@@ -93,53 +93,13 @@ export const TIKUM_KADLUM_LEARNING_POINTS = [
 
 export const TIKUM_KADLUM_SECTIONS = [
   {
-    kind: "introduction" as const,
-    title: "Chapter Introduction",
-    body: `This chapter presents an educational summary adapted from the client-provided source document Tikum Kadlum: Sugidanon (Epics) of Panay Book I (${TIKUM_KADLUM_SOURCE.authors}).
-
-This material is a source-based summary for learning purposes. It is not the complete published epic text.
-
-Source reference: ${TIKUM_KADLUM_SOURCE.documentPath}`,
-    reviewStatus: "approved" as const,
-  },
-  {
-    kind: "story" as const,
-    title: "The Hunting Trip",
-    body: "Datu Paiburong goes hunting with his brother Dumaraog and his extraordinary dog, Tikum Kadlum. The dog repeatedly draws their attention to an unusual bamboo tree, but Paiburong does not understand the warning and cuts it down.",
-    reviewStatus: "approved" as const,
-  },
-  {
-    kind: "story" as const,
-    title: "Territory and Negotiation",
-    body: "The bamboo belongs to Makabagting, a dangerous man-eating being, and his hermit sister Amburukay. Paiburong has entered another being's territory and destroyed something that was not his. After negotiation, the owners agree to accept Paiburong's daughters, Matan-ayon and Saranggaon, as compensation.",
-    reviewStatus: "approved" as const,
-  },
-  {
-    kind: "story" as const,
-    title: "Compensation and Deception",
-    body: "Paiburong and Bulawanon try to hide the girls by disguising them with soot, but Makabagting sees through the deception.",
-    reviewStatus: "approved" as const,
-  },
-  {
-    kind: "illustration" as const,
-    title: "Illustration: The Unusual Bamboo",
-    reviewStatus: "approved" as const,
+    kind: "animation" as const,
+    title: "Animation / Video",
+    reviewStatus: "draft" as const,
   },
   {
     kind: "characters" as const,
     title: "Characters in This Chapter",
-    reviewStatus: "approved" as const,
-  },
-  {
-    kind: "learning_points" as const,
-    title: "Learning Points",
-    reviewStatus: "draft" as const,
-  },
-  {
-    kind: "completion" as const,
-    title: "Chapter Complete",
-    message:
-      "You have reached the end of this chapter summary. Continue the Sugidanon journey when the next chapter is available.",
     reviewStatus: "approved" as const,
   },
 ] as const;

@@ -44,25 +44,20 @@ function generateSeed(): string {
     lines.push("        updated_at = now()");
     lines.push("      WHERE id = ch_id;");
 
-    for (const character of definition.characters) {
-      const charId = `e${String(definition.number).padStart(3, "0")}-${character.slug.slice(0, 8)}`;
+    const chapterKey = String(100 + definition.number).padStart(3, "0");
+
+    for (const [charIndex, character] of definition.characters.entries()) {
+      const charId = `b${chapterKey}0000-0001-4001-8001-${String(charIndex + 1).padStart(12, "0")}`;
       lines.push(
         `      INSERT INTO public.characters (id, name, description, review_status) VALUES ('${charId}', '${sqlEscape(character.name)}', '${sqlEscape(character.description)}', 'draft') ON CONFLICT (id) DO NOTHING;`,
       );
       lines.push(
-        `      INSERT INTO public.chapter_characters (chapter_id, character_id, sort_order) SELECT ch_id, '${charId}', ${definition.characters.indexOf(character)} WHERE NOT EXISTS (SELECT 1 FROM public.chapter_characters WHERE chapter_id = ch_id AND character_id = '${charId}');`,
-      );
-    }
-
-    for (const [index, point] of definition.learningPoints.entries()) {
-      const lpId = `f${String(definition.number).padStart(3, "0")}-lp-${index + 1}`;
-      lines.push(
-        `      INSERT INTO public.learning_points (id, chapter_id, title, description, sort_order, review_status) VALUES ('${lpId}', ch_id, '${sqlEscape(point.title)}', '${sqlEscape(point.description)}', ${index}, 'draft') ON CONFLICT (id) DO NOTHING;`,
+        `      INSERT INTO public.chapter_characters (chapter_id, character_id, sort_order) SELECT ch_id, '${charId}', ${charIndex} WHERE NOT EXISTS (SELECT 1 FROM public.chapter_characters WHERE chapter_id = ch_id AND character_id = '${charId}');`,
       );
     }
 
     for (const section of built.sections) {
-      const secId = `${definition.id}-sec-${section.sortOrder}`.replace(/-/g, "_");
+      const secId = `a${chapterKey}0000-0001-4001-8001-${String(section.sortOrder + 1).padStart(12, "0")}`;
       const body =
         "body" in section ? `'${sqlEscape(section.body)}'` : "NULL";
       const completion =
@@ -78,15 +73,6 @@ function generateSeed(): string {
         lines.push(
           `      INSERT INTO public.section_characters (section_id, character_id, sort_order) SELECT '${secId}', character_id, sort_order FROM public.chapter_characters WHERE chapter_id = ch_id ON CONFLICT DO NOTHING;`,
         );
-      }
-
-      if (section.kind === "learning_points") {
-        for (const [index] of definition.learningPoints.entries()) {
-          const lpId = `f${String(definition.number).padStart(3, "0")}-lp-${index + 1}`;
-          lines.push(
-            `      INSERT INTO public.section_learning_points (section_id, learning_point_id, sort_order) VALUES ('${secId}', '${lpId}', ${index}) ON CONFLICT DO NOTHING;`,
-          );
-        }
       }
     }
 

@@ -3,8 +3,8 @@ import "server-only";
 import { getChapterForEngine } from "@/lib/domain/chapters";
 
 /**
- * Learners must have at least one approved animation section before
- * marking a chapter complete (learner UI is animation-only).
+ * Learners can complete a chapter when it has at least one approved section
+ * (same filtered chapter payload used by the Chapter Engine).
  */
 export async function assertChapterCompletable(chapterSlug: string): Promise<void> {
   const chapter = await getChapterForEngine(chapterSlug);
@@ -13,13 +13,9 @@ export async function assertChapterCompletable(chapterSlug: string): Promise<voi
     throw new Error("Chapter not found.");
   }
 
-  const hasAnimation = chapter.sections.some(
-    (section) => section.kind === "animation",
-  );
-
-  if (!hasAnimation) {
+  if (chapter.sections.length === 0) {
     throw new Error(
-      "This chapter cannot be completed yet. An approved 2D animation is required before marking complete.",
+      "This chapter cannot be completed yet. Approved content has not been published.",
     );
   }
 }

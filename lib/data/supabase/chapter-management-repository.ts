@@ -1017,6 +1017,35 @@ export class SupabaseChapterManagementRepository
       throw managementError("Unable to create chapter.");
     }
 
+    const { data: createdRow, error: createdError } = await supabase
+      .from("chapters")
+      .select("id")
+      .eq("slug", slug)
+      .single();
+
+    if (createdError || !createdRow) {
+      throw managementError("Unable to load created chapter.");
+    }
+
+    const defaultSections: CreateSectionInput[] = [
+      { kind: "animation", title: "Animation / Video" },
+      {
+        kind: "characters",
+        title: "Characters in This Chapter",
+        characterIds: [],
+      },
+    ];
+
+    for (const [index, sectionInput] of defaultSections.entries()) {
+      const { error: sectionError } = await supabase
+        .from("chapter_sections")
+        .insert(buildSectionInsertPayload(createdRow.id, index, sectionInput));
+
+      if (sectionError) {
+        throw managementError("Unable to create default chapter sections.");
+      }
+    }
+
     const chapter = await this.getChapterForAdmin(slug);
     if (!chapter) {
       throw managementError("Unable to load created chapter.");

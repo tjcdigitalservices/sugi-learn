@@ -28,8 +28,8 @@ export function ChapterSectionsPanel({
       <div>
         <h2 className="text-lg font-semibold">Sections</h2>
         <p className="text-sm text-muted-foreground">
-          Manage the ordered structure of this chapter. Assign uploaded media
-          assets to illustration, audio, and animation sections.
+          Manage sections for this chapter. Assign uploaded media assets to
+          illustration, audio, and animation sections.
         </p>
       </div>
 
@@ -41,14 +41,11 @@ export function ChapterSectionsPanel({
         </div>
       ) : (
         <div className="space-y-4">
-          {sections.map((section, index) => (
+          {sections.map((section) => (
             <SectionEditorCard
               key={section.id}
               chapterId={chapterId}
               section={section}
-              sectionIndex={index}
-              sectionCount={sections.length}
-              allSectionIds={sections.map((item) => item.id)}
               characters={characters}
               learningPoints={learningPoints}
               mediaAssets={mediaAssets}

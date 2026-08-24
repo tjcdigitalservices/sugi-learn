@@ -51,6 +51,9 @@ export function validateCreateSection(input: CreateSectionInput): string | null 
   if (!CHAPTER_SECTION_KINDS.includes(input.kind)) {
     return "Invalid section type.";
   }
+  if (input.kind === "learning_points") {
+    return "Learning points sections are no longer supported.";
+  }
   if (input.reviewStatus && !REVIEW_STATUSES.includes(input.reviewStatus)) {
     return "Invalid section review status.";
   }

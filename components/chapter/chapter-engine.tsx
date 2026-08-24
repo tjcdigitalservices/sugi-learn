@@ -1,4 +1,4 @@
-import type { Chapter } from "@/types/chapter";
+import type { Chapter, ChapterSection } from "@/types/chapter";
 
 import { ChapterEmptyState } from "@/components/chapter/chapter-empty-state";
 import { ChapterHeader } from "@/components/chapter/chapter-header";
@@ -16,9 +16,20 @@ interface ChapterEngineProps {
   nextChapterId?: string | null;
 }
 
+function orderSectionsForDisplay(sections: ChapterSection[]): {
+  animationSections: ChapterSection[];
+  otherSections: ChapterSection[];
+} {
+  const sorted = [...sections].sort((a, b) => a.sortOrder - b.sortOrder);
+  return {
+    animationSections: sorted.filter((section) => section.kind === "animation"),
+    otherSections: sorted.filter((section) => section.kind !== "animation"),
+  };
+}
+
 /**
  * Reusable chapter renderer — one engine for all chapters.
- * Content is supplied via the Chapter data model, not hardcoded per chapter.
+ * Learner/default order: title → Animation / Video → summary → other sections.
  */
 export function ChapterEngine({
   chapter,
@@ -27,33 +38,48 @@ export function ChapterEngine({
   chapterCompleted = false,
   nextChapterId = null,
 }: ChapterEngineProps) {
-  const sections = [...chapter.sections].sort(
-    (a, b) => a.sortOrder - b.sortOrder,
+  const { animationSections, otherSections } = orderSectionsForDisplay(
+    chapter.sections,
   );
+  const hasSections = chapter.sections.length > 0;
+
+  function renderSection(section: ChapterSection) {
+    return (
+      <section key={section.id}>
+        <SectionRenderer
+          section={section}
+          mediaAssets={chapter.media}
+          characters={chapter.characters}
+          learningPoints={chapter.learningPoints}
+          chapterId={chapter.id}
+          chapterTitle={chapter.title}
+          context={context}
+          chapterCompleted={chapterCompleted}
+          nextChapterId={nextChapterId}
+        />
+      </section>
+    );
+  }
 
   return (
     <div className="space-y-10">
-      {showHeader ? <ChapterHeader chapter={chapter} /> : null}
+      {showHeader ? (
+        <ChapterHeader chapter={chapter} showSummary={false} />
+      ) : null}
 
-      {sections.length === 0 ? (
+      {!hasSections ? (
         <ChapterEmptyState context={context} />
       ) : (
         <div className="space-y-12 sm:space-y-14">
-          {sections.map((section) => (
-            <section key={section.id}>
-              <SectionRenderer
-                section={section}
-                mediaAssets={chapter.media}
-                characters={chapter.characters}
-                learningPoints={chapter.learningPoints}
-                chapterId={chapter.id}
-                chapterTitle={chapter.title}
-                context={context}
-                chapterCompleted={chapterCompleted}
-                nextChapterId={nextChapterId}
-              />
-            </section>
-          ))}
+          {animationSections.map(renderSection)}
+
+          {chapter.summary ? (
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+              {chapter.summary}
+            </p>
+          ) : null}
+
+          {otherSections.map(renderSection)}
         </div>
       )}
     </div>

@@ -1,7 +1,6 @@
 import {
   TIKUM_KADLUM_CHAPTER_METADATA,
   TIKUM_KADLUM_CHARACTERS,
-  TIKUM_KADLUM_LEARNING_POINTS,
   TIKUM_KADLUM_SECTIONS,
 } from "@/lib/content/tikum-kadlum/chapter-1";
 import { TIKUM_KADLUM_ILLUSTRATION_BAMBOO } from "@/lib/content/tikum-kadlum/chapter-1-media";
@@ -48,15 +47,6 @@ export function buildTikumKadlumMockBootstrap(): TikumKadlumMockBootstrap {
     reviewStatus: "approved",
   }));
 
-  const learningPoints: LearningPoint[] = TIKUM_KADLUM_LEARNING_POINTS.map(
-    (point, index) => ({
-      id: `tk-lp-${index + 1}`,
-      title: point.title,
-      text: point.description,
-      reviewStatus: "draft" as ReviewStatus,
-    }),
-  );
-
   const sections: ChapterSection[] = TIKUM_KADLUM_SECTIONS.map((section, index) => {
     const base = {
       id: `tk-section-${index + 1}`,
@@ -67,36 +57,17 @@ export function buildTikumKadlumMockBootstrap(): TikumKadlumMockBootstrap {
     };
 
     switch (section.kind) {
-      case "introduction":
-      case "story":
-        return {
-          ...base,
-          kind: section.kind,
-          body: "body" in section ? section.body : "",
-        };
       case "characters":
         return {
           ...base,
-          kind: "characters",
+          kind: "characters" as const,
           characterIds: characters.map((character) => character.id),
         };
-      case "illustration":
+      case "animation":
         return {
           ...base,
-          kind: "illustration",
-          mediaAssetId: TIKUM_KADLUM_ILLUSTRATION_BAMBOO.id,
-        };
-      case "learning_points":
-        return {
-          ...base,
-          kind: "learning_points",
-          learningPointIds: learningPoints.map((point) => point.id),
-        };
-      case "completion":
-        return {
-          ...base,
-          kind: "completion",
-          message: section.message,
+          kind: "animation" as const,
+          mediaAssetId: "",
         };
       default: {
         const exhaustive: never = section;
@@ -104,17 +75,6 @@ export function buildTikumKadlumMockBootstrap(): TikumKadlumMockBootstrap {
       }
     }
   });
-
-  const illustrationSection = sections.find(
-    (section) => section.kind === "illustration",
-  );
-  if (illustrationSection) {
-    mockMediaStore.assignToSection(
-      TIKUM_KADLUM_ILLUSTRATION_BAMBOO.id,
-      TIKUM_KADLUM_ID,
-      illustrationSection.id,
-    );
-  }
 
   return {
     title: TIKUM_KADLUM_CHAPTER_METADATA.title,
@@ -124,7 +84,7 @@ export function buildTikumKadlumMockBootstrap(): TikumKadlumMockBootstrap {
     sections,
     characters,
     characterOrder: characters.map((character) => character.id),
-    learningPoints,
+    learningPoints: [],
   };
 }
 

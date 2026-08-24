@@ -4,9 +4,15 @@ import type { ChapterNavigation } from "@/lib/domain/chapter-navigation";
 interface ChapterHeaderProps {
   chapter: Chapter;
   navigation?: ChapterNavigation | null;
+  /** When false, summary is omitted (rendered later, e.g. after animation). */
+  showSummary?: boolean;
 }
 
-export function ChapterHeader({ chapter, navigation }: ChapterHeaderProps) {
+export function ChapterHeader({
+  chapter,
+  navigation,
+  showSummary = true,
+}: ChapterHeaderProps) {
   const eyebrow =
     chapter.number > 0
       ? navigation
@@ -27,7 +33,7 @@ export function ChapterHeader({ chapter, navigation }: ChapterHeaderProps) {
           {chapter.subtitle}
         </p>
       ) : null}
-      {chapter.summary ? (
+      {showSummary && chapter.summary ? (
         <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
           {chapter.summary}
         </p>
