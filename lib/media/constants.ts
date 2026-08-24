@@ -17,7 +17,8 @@ export const MEDIA_ACCEPTED_TYPES: Record<MediaKind, string[]> = {
 export const MEDIA_MAX_FILE_BYTES: Record<MediaKind, number> = {
   illustration: 10 * 1024 * 1024,
   audio: 25 * 1024 * 1024,
-  animation: 200 * 1024 * 1024,
+  /** Aligned with Supabase Free plan max upload size. */
+  animation: 50 * 1024 * 1024,
 };
 
 export const MEDIA_ACCEPT_ATTRIBUTE: Record<MediaKind, string> = {
@@ -26,9 +27,9 @@ export const MEDIA_ACCEPT_ATTRIBUTE: Record<MediaKind, string> = {
   animation: MEDIA_ACCEPTED_TYPES.animation.join(","),
 };
 
-/** Soft project scope limits (AGENTS.md). */
+/** Soft project scope limits. `null` = no count cap (free-tier safe; size caps still apply). */
 export const MEDIA_SCOPE_LIMITS: Record<MediaKind, number | null> = {
-  illustration: 20,
+  illustration: null,
   audio: null,
-  animation: 3,
+  animation: null,
 };

@@ -1,8 +1,6 @@
-"use client";
-
-import Link from "next/link";
 import { Eye, Pencil } from "lucide-react";
 
+import { AdminTableActionsMenu } from "@/components/admin/admin-table-actions-menu";
 import { ReviewStatusBadge } from "@/components/admin/review-status-badge";
 import { MEDIA_KIND_LABELS } from "@/lib/media/constants";
 import { formatDateTime } from "@/lib/chapter-management/constants";
@@ -45,53 +43,62 @@ export function MediaListTable({ assets }: MediaListTableProps) {
               Updated
             </th>
             <th scope="col" className="px-4 py-3 text-right font-medium">
-              Actions
+              <span className="sr-only">Actions</span>
             </th>
           </tr>
         </thead>
         <tbody className="divide-y bg-card">
-          {assets.map((asset) => (
-            <tr key={asset.id} className="hover:bg-muted/20">
-              <td className="px-4 py-3 font-medium">
-                {asset.title ?? "Untitled asset"}
-              </td>
-              <td className="px-4 py-3 text-muted-foreground">
-                {MEDIA_KIND_LABELS[asset.kind]}
-              </td>
-              <td className="px-4 py-3 text-muted-foreground">
-                {asset.chapterTitle ?? "Unassigned"}
-              </td>
-              <td className="px-4 py-3">
-                <ReviewStatusBadge status={asset.reviewStatus} />
-              </td>
-              <td className="px-4 py-3 text-muted-foreground">
-                {asset.hasFile ? "Uploaded" : "Missing"}
-              </td>
-              <td className="whitespace-nowrap px-4 py-3 text-muted-foreground">
-                {formatDateTime(asset.updatedAt)}
-              </td>
-              <td className="whitespace-nowrap px-4 py-3">
-                <div className="flex justify-end gap-2">
-                  <Link
-                    href={`/admin/media/${asset.id}`}
-                    className="inline-flex items-center gap-1 rounded-md border px-2.5 py-1.5 text-xs font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  >
-                    <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
-                    Edit
-                  </Link>
-                  {asset.hasFile ? (
-                    <Link
-                      href={`/admin/media/${asset.id}#preview`}
-                      className="inline-flex items-center gap-1 rounded-md border px-2.5 py-1.5 text-xs font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                    >
-                      <Eye className="h-3.5 w-3.5" aria-hidden="true" />
-                      Preview
-                    </Link>
-                  ) : null}
-                </div>
-              </td>
-            </tr>
-          ))}
+          {assets.map((asset) => {
+            const title = asset.title ?? "Untitled asset";
+            const items = [
+              {
+                type: "link" as const,
+                label: "Edit",
+                href: `/admin/media/${asset.id}`,
+                icon: (
+                  <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
+                ),
+              },
+              ...(asset.hasFile
+                ? [
+                    {
+                      type: "link" as const,
+                      label: "Preview",
+                      href: `/admin/media/${asset.id}#preview`,
+                      icon: (
+                        <Eye className="h-3.5 w-3.5" aria-hidden="true" />
+                      ),
+                    },
+                  ]
+                : []),
+            ];
+
+            return (
+              <tr key={asset.id} className="hover:bg-muted/20">
+                <td className="px-4 py-3 font-medium">{title}</td>
+                <td className="px-4 py-3 text-muted-foreground">
+                  {MEDIA_KIND_LABELS[asset.kind]}
+                </td>
+                <td className="px-4 py-3 text-muted-foreground">
+                  {asset.chapterTitle ?? "Unassigned"}
+                </td>
+                <td className="px-4 py-3">
+                  <ReviewStatusBadge status={asset.reviewStatus} />
+                </td>
+                <td className="px-4 py-3 text-muted-foreground">
+                  {asset.hasFile ? "Uploaded" : "Missing"}
+                </td>
+                <td className="whitespace-nowrap px-4 py-3 text-muted-foreground">
+                  {formatDateTime(asset.updatedAt)}
+                </td>
+                <td className="whitespace-nowrap px-4 py-3">
+                  <div className="flex justify-end">
+                    <AdminTableActionsMenu label={title} items={items} />
+                  </div>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

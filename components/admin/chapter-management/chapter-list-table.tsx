@@ -1,22 +1,17 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
   Archive,
   ArchiveRestore,
-  ArrowDown,
-  ArrowUp,
   Eye,
   Pencil,
 } from "lucide-react";
 
+import { AdminTableActionsMenu } from "@/components/admin/admin-table-actions-menu";
 import { ReviewStatusBadge } from "@/components/admin/review-status-badge";
-import {
-  reorderChaptersAction,
-  setChapterActiveAction,
-} from "@/lib/chapter-management/actions";
+import { setChapterActiveAction } from "@/lib/chapter-management/actions";
 import { formatDateTime } from "@/lib/chapter-management/constants";
 import type { AdminChapterListItem } from "@/types/chapter-management";
 
@@ -35,37 +30,6 @@ export function ChapterListTable({ chapters }: ChapterListTableProps) {
         No chapters found in the database.
       </div>
     );
-  }
-
-  async function handleReorder(slug: string, direction: "up" | "down") {
-    const index = chapters.findIndex((chapter) => chapter.id === slug);
-    if (index === -1) {
-      return;
-    }
-
-    const targetIndex = direction === "up" ? index - 1 : index + 1;
-    if (targetIndex < 0 || targetIndex >= chapters.length) {
-      return;
-    }
-
-    const ordered = chapters.map((chapter) => chapter.id);
-    [ordered[index], ordered[targetIndex]] = [
-      ordered[targetIndex],
-      ordered[index],
-    ];
-
-    setPendingSlug(slug);
-    setError(null);
-
-    const result = await reorderChaptersAction(ordered);
-    setPendingSlug(null);
-
-    if (!result.success) {
-      setError(result.error);
-      return;
-    }
-
-    router.refresh();
   }
 
   async function handleArchiveToggle(slug: string, isActive: boolean) {
@@ -114,12 +78,12 @@ export function ChapterListTable({ chapters }: ChapterListTableProps) {
                 Last updated
               </th>
               <th scope="col" className="px-4 py-3 text-right font-medium">
-                Actions
+                <span className="sr-only">Actions</span>
               </th>
             </tr>
           </thead>
           <tbody className="divide-y bg-card">
-            {chapters.map((chapter, index) => {
+            {chapters.map((chapter) => {
               const isPending = pendingSlug === chapter.id;
               const archived = chapter.isActive === false;
 
@@ -156,56 +120,56 @@ export function ChapterListTable({ chapters }: ChapterListTableProps) {
                     {formatDateTime(chapter.updatedAt)}
                   </td>
                   <td className="whitespace-nowrap px-4 py-3">
-                    <div className="flex justify-end gap-1">
-                      <button
-                        type="button"
-                        disabled={isPending || index === 0}
-                        onClick={() => handleReorder(chapter.id, "up")}
-                        className="inline-flex items-center rounded-md border px-2 py-1.5 text-xs disabled:opacity-40"
-                        aria-label={`Move ${chapter.title} up`}
-                      >
-                        <ArrowUp className="h-3.5 w-3.5" />
-                      </button>
-                      <button
-                        type="button"
-                        disabled={isPending || index === chapters.length - 1}
-                        onClick={() => handleReorder(chapter.id, "down")}
-                        className="inline-flex items-center rounded-md border px-2 py-1.5 text-xs disabled:opacity-40"
-                        aria-label={`Move ${chapter.title} down`}
-                      >
-                        <ArrowDown className="h-3.5 w-3.5" />
-                      </button>
-                      <button
-                        type="button"
+                    <div className="flex justify-end">
+                      <AdminTableActionsMenu
+                        label={chapter.title}
                         disabled={isPending}
-                        onClick={() =>
-                          handleArchiveToggle(chapter.id, !chapter.isActive)
-                        }
-                        className="inline-flex items-center rounded-md border px-2 py-1.5 text-xs"
-                        aria-label={
-                          archived ? "Restore chapter" : "Archive chapter"
-                        }
-                      >
-                        {archived ? (
-                          <ArchiveRestore className="h-3.5 w-3.5" />
-                        ) : (
-                          <Archive className="h-3.5 w-3.5" />
-                        )}
-                      </button>
-                      <Link
-                        href={`/admin/chapters/${chapter.id}`}
-                        className="inline-flex items-center gap-1 rounded-md border px-2.5 py-1.5 text-xs font-medium transition-colors hover:bg-muted"
-                      >
-                        <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
-                        Edit
-                      </Link>
-                      <Link
-                        href={`/admin/chapters/${chapter.id}/preview`}
-                        className="inline-flex items-center gap-1 rounded-md border px-2.5 py-1.5 text-xs font-medium transition-colors hover:bg-muted"
-                      >
-                        <Eye className="h-3.5 w-3.5" aria-hidden="true" />
-                        Preview
-                      </Link>
+                        items={[
+                          {
+                            type: "link",
+                            label: "Edit",
+                            href: `/admin/chapters/${chapter.id}`,
+                            icon: (
+                              <Pencil
+                                className="h-3.5 w-3.5"
+                                aria-hidden="true"
+                              />
+                            ),
+                          },
+                          {
+                            type: "link",
+                            label: "Preview",
+                            href: `/admin/chapters/${chapter.id}/preview`,
+                            icon: (
+                              <Eye
+                                className="h-3.5 w-3.5"
+                                aria-hidden="true"
+                              />
+                            ),
+                          },
+                          {
+                            type: "button",
+                            label: archived ? "Restore" : "Archive",
+                            disabled: isPending,
+                            onClick: () =>
+                              handleArchiveToggle(
+                                chapter.id,
+                                !chapter.isActive,
+                              ),
+                            icon: archived ? (
+                              <ArchiveRestore
+                                className="h-3.5 w-3.5"
+                                aria-hidden="true"
+                              />
+                            ) : (
+                              <Archive
+                                className="h-3.5 w-3.5"
+                                aria-hidden="true"
+                              />
+                            ),
+                          },
+                        ]}
+                      />
                     </div>
                   </td>
                 </tr>

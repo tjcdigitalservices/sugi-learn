@@ -115,7 +115,7 @@ export function MediaUploadForm({
 
             setError(
               tooLarge
-                ? "Upload rejected: file exceeds Supabase Storage limits. The media bucket is set to 200 MB, but the project Global file size limit may still be lower (Free plans max out at 50 MB). Raise it under Supabase → Storage → Settings → Global file size limit (Pro required above 50 MB), then retry with an MP4/WebM under that limit."
+                ? "Upload rejected: file exceeds the 50 MB free-tier limit. Compress the file (MP4/WebM for animation) and retry under 50 MB."
                 : `Unable to upload the file to storage: ${raw || "please try again."}`,
             );
             return;

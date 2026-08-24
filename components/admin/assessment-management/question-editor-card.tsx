@@ -15,7 +15,6 @@ import { ReviewStatusBadge } from "@/components/admin/review-status-badge";
 import { REVIEW_STATUS_OPTIONS } from "@/lib/assessment-management/constants";
 import {
   deleteQuestionAction,
-  reorderQuestionsAction,
   saveQuestionAction,
 } from "@/lib/assessment-management/actions";
 import type { AssessmentQuestion } from "@/types/assessment";
@@ -27,8 +26,6 @@ interface QuestionEditorCardProps {
   assessmentId: string;
   question: AssessmentQuestion;
   questionIndex: number;
-  questionCount: number;
-  allQuestionIds: string[];
   chapters: ChapterSummary[];
   onChanged: () => void;
 }
@@ -47,8 +44,6 @@ export function QuestionEditorCard({
   assessmentId,
   question,
   questionIndex,
-  questionCount,
-  allQuestionIds,
   chapters,
   onChanged,
 }: QuestionEditorCardProps) {
@@ -125,28 +120,6 @@ export function QuestionEditorCard({
         ...option,
         sortOrder: optionIndex,
       }));
-    });
-  }
-
-  function moveQuestion(direction: "up" | "down") {
-    const targetIndex = direction === "up" ? questionIndex - 1 : questionIndex + 1;
-    if (targetIndex < 0 || targetIndex >= questionCount) {
-      return;
-    }
-
-    const reordered = [...allQuestionIds];
-    [reordered[questionIndex], reordered[targetIndex]] = [
-      reordered[targetIndex],
-      reordered[questionIndex],
-    ];
-
-    startTransition(async () => {
-      const result = await reorderQuestionsAction(assessmentId, reordered);
-      if (!result.success) {
-        setError(result.error);
-        return;
-      }
-      onChanged();
     });
   }
 
@@ -234,24 +207,6 @@ export function QuestionEditorCard({
 
         <div className="flex flex-wrap items-center gap-2">
           <ReviewStatusBadge status={question.reviewStatus} />
-          <button
-            type="button"
-            onClick={() => moveQuestion("up")}
-            disabled={isPending || questionIndex === 0}
-            className={buttonSecondaryClassName}
-            aria-label="Move question up"
-          >
-            <ChevronUp className="h-4 w-4" aria-hidden="true" />
-          </button>
-          <button
-            type="button"
-            onClick={() => moveQuestion("down")}
-            disabled={isPending || questionIndex === questionCount - 1}
-            className={buttonSecondaryClassName}
-            aria-label="Move question down"
-          >
-            <ChevronDown className="h-4 w-4" aria-hidden="true" />
-          </button>
         </div>
       </div>
 

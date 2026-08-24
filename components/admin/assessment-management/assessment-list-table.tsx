@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { Eye, Pencil } from "lucide-react";
 
+import { AdminTableActionsMenu } from "@/components/admin/admin-table-actions-menu";
 import { ReviewStatusBadge } from "@/components/admin/review-status-badge";
 import {
   ASSESSMENT_TYPE_LABELS,
@@ -42,7 +42,7 @@ export function AssessmentListTable({ assessments }: AssessmentListTableProps) {
               Last updated
             </th>
             <th scope="col" className="px-4 py-3 text-right font-medium">
-              Actions
+              <span className="sr-only">Actions</span>
             </th>
           </tr>
         </thead>
@@ -63,21 +63,28 @@ export function AssessmentListTable({ assessments }: AssessmentListTableProps) {
                 {formatDateTime(assessment.updatedAt)}
               </td>
               <td className="whitespace-nowrap px-4 py-3">
-                <div className="flex justify-end gap-2">
-                  <Link
-                    href={`/admin/assessments/${assessment.id}`}
-                    className="inline-flex items-center gap-1 rounded-md border px-2.5 py-1.5 text-xs font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  >
-                    <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
-                    Edit
-                  </Link>
-                  <Link
-                    href={`/admin/assessments/${assessment.id}/preview`}
-                    className="inline-flex items-center gap-1 rounded-md border px-2.5 py-1.5 text-xs font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  >
-                    <Eye className="h-3.5 w-3.5" aria-hidden="true" />
-                    Preview
-                  </Link>
+                <div className="flex justify-end">
+                  <AdminTableActionsMenu
+                    label={assessment.title}
+                    items={[
+                      {
+                        type: "link",
+                        label: "Edit",
+                        href: `/admin/assessments/${assessment.id}`,
+                        icon: (
+                          <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
+                        ),
+                      },
+                      {
+                        type: "link",
+                        label: "Preview",
+                        href: `/admin/assessments/${assessment.id}/preview`,
+                        icon: (
+                          <Eye className="h-3.5 w-3.5" aria-hidden="true" />
+                        ),
+                      },
+                    ]}
+                  />
                 </div>
               </td>
             </tr>

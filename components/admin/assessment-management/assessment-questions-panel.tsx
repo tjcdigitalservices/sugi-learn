@@ -28,8 +28,8 @@ export function AssessmentQuestionsPanel({
       <div>
         <h2 className="text-lg font-semibold">Questions</h2>
         <p className="text-sm text-muted-foreground">
-          Manage ordered assessment questions, answer options, and review status.
-          Question count comes from the database — not a fixed total.
+          Manage assessment questions, answer options, and review status.
+          Questions follow their numbered order (1, 2, 3…).
         </p>
       </div>
 
@@ -47,8 +47,6 @@ export function AssessmentQuestionsPanel({
               assessmentId={assessmentId}
               question={question}
               questionIndex={index}
-              questionCount={sortedQuestions.length}
-              allQuestionIds={sortedQuestions.map((item) => item.id)}
               chapters={chapters}
               onChanged={onChanged}
             />
