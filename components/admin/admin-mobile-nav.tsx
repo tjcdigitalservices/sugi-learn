@@ -61,7 +61,8 @@ export function AdminMobileNav({
         aria-label="Admin navigation"
         aria-hidden={!open}
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-72 max-w-[85vw] flex-col bg-sl-navy text-white shadow-lg transition-transform duration-200 ease-out lg:hidden",
+          "fixed inset-y-0 left-0 z-50 flex w-72 max-w-[min(18rem,85vw)] flex-col bg-sl-navy text-white shadow-lg transition-transform duration-200 ease-out lg:hidden",
+          "pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]",
           open ? "translate-x-0" : "-translate-x-full",
         )}
       >

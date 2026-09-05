@@ -24,8 +24,8 @@ export interface BuiltChapterContent {
 }
 
 /**
- * Default chapter structure: Animation / Video + Characters.
- * Additional section kinds can be added later in admin.
+ * Default chapter structure: Animation / Video.
+ * Characters and other kinds can be added later in admin.
  */
 export function buildChapterContent(
   definition: ChapterContentDefinition,
@@ -45,14 +45,6 @@ export function buildChapterContent(
       sortOrder: 0,
       reviewStatus: DEFAULT_SECTION_STATUS,
       mediaAssetId: "",
-    },
-    {
-      id: `${definition.id}-section-characters`,
-      kind: "characters",
-      title: "Characters in This Chapter",
-      sortOrder: 1,
-      reviewStatus: DEFAULT_SECTION_STATUS,
-      characterIds: characterOrder,
     },
   ];
 

@@ -92,7 +92,7 @@ export function LoginForm({
   return (
     <HeritageAuthCard>
       <div className="space-y-2 text-center">
-        <h1 className="font-display text-3xl font-semibold tracking-tight text-white drop-shadow-sm">
+        <h1 className="font-display text-2xl font-semibold tracking-tight text-white drop-shadow-sm sm:text-3xl">
           {title}
         </h1>
         <p className="text-sm leading-relaxed text-white/85">{description}</p>

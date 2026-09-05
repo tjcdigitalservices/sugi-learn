@@ -195,19 +195,15 @@ export function AssessmentQuestionPanel({
 
           <div className="flex flex-wrap items-center gap-2">
             {isLast ? (
-              previewMode ? (
-                <span className="text-sm text-sl-ink-muted">End of preview</span>
-              ) : (
-                <button
-                  type="button"
-                  onClick={onSubmit}
-                  disabled={isSubmitting}
-                  className="sl-btn-gold"
-                >
-                  {isSubmitting ? "Submitting…" : "Submit"}
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </button>
-              )
+              <button
+                type="button"
+                onClick={onSubmit}
+                disabled={isSubmitting}
+                className="sl-btn-gold"
+              >
+                {isSubmitting ? "Submitting…" : "Submit"}
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </button>
             ) : (
               <button
                 type="button"

@@ -58,7 +58,7 @@ export function CreateChapterPanel() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className={`${buttonPrimaryClassName} shrink-0`}
+        className={`${buttonPrimaryClassName} w-full shrink-0 sm:w-auto`}
         aria-expanded={false}
       >
         <Plus className="h-4 w-4" aria-hidden="true" />

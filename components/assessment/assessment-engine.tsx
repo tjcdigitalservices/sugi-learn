@@ -6,6 +6,7 @@ import {
   submitPreAssessmentAction,
   type AssessmentActionResult,
 } from "@/lib/assessment/actions";
+import { buildAttemptQuestionReviews } from "@/lib/assessment/attempt-review";
 import {
   ASSESSMENT_LANGUAGE_STORAGE_KEY,
   type AssessmentLanguage,
@@ -16,10 +17,14 @@ import type {
   AssessmentQuestion,
   AssessmentSubmissionResult,
   LearnerAssessmentQuestion,
+  LearnerResultsDashboardView,
 } from "@/types/assessment";
 
 import { AssessmentCompletion } from "@/components/assessment/assessment-completion";
 import { AssessmentQuestionPanel } from "@/components/assessment/assessment-question-panel";
+import { LearningResultsDashboard } from "@/components/learner/results/learning-results-dashboard";
+import { QuestionReviewPanel } from "@/components/learner/results/question-review-panel";
+import { HeritageWave } from "@/components/brand/heritage-wave";
 
 interface AssessmentEngineProps {
   assessment: Assessment;
@@ -34,6 +39,8 @@ interface AssessmentEngineProps {
   ) => Promise<AssessmentActionResult<AssessmentSubmissionResult>>;
 }
 
+type PreviewStage = "questions" | "completion" | "results" | "next" | "review";
+
 function readStoredLanguage(): AssessmentLanguage {
   if (typeof window === "undefined") {
     return "en";
@@ -44,6 +51,68 @@ function readStoredLanguage(): AssessmentLanguage {
   } catch {
     return "en";
   }
+}
+
+function gradePreviewAnswers(
+  assessment: Assessment,
+  questions: AssessmentQuestion[],
+  answers: Record<string, string>,
+): AssessmentSubmissionResult {
+  let correctCount = 0;
+  for (const question of questions) {
+    if (answers[question.id] === question.correctOptionId) {
+      correctCount += 1;
+    }
+  }
+  const totalQuestions = questions.length;
+  const score =
+    totalQuestions === 0
+      ? 0
+      : Math.round((correctCount / totalQuestions) * 100);
+
+  return {
+    attemptId: "preview",
+    assessmentType: assessment.type,
+    score,
+    totalQuestions,
+    correctCount,
+    completedAt: new Date().toISOString(),
+  };
+}
+
+function buildPreviewResultsView(
+  assessment: Assessment,
+  questions: AssessmentQuestion[],
+  answers: Record<string, string>,
+  result: AssessmentSubmissionResult,
+): LearnerResultsDashboardView {
+  const reviewAnswers = Object.entries(answers).map(
+    ([questionId, selectedOptionId]) => ({
+      questionId,
+      selectedOptionId,
+    }),
+  );
+  const reviews = buildAttemptQuestionReviews(questions, reviewAnswers);
+  const incorrectReviews = reviews.filter((item) => !item.isCorrect);
+
+  return {
+    attemptId: "preview",
+    learnerDisplayName: "Preview learner",
+    completedAt: result.completedAt,
+    pre: null,
+    post: {
+      correctCount: result.correctCount,
+      total: result.totalQuestions,
+      score: result.score,
+    },
+    learningGainPercentagePoints: null,
+    questionOutcomes: reviews.map((item, index) => ({
+      index: index + 1,
+      questionId: item.questionId,
+      isCorrect: item.isCorrect,
+    })),
+    incorrectReviews,
+  };
 }
 
 export function AssessmentEngine({
@@ -85,6 +154,7 @@ export function AssessmentEngine({
   const [validationError, setValidationError] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, startSubmitTransition] = useTransition();
+  const [previewStage, setPreviewStage] = useState<PreviewStage>("questions");
   const [result, setResult] = useState<AssessmentSubmissionResult | null>(
     initialCompletedAttempt
       ? {
@@ -93,7 +163,8 @@ export function AssessmentEngine({
           score: initialCompletedAttempt.score ?? 0,
           totalQuestions: initialCompletedAttempt.totalQuestions,
           correctCount: initialCompletedAttempt.correctCount ?? 0,
-          completedAt: initialCompletedAttempt.completedAt ?? new Date().toISOString(),
+          completedAt:
+            initialCompletedAttempt.completedAt ?? new Date().toISOString(),
         }
       : null,
   );
@@ -138,6 +209,15 @@ export function AssessmentEngine({
     setCurrentIndex((value) => Math.min(totalQuestions - 1, value + 1));
   }
 
+  function restartPreview() {
+    setAnswers({});
+    setCurrentIndex(0);
+    setResult(null);
+    setValidationError(null);
+    setSubmitError(null);
+    setPreviewStage("questions");
+  }
+
   function handleSubmit() {
     if (!currentQuestion) {
       return;
@@ -159,6 +239,13 @@ export function AssessmentEngine({
     setSubmitError(null);
 
     if (isPreview) {
+      const previewResult = gradePreviewAnswers(
+        assessment,
+        previewQuestions,
+        answers,
+      );
+      setResult(previewResult);
+      setPreviewStage("completion");
       return;
     }
 
@@ -170,6 +257,77 @@ export function AssessmentEngine({
       }
       setResult(actionResult.data);
     });
+  }
+
+  const previewResultsView = useMemo(() => {
+    if (!isPreview || !result) {
+      return null;
+    }
+    return buildPreviewResultsView(
+      assessment,
+      previewQuestions,
+      answers,
+      result,
+    );
+  }, [answers, assessment, isPreview, previewQuestions, result]);
+
+  if (isPreview && result && previewStage === "completion") {
+    return (
+      <AssessmentCompletion
+        assessmentTitle={assessment.title}
+        result={result}
+        continueHref={continueHref}
+        continueLabel={continueLabel}
+        onContinue={() =>
+          setPreviewStage(assessment.type === "post" ? "results" : "next")
+        }
+        onSecondaryAction={restartPreview}
+        secondaryLabel="Restart preview"
+      />
+    );
+  }
+
+  if (isPreview && result && previewStage === "results" && previewResultsView) {
+    return (
+      <LearningResultsDashboard
+        view={previewResultsView}
+        hideReportActions
+        onReviewAnswers={() => setPreviewStage("review")}
+      />
+    );
+  }
+
+  if (isPreview && result && previewStage === "review" && previewResultsView) {
+    return (
+      <QuestionReviewPanel
+        attemptId="preview"
+        incorrectReviews={previewResultsView.incorrectReviews}
+        onBackToResults={() => setPreviewStage("results")}
+      />
+    );
+  }
+
+  if (isPreview && result && previewStage === "next") {
+    return (
+      <section className="sl-card relative mx-auto w-full max-w-2xl overflow-hidden">
+        <div className="space-y-5 px-4 py-6 sm:space-y-6 sm:px-8 sm:py-8">
+          <header className="space-y-1.5 sm:space-y-2">
+            <h1 className="font-display text-2xl font-semibold tracking-tight text-sl-navy sm:text-3xl">
+              Next for learners
+            </h1>
+            <p className="text-sm text-sl-ink-muted">
+              After the pre-assessment, learners continue to the chapter journey
+              at <span className="font-medium text-sl-navy">/learn/chapters</span>
+              . Progress is not saved in admin preview.
+            </p>
+          </header>
+          <button type="button" onClick={restartPreview} className="sl-btn-gold">
+            Restart preview
+          </button>
+        </div>
+        <HeritageWave className="h-12" />
+      </section>
+    );
   }
 
   if (result && !isPreview) {

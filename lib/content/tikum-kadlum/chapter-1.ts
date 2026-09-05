@@ -97,11 +97,6 @@ export const TIKUM_KADLUM_SECTIONS = [
     title: "Animation / Video",
     reviewStatus: "draft" as const,
   },
-  {
-    kind: "characters" as const,
-    title: "Characters in This Chapter",
-    reviewStatus: "approved" as const,
-  },
 ] as const;
 
 /** Illustration opportunities — scene candidates only; no assets in M10. */

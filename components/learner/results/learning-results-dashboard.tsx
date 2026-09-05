@@ -12,10 +12,16 @@ import type { LearnerResultsDashboardView } from "@/types/assessment";
 
 interface LearningResultsDashboardProps {
   view: LearnerResultsDashboardView;
+  /** When set, Review uses a button callback instead of navigating. */
+  onReviewAnswers?: () => void;
+  /** Hide PDF/report actions (e.g. admin preview). */
+  hideReportActions?: boolean;
 }
 
 export function LearningResultsDashboard({
   view,
+  onReviewAnswers,
+  hideReportActions = false,
 }: LearningResultsDashboardProps) {
   const hasIncorrect = view.incorrectReviews.length > 0;
 
@@ -32,13 +38,24 @@ export function LearningResultsDashboard({
 
         <div className="space-y-3">
           <div className="flex justify-end">
-            <Link
-              href={`/learn/results/${view.attemptId}/review`}
-              className="sl-btn-gold w-full sm:w-auto"
-            >
-              Review Your Answers
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Link>
+            {onReviewAnswers ? (
+              <button
+                type="button"
+                onClick={onReviewAnswers}
+                className="sl-btn-gold w-full sm:w-auto"
+              >
+                Review Your Answers
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </button>
+            ) : (
+              <Link
+                href={`/learn/results/${view.attemptId}/review`}
+                className="sl-btn-gold w-full sm:w-auto"
+              >
+                Review Your Answers
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            )}
           </div>
           {!hasIncorrect ? (
             <p className="text-right text-xs text-sl-ink-muted">
@@ -46,7 +63,7 @@ export function LearningResultsDashboard({
               celebration summary.
             </p>
           ) : null}
-          <ResultsReportActions view={view} />
+          {hideReportActions ? null : <ResultsReportActions view={view} />}
         </div>
 
         <HeritageWave className="!h-12 opacity-30" tone="gold" />

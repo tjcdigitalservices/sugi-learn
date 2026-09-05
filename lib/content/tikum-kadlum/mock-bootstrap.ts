@@ -48,32 +48,18 @@ export function buildTikumKadlumMockBootstrap(): TikumKadlumMockBootstrap {
   }));
 
   const sections: ChapterSection[] = TIKUM_KADLUM_SECTIONS.map((section, index) => {
-    const base = {
-      id: `tk-section-${index + 1}`,
-      kind: section.kind,
-      title: section.title,
-      sortOrder: index,
-      reviewStatus: section.reviewStatus,
-    };
-
-    switch (section.kind) {
-      case "characters":
-        return {
-          ...base,
-          kind: "characters" as const,
-          characterIds: characters.map((character) => character.id),
-        };
-      case "animation":
-        return {
-          ...base,
-          kind: "animation" as const,
-          mediaAssetId: "",
-        };
-      default: {
-        const exhaustive: never = section;
-        throw new Error(`Unsupported section: ${exhaustive}`);
-      }
+    if (section.kind === "animation") {
+      return {
+        id: `tk-section-${index + 1}`,
+        kind: "animation" as const,
+        title: section.title,
+        sortOrder: index,
+        reviewStatus: section.reviewStatus,
+        mediaAssetId: "",
+      };
     }
+
+    throw new Error(`Unsupported Tikum Kadlum section kind: ${section.kind}`);
   });
 
   return {

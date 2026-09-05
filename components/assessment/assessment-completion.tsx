@@ -8,12 +8,20 @@ interface AssessmentCompletionProps {
   result: AssessmentSubmissionResult;
   continueHref: string;
   continueLabel: string;
+  /** When set, primary continue is a button (preview) instead of a Link. */
+  onContinue?: () => void;
+  /** When set, replaces the secondary “Back to home” link. */
+  onSecondaryAction?: () => void;
+  secondaryLabel?: string;
 }
 
 export function AssessmentCompletion({
   result,
   continueHref,
   continueLabel,
+  onContinue,
+  onSecondaryAction,
+  secondaryLabel = "Back to home",
 }: AssessmentCompletionProps) {
   return (
     <section
@@ -53,18 +61,38 @@ export function AssessmentCompletion({
         </dl>
 
         <div className="grid grid-cols-2 gap-2 sm:gap-3">
-          <Link
-            href="/learn"
-            className="inline-flex items-center justify-center rounded-full border border-[color:rgba(44,36,22,0.15)] px-3 py-3 text-center text-sm font-medium text-sl-ink transition hover:bg-white sm:px-5"
-          >
-            Back to home
-          </Link>
-          <Link
-            href={continueHref}
-            className="sl-btn-gold justify-center px-3 text-center sm:px-5"
-          >
-            {continueLabel}
-          </Link>
+          {onSecondaryAction ? (
+            <button
+              type="button"
+              onClick={onSecondaryAction}
+              className="inline-flex items-center justify-center rounded-full border border-[color:rgba(44,36,22,0.15)] px-3 py-3 text-center text-sm font-medium text-sl-ink transition hover:bg-white sm:px-5"
+            >
+              {secondaryLabel}
+            </button>
+          ) : (
+            <Link
+              href="/learn"
+              className="inline-flex items-center justify-center rounded-full border border-[color:rgba(44,36,22,0.15)] px-3 py-3 text-center text-sm font-medium text-sl-ink transition hover:bg-white sm:px-5"
+            >
+              Back to home
+            </Link>
+          )}
+          {onContinue ? (
+            <button
+              type="button"
+              onClick={onContinue}
+              className="sl-btn-gold justify-center px-3 text-center sm:px-5"
+            >
+              {continueLabel}
+            </button>
+          ) : (
+            <Link
+              href={continueHref}
+              className="sl-btn-gold justify-center px-3 text-center sm:px-5"
+            >
+              {continueLabel}
+            </Link>
+          )}
         </div>
       </div>
       <HeritageWave className="h-12" />

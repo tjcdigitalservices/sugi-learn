@@ -27,8 +27,6 @@ BEGIN
       INSERT INTO public.characters (id, name, description, review_status) VALUES ('b1020000-0001-4001-8001-000000000004', 'Labaw Donggon', 'Takes Amburukay''s golden pubic hair after enchanting her to sleep; bound to her marriage condition; judged worthy to marry the daughters she raised.', 'draft') ON CONFLICT (id) DO NOTHING;
       INSERT INTO public.chapter_characters (chapter_id, character_id, sort_order) SELECT ch_id, 'b1020000-0001-4001-8001-000000000004', 3 WHERE NOT EXISTS (SELECT 1 FROM public.chapter_characters WHERE chapter_id = ch_id AND character_id = 'b1020000-0001-4001-8001-000000000004');
       INSERT INTO public.chapter_sections (id, chapter_id, kind, title, sort_order, review_status, body_text, completion_message) VALUES ('a1020000-0001-4001-8001-000000000001', ch_id, 'animation', 'Animation / Video', 0, 'draft', NULL, NULL) ON CONFLICT (id) DO NOTHING;
-      INSERT INTO public.chapter_sections (id, chapter_id, kind, title, sort_order, review_status, body_text, completion_message) VALUES ('a1020000-0001-4001-8001-000000000002', ch_id, 'characters', 'Characters in This Chapter', 1, 'draft', NULL, NULL) ON CONFLICT (id) DO NOTHING;
-      INSERT INTO public.section_characters (section_id, character_id, sort_order) SELECT 'a1020000-0001-4001-8001-000000000002', character_id, sort_order FROM public.chapter_characters WHERE chapter_id = ch_id ON CONFLICT DO NOTHING;
     END IF;
   END IF;
 
@@ -51,8 +49,6 @@ BEGIN
       INSERT INTO public.characters (id, name, description, review_status) VALUES ('b1030000-0001-4001-8001-000000000004', 'Paglambuhan', 'Connected to Sinagnayan; has taken an heirloom sailboat belonging to Matan-ayon''s parents.', 'draft') ON CONFLICT (id) DO NOTHING;
       INSERT INTO public.chapter_characters (chapter_id, character_id, sort_order) SELECT ch_id, 'b1030000-0001-4001-8001-000000000004', 3 WHERE NOT EXISTS (SELECT 1 FROM public.chapter_characters WHERE chapter_id = ch_id AND character_id = 'b1030000-0001-4001-8001-000000000004');
       INSERT INTO public.chapter_sections (id, chapter_id, kind, title, sort_order, review_status, body_text, completion_message) VALUES ('a1030000-0001-4001-8001-000000000001', ch_id, 'animation', 'Animation / Video', 0, 'draft', NULL, NULL) ON CONFLICT (id) DO NOTHING;
-      INSERT INTO public.chapter_sections (id, chapter_id, kind, title, sort_order, review_status, body_text, completion_message) VALUES ('a1030000-0001-4001-8001-000000000002', ch_id, 'characters', 'Characters in This Chapter', 1, 'draft', NULL, NULL) ON CONFLICT (id) DO NOTHING;
-      INSERT INTO public.section_characters (section_id, character_id, sort_order) SELECT 'a1030000-0001-4001-8001-000000000002', character_id, sort_order FROM public.chapter_characters WHERE chapter_id = ch_id ON CONFLICT DO NOTHING;
     END IF;
   END IF;
 
@@ -79,8 +75,6 @@ BEGIN
       INSERT INTO public.characters (id, name, description, review_status) VALUES ('b1040000-0001-4001-8001-000000000006', 'Laon Sina', 'Intervenes to end the conflict when force alone cannot restore order.', 'draft') ON CONFLICT (id) DO NOTHING;
       INSERT INTO public.chapter_characters (chapter_id, character_id, sort_order) SELECT ch_id, 'b1040000-0001-4001-8001-000000000006', 5 WHERE NOT EXISTS (SELECT 1 FROM public.chapter_characters WHERE chapter_id = ch_id AND character_id = 'b1040000-0001-4001-8001-000000000006');
       INSERT INTO public.chapter_sections (id, chapter_id, kind, title, sort_order, review_status, body_text, completion_message) VALUES ('a1040000-0001-4001-8001-000000000001', ch_id, 'animation', 'Animation / Video', 0, 'draft', NULL, NULL) ON CONFLICT (id) DO NOTHING;
-      INSERT INTO public.chapter_sections (id, chapter_id, kind, title, sort_order, review_status, body_text, completion_message) VALUES ('a1040000-0001-4001-8001-000000000002', ch_id, 'characters', 'Characters in This Chapter', 1, 'draft', NULL, NULL) ON CONFLICT (id) DO NOTHING;
-      INSERT INTO public.section_characters (section_id, character_id, sort_order) SELECT 'a1040000-0001-4001-8001-000000000002', character_id, sort_order FROM public.chapter_characters WHERE chapter_id = ch_id ON CONFLICT DO NOTHING;
     END IF;
   END IF;
 
@@ -111,8 +105,6 @@ BEGIN
       INSERT INTO public.characters (id, name, description, review_status) VALUES ('b1050000-0001-4001-8001-000000000008', 'Laon Sina', 'Sister of Luyong Kabig (named in source as her relation).', 'draft') ON CONFLICT (id) DO NOTHING;
       INSERT INTO public.chapter_characters (chapter_id, character_id, sort_order) SELECT ch_id, 'b1050000-0001-4001-8001-000000000008', 7 WHERE NOT EXISTS (SELECT 1 FROM public.chapter_characters WHERE chapter_id = ch_id AND character_id = 'b1050000-0001-4001-8001-000000000008');
       INSERT INTO public.chapter_sections (id, chapter_id, kind, title, sort_order, review_status, body_text, completion_message) VALUES ('a1050000-0001-4001-8001-000000000001', ch_id, 'animation', 'Animation / Video', 0, 'draft', NULL, NULL) ON CONFLICT (id) DO NOTHING;
-      INSERT INTO public.chapter_sections (id, chapter_id, kind, title, sort_order, review_status, body_text, completion_message) VALUES ('a1050000-0001-4001-8001-000000000002', ch_id, 'characters', 'Characters in This Chapter', 1, 'draft', NULL, NULL) ON CONFLICT (id) DO NOTHING;
-      INSERT INTO public.section_characters (section_id, character_id, sort_order) SELECT 'a1050000-0001-4001-8001-000000000002', character_id, sort_order FROM public.chapter_characters WHERE chapter_id = ch_id ON CONFLICT DO NOTHING;
     END IF;
   END IF;
 
@@ -139,8 +131,6 @@ BEGIN
       INSERT INTO public.characters (id, name, description, review_status) VALUES ('b1060000-0001-4001-8001-000000000006', 'Laon Sina', 'Restores Labaw Donggon and mediates the dispute.', 'draft') ON CONFLICT (id) DO NOTHING;
       INSERT INTO public.chapter_characters (chapter_id, character_id, sort_order) SELECT ch_id, 'b1060000-0001-4001-8001-000000000006', 5 WHERE NOT EXISTS (SELECT 1 FROM public.chapter_characters WHERE chapter_id = ch_id AND character_id = 'b1060000-0001-4001-8001-000000000006');
       INSERT INTO public.chapter_sections (id, chapter_id, kind, title, sort_order, review_status, body_text, completion_message) VALUES ('a1060000-0001-4001-8001-000000000001', ch_id, 'animation', 'Animation / Video', 0, 'draft', NULL, NULL) ON CONFLICT (id) DO NOTHING;
-      INSERT INTO public.chapter_sections (id, chapter_id, kind, title, sort_order, review_status, body_text, completion_message) VALUES ('a1060000-0001-4001-8001-000000000002', ch_id, 'characters', 'Characters in This Chapter', 1, 'draft', NULL, NULL) ON CONFLICT (id) DO NOTHING;
-      INSERT INTO public.section_characters (section_id, character_id, sort_order) SELECT 'a1060000-0001-4001-8001-000000000002', character_id, sort_order FROM public.chapter_characters WHERE chapter_id = ch_id ON CONFLICT DO NOTHING;
     END IF;
   END IF;
 
@@ -169,8 +159,6 @@ BEGIN
       INSERT INTO public.characters (id, name, description, review_status) VALUES ('b1070000-0001-4001-8001-000000000007', 'Minayunmon', 'Sinagnayan''s mother; guards the lion containing the eggshell.', 'draft') ON CONFLICT (id) DO NOTHING;
       INSERT INTO public.chapter_characters (chapter_id, character_id, sort_order) SELECT ch_id, 'b1070000-0001-4001-8001-000000000007', 6 WHERE NOT EXISTS (SELECT 1 FROM public.chapter_characters WHERE chapter_id = ch_id AND character_id = 'b1070000-0001-4001-8001-000000000007');
       INSERT INTO public.chapter_sections (id, chapter_id, kind, title, sort_order, review_status, body_text, completion_message) VALUES ('a1070000-0001-4001-8001-000000000001', ch_id, 'animation', 'Animation / Video', 0, 'draft', NULL, NULL) ON CONFLICT (id) DO NOTHING;
-      INSERT INTO public.chapter_sections (id, chapter_id, kind, title, sort_order, review_status, body_text, completion_message) VALUES ('a1070000-0001-4001-8001-000000000002', ch_id, 'characters', 'Characters in This Chapter', 1, 'draft', NULL, NULL) ON CONFLICT (id) DO NOTHING;
-      INSERT INTO public.section_characters (section_id, character_id, sort_order) SELECT 'a1070000-0001-4001-8001-000000000002', character_id, sort_order FROM public.chapter_characters WHERE chapter_id = ch_id ON CONFLICT DO NOTHING;
     END IF;
   END IF;
 
@@ -189,8 +177,6 @@ BEGIN
       INSERT INTO public.characters (id, name, description, review_status) VALUES ('b1080000-0001-4001-8001-000000000002', 'Nagmalitong Yawa (Mali)', 'Courted by Humadapnon; disguises herself, performs ritual and magical actions, rescues Humadapnon, and makes strategic decisions.', 'draft') ON CONFLICT (id) DO NOTHING;
       INSERT INTO public.chapter_characters (chapter_id, character_id, sort_order) SELECT ch_id, 'b1080000-0001-4001-8001-000000000002', 1 WHERE NOT EXISTS (SELECT 1 FROM public.chapter_characters WHERE chapter_id = ch_id AND character_id = 'b1080000-0001-4001-8001-000000000002');
       INSERT INTO public.chapter_sections (id, chapter_id, kind, title, sort_order, review_status, body_text, completion_message) VALUES ('a1080000-0001-4001-8001-000000000001', ch_id, 'animation', 'Animation / Video', 0, 'draft', NULL, NULL) ON CONFLICT (id) DO NOTHING;
-      INSERT INTO public.chapter_sections (id, chapter_id, kind, title, sort_order, review_status, body_text, completion_message) VALUES ('a1080000-0001-4001-8001-000000000002', ch_id, 'characters', 'Characters in This Chapter', 1, 'draft', NULL, NULL) ON CONFLICT (id) DO NOTHING;
-      INSERT INTO public.section_characters (section_id, character_id, sort_order) SELECT 'a1080000-0001-4001-8001-000000000002', character_id, sort_order FROM public.chapter_characters WHERE chapter_id = ch_id ON CONFLICT DO NOTHING;
     END IF;
   END IF;
 
@@ -215,8 +201,6 @@ BEGIN
       INSERT INTO public.characters (id, name, description, review_status) VALUES ('b1090000-0001-4001-8001-000000000005', 'Taghuy', 'Attempts to reconcile Humadapnon and Mali.', 'draft') ON CONFLICT (id) DO NOTHING;
       INSERT INTO public.chapter_characters (chapter_id, character_id, sort_order) SELECT ch_id, 'b1090000-0001-4001-8001-000000000005', 4 WHERE NOT EXISTS (SELECT 1 FROM public.chapter_characters WHERE chapter_id = ch_id AND character_id = 'b1090000-0001-4001-8001-000000000005');
       INSERT INTO public.chapter_sections (id, chapter_id, kind, title, sort_order, review_status, body_text, completion_message) VALUES ('a1090000-0001-4001-8001-000000000001', ch_id, 'animation', 'Animation / Video', 0, 'draft', NULL, NULL) ON CONFLICT (id) DO NOTHING;
-      INSERT INTO public.chapter_sections (id, chapter_id, kind, title, sort_order, review_status, body_text, completion_message) VALUES ('a1090000-0001-4001-8001-000000000002', ch_id, 'characters', 'Characters in This Chapter', 1, 'draft', NULL, NULL) ON CONFLICT (id) DO NOTHING;
-      INSERT INTO public.section_characters (section_id, character_id, sort_order) SELECT 'a1090000-0001-4001-8001-000000000002', character_id, sort_order FROM public.chapter_characters WHERE chapter_id = ch_id ON CONFLICT DO NOTHING;
     END IF;
   END IF;
 
@@ -237,8 +221,6 @@ BEGIN
       INSERT INTO public.characters (id, name, description, review_status) VALUES ('b1100000-0001-4001-8001-000000000003', 'Labaw Donggon', 'Initial misunderstanding arises with Humadapnon.', 'draft') ON CONFLICT (id) DO NOTHING;
       INSERT INTO public.chapter_characters (chapter_id, character_id, sort_order) SELECT ch_id, 'b1100000-0001-4001-8001-000000000003', 2 WHERE NOT EXISTS (SELECT 1 FROM public.chapter_characters WHERE chapter_id = ch_id AND character_id = 'b1100000-0001-4001-8001-000000000003');
       INSERT INTO public.chapter_sections (id, chapter_id, kind, title, sort_order, review_status, body_text, completion_message) VALUES ('a1100000-0001-4001-8001-000000000001', ch_id, 'animation', 'Animation / Video', 0, 'draft', NULL, NULL) ON CONFLICT (id) DO NOTHING;
-      INSERT INTO public.chapter_sections (id, chapter_id, kind, title, sort_order, review_status, body_text, completion_message) VALUES ('a1100000-0001-4001-8001-000000000002', ch_id, 'characters', 'Characters in This Chapter', 1, 'draft', NULL, NULL) ON CONFLICT (id) DO NOTHING;
-      INSERT INTO public.section_characters (section_id, character_id, sort_order) SELECT 'a1100000-0001-4001-8001-000000000002', character_id, sort_order FROM public.chapter_characters WHERE chapter_id = ch_id ON CONFLICT DO NOTHING;
     END IF;
   END IF;
 
@@ -265,8 +247,6 @@ BEGIN
       INSERT INTO public.characters (id, name, description, review_status) VALUES ('b1110000-0001-4001-8001-000000000006', 'Sumagulong', 'Persuades Mali''s relatives to accept the match; wedding feast begins.', 'draft') ON CONFLICT (id) DO NOTHING;
       INSERT INTO public.chapter_characters (chapter_id, character_id, sort_order) SELECT ch_id, 'b1110000-0001-4001-8001-000000000006', 5 WHERE NOT EXISTS (SELECT 1 FROM public.chapter_characters WHERE chapter_id = ch_id AND character_id = 'b1110000-0001-4001-8001-000000000006');
       INSERT INTO public.chapter_sections (id, chapter_id, kind, title, sort_order, review_status, body_text, completion_message) VALUES ('a1110000-0001-4001-8001-000000000001', ch_id, 'animation', 'Animation / Video', 0, 'draft', NULL, NULL) ON CONFLICT (id) DO NOTHING;
-      INSERT INTO public.chapter_sections (id, chapter_id, kind, title, sort_order, review_status, body_text, completion_message) VALUES ('a1110000-0001-4001-8001-000000000002', ch_id, 'characters', 'Characters in This Chapter', 1, 'draft', NULL, NULL) ON CONFLICT (id) DO NOTHING;
-      INSERT INTO public.section_characters (section_id, character_id, sort_order) SELECT 'a1110000-0001-4001-8001-000000000002', character_id, sort_order FROM public.chapter_characters WHERE chapter_id = ch_id ON CONFLICT DO NOTHING;
     END IF;
   END IF;
 
@@ -287,8 +267,6 @@ BEGIN
       INSERT INTO public.characters (id, name, description, review_status) VALUES ('b1120000-0001-4001-8001-000000000003', 'Laon Sina', 'Advises Humadapnon to plant an alayaw tree.', 'draft') ON CONFLICT (id) DO NOTHING;
       INSERT INTO public.chapter_characters (chapter_id, character_id, sort_order) SELECT ch_id, 'b1120000-0001-4001-8001-000000000003', 2 WHERE NOT EXISTS (SELECT 1 FROM public.chapter_characters WHERE chapter_id = ch_id AND character_id = 'b1120000-0001-4001-8001-000000000003');
       INSERT INTO public.chapter_sections (id, chapter_id, kind, title, sort_order, review_status, body_text, completion_message) VALUES ('a1120000-0001-4001-8001-000000000001', ch_id, 'animation', 'Animation / Video', 0, 'draft', NULL, NULL) ON CONFLICT (id) DO NOTHING;
-      INSERT INTO public.chapter_sections (id, chapter_id, kind, title, sort_order, review_status, body_text, completion_message) VALUES ('a1120000-0001-4001-8001-000000000002', ch_id, 'characters', 'Characters in This Chapter', 1, 'draft', NULL, NULL) ON CONFLICT (id) DO NOTHING;
-      INSERT INTO public.section_characters (section_id, character_id, sort_order) SELECT 'a1120000-0001-4001-8001-000000000002', character_id, sort_order FROM public.chapter_characters WHERE chapter_id = ch_id ON CONFLICT DO NOTHING;
     END IF;
   END IF;
 
@@ -311,8 +289,6 @@ BEGIN
       INSERT INTO public.characters (id, name, description, review_status) VALUES ('b1130000-0001-4001-8001-000000000004', 'Humadapnon', 'Prevents Mali from attending the ceremony; courting another secluded woman.', 'draft') ON CONFLICT (id) DO NOTHING;
       INSERT INTO public.chapter_characters (chapter_id, character_id, sort_order) SELECT ch_id, 'b1130000-0001-4001-8001-000000000004', 3 WHERE NOT EXISTS (SELECT 1 FROM public.chapter_characters WHERE chapter_id = ch_id AND character_id = 'b1130000-0001-4001-8001-000000000004');
       INSERT INTO public.chapter_sections (id, chapter_id, kind, title, sort_order, review_status, body_text, completion_message) VALUES ('a1130000-0001-4001-8001-000000000001', ch_id, 'animation', 'Animation / Video', 0, 'draft', NULL, NULL) ON CONFLICT (id) DO NOTHING;
-      INSERT INTO public.chapter_sections (id, chapter_id, kind, title, sort_order, review_status, body_text, completion_message) VALUES ('a1130000-0001-4001-8001-000000000002', ch_id, 'characters', 'Characters in This Chapter', 1, 'draft', NULL, NULL) ON CONFLICT (id) DO NOTHING;
-      INSERT INTO public.section_characters (section_id, character_id, sort_order) SELECT 'a1130000-0001-4001-8001-000000000002', character_id, sort_order FROM public.chapter_characters WHERE chapter_id = ch_id ON CONFLICT DO NOTHING;
     END IF;
   END IF;
 

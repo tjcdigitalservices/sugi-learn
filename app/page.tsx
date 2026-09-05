@@ -9,18 +9,18 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-sl-cream font-body text-sl-ink">
       <header className="relative z-20 bg-sl-navy">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-2.5 sm:px-6">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2.5 sm:gap-4 sm:px-6">
           <SugidanonMark light showTagline={false} />
-          <div className="flex items-center gap-5 sm:gap-6">
+          <div className="flex shrink-0 items-center gap-3 sm:gap-6">
             <a
               href="#about"
-              className="text-sm text-white/85 transition hover:text-white"
+              className="hidden text-sm text-white/85 transition hover:text-white sm:inline"
             >
               About
             </a>
             <Link
               href="/login"
-              className="inline-flex items-center gap-2 rounded-full border border-sl-gold px-4 py-2 text-sm font-medium text-sl-gold transition hover:bg-sl-gold/10"
+              className="inline-flex min-h-10 items-center gap-2 rounded-full border border-sl-gold px-3 py-2 text-sm font-medium text-sl-gold transition hover:bg-sl-gold/10 sm:px-4"
             >
               Sign in
             </Link>

@@ -83,7 +83,7 @@ export function MediaLibrary({ chapters }: MediaLibraryProps) {
         </div>
       ) : null}
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
         <p className="text-sm text-muted-foreground">
           {isLoading
             ? "Loading media library…"
@@ -94,7 +94,7 @@ export function MediaLibrary({ chapters }: MediaLibraryProps) {
             <button
               type="button"
               onClick={() => setShowUpload(false)}
-              className={`${buttonSecondaryClassName} gap-2`}
+              className={`${buttonSecondaryClassName} w-full gap-2 sm:w-auto`}
             >
               <X className="h-4 w-4" aria-hidden="true" />
               Cancel
@@ -103,7 +103,7 @@ export function MediaLibrary({ chapters }: MediaLibraryProps) {
             <button
               type="button"
               onClick={() => setShowUpload(true)}
-              className={buttonPrimaryClassName}
+              className={`${buttonPrimaryClassName} w-full sm:w-auto`}
               aria-expanded={false}
             >
               <Upload className="h-4 w-4" aria-hidden="true" />

@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { ChapterEngine } from "@/components/chapter/chapter-engine";
-import { getChapterForAdmin } from "@/lib/domain/chapter-management";
+import { AssessmentAccessBlockedState } from "@/components/assessment/assessment-access-blocked-state";
+import { LearnerChapterLayout } from "@/components/chapter/learner-chapter-layout";
+import { StorybookTransitionProvider } from "@/components/chapter/storybook/storybook-transition-provider";
+import { getChapterNavigation } from "@/lib/domain/chapter-navigation";
+import { getChapterForEngine } from "@/lib/domain/chapters";
 
 interface AdminChapterPreviewPageProps {
   params: Promise<{ chapterId: string }>;
@@ -15,7 +18,7 @@ export default async function AdminChapterPreviewPage({
 
   let chapter;
   try {
-    chapter = await getChapterForAdmin(chapterId);
+    chapter = await getChapterForEngine(chapterId);
   } catch {
     notFound();
   }
@@ -24,19 +27,44 @@ export default async function AdminChapterPreviewPage({
     notFound();
   }
 
-  const sortedChapter = {
-    ...chapter,
-    sections: [...chapter.sections].sort((a, b) => a.sortOrder - b.sortOrder),
-  };
+  const navigation = await getChapterNavigation(chapterId);
+
+  if (!navigation) {
+    notFound();
+  }
+
+  if (chapter.sections.length === 0) {
+    return (
+      <div className="space-y-6">
+        <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
+          <p className="font-medium">Admin preview</p>
+          <p className="mt-1">
+            Same learner storybook experience — approved content only. Progress
+            is not saved.
+          </p>
+          <Link
+            href={`/admin/chapters/${chapterId}`}
+            className="mt-2 inline-block font-medium underline-offset-4 hover:underline"
+          >
+            Back to chapter editor
+          </Link>
+        </div>
+        <AssessmentAccessBlockedState
+          title="No approved content to preview"
+          description="Learners only see Approved sections. Approve at least one section (and any linked media) to preview this chapter as learners will see it."
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
       <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
         <p className="font-medium">Admin preview</p>
         <p className="mt-1">
-          This preview uses the same Chapter Engine as the learner experience.
-          Draft and unpublished sections are visible here for editorial review;
-          learners only see Approved sections.
+          Same storybook UI learners use. Only Approved sections, learning
+          points, and media are shown. Draft content is hidden. Progress is not
+          saved.
         </p>
         <Link
           href={`/admin/chapters/${chapterId}`}
@@ -46,7 +74,14 @@ export default async function AdminChapterPreviewPage({
         </Link>
       </div>
 
-      <ChapterEngine chapter={sortedChapter} context="preview" />
+      <StorybookTransitionProvider>
+        <LearnerChapterLayout
+          chapter={chapter}
+          navigation={navigation}
+          progressStatus="not_started"
+          previewMode
+        />
+      </StorybookTransitionProvider>
     </div>
   );
 }

@@ -56,8 +56,10 @@ export default async function AdminAssessmentPreviewPage({
       <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
         <p className="font-medium">Admin preview</p>
         <p className="mt-1">
-          This preview uses the same AssessmentEngine as the learner experience.
-          Correct answers are visible here for authorized admins only.
+          This preview uses the same AssessmentEngine as the learner experience,
+          including submit, score, and the next screens. Correct answers are
+          highlighted on questions for admins only. Nothing is saved to learner
+          progress.
         </p>
         <Link
           href={`/admin/assessments/${assessmentId}`}
@@ -72,6 +74,12 @@ export default async function AdminAssessmentPreviewPage({
         questions={[]}
         previewQuestions={questions}
         mode="preview"
+        continueHref={
+          assessment.type === "post" ? "/learn/results" : "/learn/chapters"
+        }
+        continueLabel={
+          assessment.type === "post" ? "View Results" : "View Chapters"
+        }
       />
     </div>
   );

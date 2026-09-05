@@ -2,7 +2,7 @@
 -- Source: docs/sources/Tikum-Kadlum-Sugidanon-Source.docx
 -- Educational summary content — not the full epic text. Final wording: PENDING CLIENT APPROVAL.
 --
--- Default sections: Animation / Video + Characters (additional kinds via admin Add section).
+-- Default sections: Animation / Video (Characters and other kinds via admin Add section).
 --
 -- Run manually after foundation seed:
 --   psql $DATABASE_URL -f supabase/seed-tikum-kadlum-chapter-1.sql
@@ -14,7 +14,6 @@ DECLARE
   ch_id UUID;
   section_count INTEGER;
   sec_anim UUID := 'a1000001-0001-4001-8001-000000000001';
-  sec_chars UUID := 'a1000001-0001-4001-8001-000000000002';
 BEGIN
   SELECT id INTO ch_id FROM public.chapters WHERE slug = 'tikum-kadlum';
   IF ch_id IS NULL THEN
@@ -60,14 +59,7 @@ BEGIN
 
   INSERT INTO public.chapter_sections (id, chapter_id, kind, title, sort_order, review_status, body_text, completion_message)
   VALUES
-    (sec_anim, ch_id, 'animation', 'Animation / Video', 0, 'draft', NULL, NULL),
-    (sec_chars, ch_id, 'characters', 'Characters in This Chapter', 1, 'approved', NULL, NULL);
-
-  INSERT INTO public.section_characters (section_id, character_id, sort_order)
-  SELECT sec_chars, character_id, sort_order
-  FROM public.chapter_characters
-  WHERE chapter_id = ch_id
-  ON CONFLICT DO NOTHING;
+    (sec_anim, ch_id, 'animation', 'Animation / Video', 0, 'draft', NULL, NULL);
 
   RAISE NOTICE 'M10 Tikum Kadlum Chapter 1 seed applied successfully.';
 END $$;

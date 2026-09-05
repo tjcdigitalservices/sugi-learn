@@ -11,25 +11,41 @@ import { cn } from "@/lib/utils";
 interface QuestionReviewPanelProps {
   attemptId: string;
   incorrectReviews: AttemptQuestionReviewItem[];
+  /** When set, Back uses a button callback instead of navigating. */
+  onBackToResults?: () => void;
 }
 
 export function QuestionReviewPanel({
   attemptId,
   incorrectReviews,
+  onBackToResults,
 }: QuestionReviewPanelProps) {
   const [index, setIndex] = useState(0);
   const total = incorrectReviews.length;
 
+  const backControl = onBackToResults ? (
+    <button
+      type="button"
+      onClick={onBackToResults}
+      className="inline-flex items-center gap-2 text-sm font-medium text-sl-ink-muted transition hover:text-sl-navy"
+    >
+      <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+      Back to Results
+    </button>
+  ) : (
+    <Link
+      href={`/learn/results/${attemptId}`}
+      className="inline-flex items-center gap-2 text-sm font-medium text-sl-ink-muted transition hover:text-sl-navy"
+    >
+      <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+      Back to Results
+    </Link>
+  );
+
   if (total === 0) {
     return (
       <div className="mx-auto max-w-2xl space-y-6 py-6">
-        <Link
-          href={`/learn/results/${attemptId}`}
-          className="inline-flex items-center gap-2 text-sm font-medium text-sl-ink-muted transition hover:text-sl-navy"
-        >
-          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-          Back to Results
-        </Link>
+        {backControl}
 
         <div className="sl-card space-y-4 p-8 text-center">
           <span className="mx-auto inline-flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
@@ -41,9 +57,15 @@ export function QuestionReviewPanel({
           <p className="text-sm text-sl-ink-muted">
             There are no incorrect answers to review for this attempt.
           </p>
-          <Link href={`/learn/results/${attemptId}`} className="sl-btn-gold">
-            Back to Results
-          </Link>
+          {onBackToResults ? (
+            <button type="button" onClick={onBackToResults} className="sl-btn-gold">
+              Back to Results
+            </button>
+          ) : (
+            <Link href={`/learn/results/${attemptId}`} className="sl-btn-gold">
+              Back to Results
+            </Link>
+          )}
         </div>
       </div>
     );
@@ -54,13 +76,7 @@ export function QuestionReviewPanel({
   return (
     <div className="mx-auto max-w-2xl space-y-6 pb-10">
       <div className="flex items-center justify-between gap-3">
-        <Link
-          href={`/learn/results/${attemptId}`}
-          className="inline-flex items-center gap-2 text-sm font-medium text-sl-ink-muted transition hover:text-sl-navy"
-        >
-          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-          Back to Results
-        </Link>
+        {backControl}
         <p className="text-sm font-medium text-sl-ink-muted">
           Question {index + 1} of {total}
         </p>
@@ -99,6 +115,17 @@ export function QuestionReviewPanel({
             </p>
           </div>
         </div>
+
+        {item.explanation ? (
+          <div className="rounded-xl border border-[color:rgba(44,36,22,0.12)] bg-[color:rgba(251,246,239,0.65)] px-4 py-3">
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-sl-navy">
+              Explanation
+            </p>
+            <p className="text-sm leading-relaxed text-sl-ink-muted">
+              {item.explanation}
+            </p>
+          </div>
+        ) : null}
 
         <div className="flex items-center justify-between gap-3 pt-2">
           <button

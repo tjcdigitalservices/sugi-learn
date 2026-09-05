@@ -1029,11 +1029,7 @@ export class SupabaseChapterManagementRepository
 
     const defaultSections: CreateSectionInput[] = [
       { kind: "animation", title: "Animation / Video" },
-      {
-        kind: "characters",
-        title: "Characters in This Chapter",
-        characterIds: [],
-      },
+      { kind: "illustration", title: "Chapter Illustration" },
     ];
 
     for (const [index, sectionInput] of defaultSections.entries()) {

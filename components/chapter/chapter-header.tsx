@@ -4,7 +4,7 @@ import type { ChapterNavigation } from "@/lib/domain/chapter-navigation";
 interface ChapterHeaderProps {
   chapter: Chapter;
   navigation?: ChapterNavigation | null;
-  /** When false, summary is omitted (rendered later, e.g. after animation). */
+  /** When false, summary is omitted from the header. */
   showSummary?: boolean;
 }
 

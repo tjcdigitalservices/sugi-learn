@@ -55,7 +55,7 @@ export function ChapterManagementEditor({
           <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
             Chapter {chapter.number}
           </p>
-          <h1 className="text-2xl font-semibold tracking-tight">{chapter.title}</h1>
+          <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">{chapter.title}</h1>
           <div className="flex flex-wrap items-center gap-3 text-sm">
             <ReviewStatusBadge status={chapter.reviewStatus} />
             <span className="text-muted-foreground">
@@ -85,7 +85,7 @@ export function ChapterManagementEditor({
       <div
         role="tablist"
         aria-label="Chapter management sections"
-        className="flex flex-wrap gap-2 border-b pb-2"
+        className="-mx-1 flex gap-2 overflow-x-auto border-b px-1 pb-2"
       >
         {TABS.map((tab) => (
           <button
@@ -96,8 +96,8 @@ export function ChapterManagementEditor({
             onClick={() => setActiveTab(tab.id)}
             className={
               activeTab === tab.id
-                ? "rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground"
-                : "rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                ? "shrink-0 rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground"
+                : "shrink-0 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             }
           >
             {tab.label}

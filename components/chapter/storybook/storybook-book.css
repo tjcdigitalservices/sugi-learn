@@ -1,0 +1,1161 @@
+/* Storybook — shared canonical sizing; chrome is external (cover) or internal (open). */
+
+:root {
+  /* ONE PAGE / CLOSED COVER: 700×786 · OPEN BOOK: 1400×786 */
+  --sb-page-w: 700;
+  --sb-page-h: 786;
+  --sb-page-max-w: 700px;
+  --sb-page-max-h: 786px;
+  --sb-open-max-w: 1400px;
+  --sb-open-max-h: 786px;
+  --sb-page-aspect: calc(var(--sb-page-w) / var(--sb-page-h));
+  --sb-open-aspect: calc((var(--sb-page-w) * 2) / var(--sb-page-h));
+
+  --sb-viewport-chrome: calc(
+    5.5rem + 3.5rem + 6.5rem + env(safe-area-inset-top, 0px) +
+      env(safe-area-inset-bottom, 0px)
+  );
+  /* Fallback only — real budget is recomputed on .sb-book-view (see below). */
+  --sb-book-max-h: min(
+    var(--sb-page-max-h),
+    calc(100vh - var(--sb-viewport-chrome)),
+    calc(100dvh - var(--sb-viewport-chrome))
+  );
+}
+
+/*
+ * IMPORTANT: --sb-book-max-h must be redefined wherever --sb-viewport-chrome
+ * changes. Custom properties resolve on the element that defines them; children
+ * would otherwise inherit a :root value still tied to the large default chrome
+ * (~15.5rem), capping the book near ~1218×684 instead of ~1400×786.
+ */
+.sb-book-view {
+  /* Mobile: header visible */
+  --sb-viewport-chrome: calc(
+    4.75rem + 2.75rem + 4rem + env(safe-area-inset-top, 0px) +
+      env(safe-area-inset-bottom, 0px)
+  );
+  --sb-book-max-h: min(
+    var(--sb-page-max-h),
+    calc(100vh - var(--sb-viewport-chrome)),
+    calc(100dvh - var(--sb-viewport-chrome))
+  );
+}
+
+/* Desktop book view: no header — maximize book toward 1400×786 */
+@media (min-width: 768px) {
+  .sb-book-view {
+    --sb-viewport-chrome: calc(
+      2.75rem + env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px)
+    );
+    --sb-book-max-h: min(
+      var(--sb-page-max-h),
+      calc(100vh - var(--sb-viewport-chrome)),
+      calc(100dvh - var(--sb-viewport-chrome))
+    );
+  }
+}
+
+/* Fill viewport and vertically center the book */
+.sb-chapter-stage {
+  position: relative;
+  display: flex;
+  width: 100%;
+  max-width: none;
+  margin-inline: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .sb-chapter-stage {
+    min-height: 0;
+  }
+}
+
+.sb-chapter-stage-book {
+  display: flex;
+  width: 100%;
+  max-width: calc(var(--sb-open-max-w) + 2rem);
+  margin-inline: auto;
+  min-height: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-block: 0.15rem;
+}
+
+/* Chrome: external (above closed cover) vs internal (inside open frame). */
+.sb-book-shell {
+  position: relative;
+  display: flex;
+  max-width: 100%;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.sb-book-chrome {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+/* Closed cover: outside / above the cover artwork. */
+.sb-book-chrome--external {
+  padding: 0 0.15rem 0.4rem;
+}
+
+/*
+ * Open book: inside the frame, upper corners of the paper.
+ * Below leaf/page-turn overlays (z ~15); above page content.
+ * --sb-chrome-clearance: top inset + link line + small gap for page content.
+ */
+.sb-book-chrome--internal {
+  --sb-chrome-clearance: calc(1.625rem + 1.5rem);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  box-sizing: border-box;
+  padding: 1.625rem 1.625rem 0;
+  pointer-events: none;
+}
+
+.sb-book-chrome--internal > * {
+  pointer-events: auto;
+  min-width: 0;
+}
+
+.sb-book-chrome--internal > :last-child {
+  text-align: right;
+}
+
+/* Paged open: page content starts below the absolute chrome row. */
+.sb-frame:has(.sb-book-chrome--internal) .sb-spread--paged .sb-page--fixed {
+  padding-top: var(--sb-chrome-clearance, 3.25rem);
+}
+
+.sb-book-shell--cover {
+  width: min(
+    50%,
+    var(--sb-page-max-w),
+    calc(var(--sb-book-max-h) * var(--sb-page-w) / var(--sb-page-h))
+  );
+  margin-inline: auto;
+}
+
+.sb-book-shell--paged {
+  width: min(
+    100%,
+    var(--sb-page-max-w),
+    calc(var(--sb-book-max-h) * var(--sb-page-w) / var(--sb-page-h))
+  );
+}
+
+.sb-book-shell--open {
+  width: min(
+    100%,
+    var(--sb-open-max-w),
+    calc(var(--sb-book-max-h) * var(--sb-page-w) * 2 / var(--sb-page-h))
+  );
+  margin-inline: auto;
+}
+
+.sb-book-shell--open.sb-book-shell--paged {
+  width: min(
+    100%,
+    var(--sb-page-max-w),
+    calc(var(--sb-book-max-h) * var(--sb-page-w) / var(--sb-page-h))
+  );
+}
+
+@media (max-width: 767px) {
+  .sb-book-shell--cover {
+    width: min(
+      100%,
+      var(--sb-page-max-w),
+      calc(var(--sb-book-max-h) * var(--sb-page-w) / var(--sb-page-h))
+    );
+  }
+}
+
+/*
+ * Shared responsive scale:
+ * open  = min(100%, 1400px, height-budget × 1400/786)
+ * cover = min(50%, 700px, height-budget × 700/786)
+ */
+.sb-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--sb-open-aspect);
+  flex-shrink: 0;
+}
+
+.sb-frame--paged {
+  aspect-ratio: var(--sb-page-aspect);
+}
+
+.sb-stage {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  perspective: 1400px;
+  perspective-origin: 50% 45%;
+}
+
+.sb-cover-book {
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--sb-page-aspect);
+  margin-inline: auto;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  flex-shrink: 0;
+  transition: transform 220ms ease, filter 220ms ease;
+  container-type: size;
+  container-name: sb-cover;
+}
+
+.sb-cover-book:hover:not(:disabled):not(.is-opening) {
+  transform: translateY(-2px);
+  filter: brightness(1.03);
+}
+
+.sb-cover-book:focus-visible {
+  outline: 2px solid rgba(209, 165, 58, 0.85);
+  outline-offset: 4px;
+}
+
+.sb-cover-book:disabled,
+.sb-cover-book.is-opening {
+  cursor: default;
+}
+
+.sb-cover-panel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transition: transform 700ms cubic-bezier(0.4, 0.05, 0.2, 1);
+  will-change: transform;
+}
+
+.sb-cover-book.is-opening .sb-cover-panel {
+  transform: rotateY(-105deg);
+}
+
+.sb-cover-face {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  backface-visibility: hidden;
+  border-radius: 0.4rem 0.75rem 0.75rem 0.4rem;
+  background:
+    linear-gradient(
+      165deg,
+      #0f2748 0%,
+      var(--sl-navy-deep) 42%,
+      #081628 100%
+    );
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.08) inset,
+    0 18px 40px -18px rgba(11, 29, 58, 0.5),
+    0 8px 16px -10px rgba(11, 29, 58, 0.32);
+  border: 1px solid rgba(209, 165, 58, 0.28);
+}
+
+.sb-cover-face::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+  opacity: 0.28;
+  mix-blend-mode: soft-light;
+}
+
+.sb-cover-spine-edge {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 3;
+  width: 0.5rem;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(209, 165, 58, 0.35) 45%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.sb-cover-body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  padding: 1.1rem 1.15rem 1.15rem 1.35rem;
+  gap: 0;
+}
+
+.sb-cover-brand {
+  display: flex;
+  flex: 1 1 0;
+  min-height: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.sb-cover-brand-title {
+  margin: 0;
+  /* ~90% larger than prior 0.625rem */
+  font-size: 1.1875rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--sl-gold-soft);
+}
+
+.sb-cover-brand-sub {
+  margin: 0.35rem 0 0;
+  /* ~90% larger than prior 0.55rem */
+  font-size: 1.045rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(251, 246, 239, 0.55);
+}
+
+.sb-cover-art-frame {
+  position: relative;
+  z-index: 1;
+  display: block;
+  flex: 0 0 auto;
+  width: auto;
+  margin-inline: 0.15rem;
+  padding: 0.45rem;
+  border-radius: 0.35rem;
+  border: 1px solid rgba(209, 165, 58, 0.32);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(7, 20, 40, 0.55) 0%,
+      rgba(7, 20, 40, 0.75) 100%
+    );
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+    0 6px 18px -12px rgba(0, 0, 0, 0.45);
+}
+
+.sb-cover-art-inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  border-radius: 0.2rem;
+  background: rgba(251, 246, 239, 0.04);
+  line-height: 0;
+}
+
+.sb-cover-art-inner img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.sb-cover-art-fallback {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  background:
+    radial-gradient(
+      ellipse at 50% 40%,
+      rgba(209, 165, 58, 0.12) 0%,
+      transparent 65%
+    ),
+    rgba(7, 20, 40, 0.4);
+}
+
+.sb-cover-meta {
+  display: flex;
+  flex: 1 1 0;
+  min-height: 0;
+  flex-direction: column;
+  justify-content: flex-end;
+  text-align: center;
+  padding: 0.15rem 0.35rem 0.1rem;
+}
+
+.sb-cover-meta-chapter {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sl-gold-soft);
+}
+
+.sb-cover-meta-title {
+  margin: 0.35rem 0 0;
+  font-family: var(--font-display), ui-serif, Georgia, "Times New Roman", serif;
+  font-size: clamp(1.15rem, 2.6vw, 1.65rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: #fbf6ef;
+}
+
+.sb-cover-meta-subtitle {
+  margin: 0.35rem 0 0;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: rgba(251, 246, 239, 0.62);
+}
+
+.sb-cover-gold-rule {
+  flex-shrink: 0;
+  height: 1px;
+  width: 5.25rem;
+  margin: 0.35rem auto 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(209, 165, 58, 0.65),
+    transparent
+  );
+}
+
+/* Short covers only: shrink brand so it still fits above the artwork. */
+@container sb-cover (max-height: 380px) {
+  .sb-cover-brand-title {
+    font-size: 0.9rem;
+  }
+
+  .sb-cover-brand-sub {
+    margin-top: 0.2rem;
+    font-size: 0.78rem;
+  }
+
+  .sb-cover-gold-rule {
+    width: 3.75rem;
+    margin-top: 0.2rem;
+  }
+}
+
+@container sb-cover (max-height: 340px) {
+  .sb-cover-brand-title {
+    font-size: 0.75rem;
+  }
+
+  .sb-cover-brand-sub {
+    margin-top: 0.15rem;
+    font-size: 0.65rem;
+  }
+
+  .sb-cover-gold-rule {
+    width: 2.75rem;
+    margin-top: 0.15rem;
+  }
+}
+
+.sb-cover-inner {
+  position: absolute;
+  inset: 0;
+  border-radius: 0.75rem 0.4rem 0.4rem 0.75rem;
+  background: linear-gradient(180deg, #fbf6ef 0%, #f3e8d8 100%);
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+  box-shadow: inset 0 0 24px rgba(44, 36, 22, 0.06);
+}
+
+.sb-spread {
+  position: relative;
+  border-radius: 0.75rem;
+  background:
+    linear-gradient(
+      90deg,
+      #fbf6ef 0%,
+      #f7efe4 46%,
+      #efe4d4 50%,
+      #f7efe4 54%,
+      #fbf6ef 100%
+    );
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.65) inset,
+    0 20px 48px -24px rgba(11, 29, 58, 0.35),
+    0 4px 12px -6px rgba(44, 36, 22, 0.12);
+  border: 1px solid rgba(44, 36, 22, 0.1);
+  overflow: hidden;
+}
+
+.sb-spread::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.4;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+/*
+ * Primary open book — physical depth (presentation only).
+ * Page-edge stacks use box-shadow so they paint outside without being
+ * clipped by overflow:hidden, and never intercept clicks.
+ */
+.sb-spread-shell--primary > .sb-spread {
+  z-index: 1;
+  box-shadow:
+    /* Soft paper inset highlight */
+    0 1px 0 rgba(255, 255, 255, 0.7) inset,
+    /* Outer left page stack — thin sheets only */
+    -1px 0 0 #f6eee3,
+    -2px 0.5px 0 rgba(44, 36, 22, 0.035),
+    -3px 1px 0 #f3e9db,
+    -4px 1.5px 0 rgba(44, 36, 22, 0.03),
+    /* Outer right page stack */
+    1px 0 0 #f6eee3,
+    2px 0.5px 0 rgba(44, 36, 22, 0.035),
+    3px 1px 0 #f3e9db,
+    4px 1.5px 0 rgba(44, 36, 22, 0.03),
+    /* Soft grounded shadow (resting, not floating) */
+    0 1px 3px rgba(44, 36, 22, 0.06),
+    0 10px 22px -14px rgba(11, 29, 58, 0.16),
+    0 18px 36px -20px rgba(11, 29, 58, 0.14);
+}
+
+.sb-spread-shell--primary > .sb-spread::before {
+  z-index: 0;
+  opacity: 0.28;
+}
+
+/* Paged / mobile: thinner single-page edge stacks */
+.sb-spread-shell--primary > .sb-spread.sb-spread--paged {
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.7) inset,
+    -1px 0 0 #f6eee3,
+    -2px 0.5px 0 rgba(44, 36, 22, 0.035),
+    -3px 1px 0 #f3e9db,
+    1px 0 0 #f6eee3,
+    2px 0.5px 0 rgba(44, 36, 22, 0.035),
+    3px 1px 0 #f3e9db,
+    0 1px 3px rgba(44, 36, 22, 0.06),
+    0 10px 22px -14px rgba(11, 29, 58, 0.16),
+    0 18px 36px -20px rgba(11, 29, 58, 0.14);
+}
+
+@media (max-width: 1023px) and (min-width: 768px) {
+  /* Tablet: thinner page edges + same quiet shadow */
+  .sb-spread-shell--primary > .sb-spread:not(.sb-spread--paged) {
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.7) inset,
+      -1px 0 0 #f6eee3,
+      -2px 0.5px 0 rgba(44, 36, 22, 0.035),
+      -3px 1px 0 #f3e9db,
+      1px 0 0 #f6eee3,
+      2px 0.5px 0 rgba(44, 36, 22, 0.035),
+      3px 1px 0 #f3e9db,
+      0 1px 3px rgba(44, 36, 22, 0.06),
+      0 10px 22px -14px rgba(11, 29, 58, 0.16),
+      0 18px 36px -20px rgba(11, 29, 58, 0.14);
+  }
+}
+
+.sb-spine {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .sb-spine {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2rem;
+    transform: translateX(-50%);
+    background: linear-gradient(
+      90deg,
+      rgba(44, 36, 22, 0.068) 0%,
+      rgba(44, 36, 22, 0.03) 18%,
+      rgba(255, 255, 255, 0.15) 42%,
+      rgba(255, 255, 255, 0.28) 50%,
+      rgba(255, 255, 255, 0.15) 58%,
+      rgba(44, 36, 22, 0.03) 82%,
+      rgba(44, 36, 22, 0.068) 100%
+    );
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* Soft recess at the binding fold — fold, not a hard rule */
+  .sb-spine::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    transform: translateX(-50%);
+    background: linear-gradient(
+      180deg,
+      rgba(44, 36, 22, 0.03) 0%,
+      rgba(44, 36, 22, 0.08) 20%,
+      rgba(44, 36, 22, 0.09) 50%,
+      rgba(44, 36, 22, 0.08) 80%,
+      rgba(44, 36, 22, 0.03) 100%
+    );
+    opacity: 0.35;
+  }
+}
+
+.sb-page {
+  position: relative;
+  z-index: 1;
+}
+
+/* Inner page shade toward the spine (desktop spread only) */
+@media (min-width: 768px) {
+  .sb-spread--fixed:not(.sb-spread--paged) .sb-spread-grid > .sb-page:first-child::after,
+  .sb-spread--fixed:not(.sb-spread--paged) .sb-spread-grid > .sb-page:last-child::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: min(18%, 5.5rem);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .sb-spread--fixed:not(.sb-spread--paged) .sb-spread-grid > .sb-page:first-child::after {
+    right: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(44, 36, 22, 0) 0%,
+      rgba(44, 36, 22, 0.018) 55%,
+      rgba(44, 36, 22, 0.045) 100%
+    );
+  }
+
+  .sb-spread--fixed:not(.sb-spread--paged) .sb-spread-grid > .sb-page:last-child::before {
+    left: 0;
+    background: linear-gradient(
+      270deg,
+      rgba(44, 36, 22, 0) 0%,
+      rgba(44, 36, 22, 0.018) 55%,
+      rgba(44, 36, 22, 0.045) 100%
+    );
+  }
+}
+
+.sb-spread-shell--primary > .sb-spread {
+  height: 100%;
+}
+
+.sb-spread--fixed {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.sb-spread--fixed .sb-spread-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  height: 100%;
+  min-height: 0;
+  width: 100%;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.sb-spread--paged {
+  overflow: hidden;
+  background: linear-gradient(180deg, #fbf6ef 0%, #f7efe4 100%);
+}
+
+.sb-spread--paged .sb-spine {
+  display: none;
+}
+
+.sb-spread--paged .sb-spread-grid {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.sb-page--paged-scroll {
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sb-spread--paged .sb-page--fixed.sb-page--paged-scroll {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.sb-page--fixed {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sb-page--summary-scroll {
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sb-page-nav {
+  display: flex;
+  flex-direction: column;
+  min-height: 2.75rem;
+  justify-content: flex-end;
+}
+
+.sb-page-nav--prev {
+  align-items: flex-start;
+}
+
+.sb-page-nav--next {
+  align-items: flex-end;
+}
+
+.sb-page-nav.sb-page-nav--paged {
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.sb-page-nav.sb-page-nav--paged-end {
+  justify-content: flex-end;
+}
+
+.sb-page-nav.sb-page-nav--paged-split {
+  justify-content: space-between;
+}
+
+.sb-page-nav.sb-page-nav--paged .sb-nav-btn {
+  flex: 0 1 auto;
+  max-width: calc(50% - 0.25rem);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sb-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  max-width: 100%;
+  border-radius: 0.375rem;
+  border: 1px solid rgba(44, 36, 22, 0.12);
+  background: rgba(251, 246, 239, 0.65);
+  padding: 0.4rem 0.7rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--sl-navy);
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    opacity 160ms ease,
+    color 160ms ease;
+}
+
+.sb-nav-btn:hover:not(:disabled) {
+  border-color: rgba(44, 36, 22, 0.2);
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.sb-nav-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+.sb-nav-btn--prev {
+  background: transparent;
+  border-color: rgba(44, 36, 22, 0.1);
+  color: var(--sl-navy);
+  box-shadow: none;
+}
+
+.sb-nav-btn--next {
+  background: rgba(251, 246, 239, 0.75);
+  box-shadow: none;
+}
+
+.sb-nav-btn--next.is-ready {
+  border-color: rgba(209, 165, 58, 0.35);
+  background: rgba(248, 236, 210, 0.55);
+  color: var(--sl-navy);
+}
+
+.sb-nav-btn--next.is-ready:hover:not(:disabled) {
+  border-color: rgba(209, 165, 58, 0.5);
+  background: rgba(248, 236, 210, 0.8);
+}
+
+.sb-media-host {
+  width: 100%;
+  min-height: 0;
+}
+
+.sb-media-slot {
+  width: 94%;
+  max-width: 100%;
+  max-height: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  flex-shrink: 1;
+  min-height: 0;
+  margin-inline: auto;
+  background: rgba(44, 36, 22, 0.03);
+}
+
+.sb-spread--paged .sb-media-slot {
+  width: 100%;
+}
+
+.sb-media-slot-fill {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.sb-media-slot figure {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.sb-media-slot figure > div,
+.sb-media-slot .aspect-video {
+  height: 100% !important;
+  max-height: none !important;
+  aspect-ratio: auto !important;
+}
+
+.sb-media-slot video,
+.sb-media-slot img {
+  height: 100% !important;
+  max-height: none !important;
+  width: 100% !important;
+  object-fit: contain;
+}
+
+.sb-media-slot-empty {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed rgba(44, 36, 22, 0.15);
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--sl-ink-muted);
+}
+
+/* In-chapter leaf turn (text ↔ video) */
+.sb-leaf-turn-root {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  pointer-events: none;
+  perspective: 1400px;
+  perspective-origin: 50% 45%;
+}
+
+.sb-leaf-turn-leaf {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform-origin: left center;
+  transition: transform 520ms cubic-bezier(0.4, 0.05, 0.2, 1);
+  will-change: transform;
+  background: linear-gradient(180deg, #fbf6ef 0%, #f7efe4 100%);
+  box-shadow: 0 8px 28px -16px rgba(11, 29, 58, 0.35);
+  border: 1px solid rgba(44, 36, 22, 0.08);
+}
+
+.sb-leaf-turn-root.is-back .sb-leaf-turn-leaf {
+  transform-origin: right center;
+}
+
+.sb-leaf-turn-root.is-turning.is-forward .sb-leaf-turn-leaf {
+  transform: rotateY(-180deg);
+}
+
+.sb-leaf-turn-root.is-turning.is-back .sb-leaf-turn-leaf {
+  transform: rotateY(180deg);
+}
+
+.sb-leaf-turn-reduced .sb-leaf-turn-leaf {
+  transition: opacity 220ms ease;
+}
+
+.sb-leaf-turn-reduced.is-turning .sb-leaf-turn-leaf {
+  transform: none;
+  opacity: 0;
+}
+
+/* Phase 2: chapter page-turn */
+.sb-spread-shell {
+  position: relative;
+}
+
+.sb-turn-root {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  perspective: 1600px;
+  perspective-origin: 50% 45%;
+}
+
+.sb-turn-underlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  align-items: stretch;
+  background: linear-gradient(180deg, #fbf6ef 0%, #f7efe4 100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sb-turn-underlay--clear {
+  background: transparent;
+  opacity: 0 !important;
+}
+
+.sb-turn-forward .sb-turn-underlay {
+  left: 50%;
+  right: 0;
+}
+
+.sb-turn-back .sb-turn-underlay {
+  left: 0;
+  right: 50%;
+}
+
+.sb-turn-face-back--plain {
+  /* Plain paper only — destination content is Layer B behind the leaf. */
+}
+
+/* Dual-layer chapter-turn hold */
+.sb-hold-stage {
+  position: relative;
+  width: 100%;
+  max-width: calc(var(--sb-open-max-w) + 2rem);
+  margin-inline: auto;
+}
+
+.sb-hold-stack {
+  position: relative;
+  width: 100%;
+}
+
+.sb-hold-layer {
+  width: 100%;
+}
+
+.sb-hold-layer--incoming {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.sb-hold-layer--incoming.is-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.sb-hold-layer--outgoing {
+  position: relative;
+  z-index: 2;
+}
+
+.sb-hold-layer--outgoing.is-concealed {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.sb-hold-turn-slot {
+  position: absolute;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.sb-turn-face-inner {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 1.25rem;
+}
+
+.sb-turn-face-copy {
+  max-width: 22rem;
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .sb-turn-face-inner {
+    padding: 2rem 1.75rem;
+  }
+}
+
+.sb-turn-leaf {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  transform-style: preserve-3d;
+  transition: transform 700ms cubic-bezier(0.4, 0.05, 0.2, 1);
+  will-change: transform;
+  box-shadow: 0 8px 28px -16px rgba(11, 29, 58, 0.35);
+}
+
+.sb-turn-forward .sb-turn-leaf {
+  left: 50%;
+  right: 0;
+  transform-origin: left center;
+}
+
+.sb-turn-back .sb-turn-leaf {
+  left: 0;
+  right: 50%;
+  transform-origin: right center;
+}
+
+.sb-turn-forward.is-turning .sb-turn-leaf {
+  transform: rotateY(-180deg);
+}
+
+.sb-turn-back.is-turning .sb-turn-leaf {
+  transform: rotateY(180deg);
+}
+
+.sb-turn-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  background: linear-gradient(180deg, #fbf6ef 0%, #f7efe4 100%);
+  border: 1px solid rgba(44, 36, 22, 0.08);
+}
+
+.sb-turn-face-front {
+  transform: rotateY(0deg);
+}
+
+.sb-turn-face-back {
+  transform: rotateY(180deg);
+}
+
+.sb-turn-face-back--plain {
+  /* Empty paper reverse — destination UI is the staged Layer B spread. */
+}
+
+@media (max-width: 767px) {
+  .sb-turn-forward .sb-turn-leaf,
+  .sb-turn-back .sb-turn-leaf,
+  .sb-turn-forward .sb-turn-underlay,
+  .sb-turn-back .sb-turn-underlay {
+    left: 0;
+    right: 0;
+  }
+
+  .sb-turn-forward .sb-turn-leaf {
+    transform-origin: left center;
+  }
+
+  .sb-turn-back .sb-turn-leaf {
+    transform-origin: right center;
+  }
+
+  .sb-turn-underlay .sb-turn-face-inner,
+  .sb-turn-face-inner {
+    padding: 1.25rem 1rem;
+  }
+}
+
+.sb-turn-reduced .sb-turn-leaf {
+  transition: opacity 220ms ease;
+}
+
+.sb-turn-reduced.is-turning .sb-turn-leaf {
+  transform: none;
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sb-cover-panel {
+    transition: none;
+  }
+
+  .sb-cover-book.is-opening .sb-cover-panel {
+    transform: none;
+    opacity: 0;
+  }
+
+  .sb-leaf-turn-leaf {
+    transition: opacity 220ms ease;
+  }
+
+  .sb-leaf-turn-root.is-turning .sb-leaf-turn-leaf {
+    transform: none;
+    opacity: 0;
+  }
+
+  .sb-turn-leaf {
+    transition: opacity 220ms ease;
+  }
+
+  .sb-turn-forward.is-turning .sb-turn-leaf,
+  .sb-turn-back.is-turning .sb-turn-leaf {
+    transform: none;
+    opacity: 0;
+  }
+}

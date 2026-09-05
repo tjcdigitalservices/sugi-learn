@@ -1,7 +1,7 @@
 import type { Chapter, ChapterSection } from "@/types/chapter";
 
 import { ChapterEmptyState } from "@/components/chapter/chapter-empty-state";
-import { ChapterHeader } from "@/components/chapter/chapter-header";
+import { ChapterSummaryExpandable } from "@/components/chapter/chapter-summary-expandable";
 import {
   SectionRenderer,
   type ChapterEngineContext,
@@ -9,7 +9,7 @@ import {
 
 interface ChapterEngineProps {
   chapter: Chapter;
-  /** When false, the wrapper provides the header. */
+  /** When false, the wrapper provides the header / hero. */
   showHeader?: boolean;
   context?: ChapterEngineContext;
   chapterCompleted?: boolean;
@@ -29,7 +29,7 @@ function orderSectionsForDisplay(sections: ChapterSection[]): {
 
 /**
  * Reusable chapter renderer — one engine for all chapters.
- * Learner/default order: title → Animation / Video → summary → other sections.
+ * Title and summary sit with the primary media; remaining sections render below.
  */
 export function ChapterEngine({
   chapter,
@@ -61,27 +61,63 @@ export function ChapterEngine({
     );
   }
 
+  const eyebrow =
+    chapter.number > 0 ? `Chapter ${chapter.number}` : "Demo";
+
   return (
-    <div className="space-y-10">
+    <div className="space-y-8 sm:space-y-10">
       {showHeader ? (
-        <ChapterHeader chapter={chapter} showSummary={false} />
+        <div className="space-y-6 sm:space-y-8">
+          <div className="space-y-3">
+            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              {eyebrow}
+            </p>
+            <h1 className="font-display text-3xl font-semibold tracking-tight text-sl-navy sm:text-4xl">
+              {chapter.title}
+            </h1>
+            {chapter.subtitle ? (
+              <p className="max-w-2xl text-base text-sl-ink-muted sm:text-lg">
+                {chapter.subtitle}
+              </p>
+            ) : null}
+          </div>
+
+          <div className="grid items-start gap-8 border-t border-[color:rgba(44,36,22,0.08)] pt-5 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-10">
+            <div className="space-y-2">
+              {chapter.summary ? (
+                <>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-sl-navy">
+                    About this chapter
+                  </p>
+                  <ChapterSummaryExpandable summary={chapter.summary} />
+                </>
+              ) : null}
+            </div>
+
+            <div className="space-y-3">
+              {animationSections.length > 0 ? (
+                <div className="space-y-6">
+                  {animationSections.map(renderSection)}
+                </div>
+              ) : (
+                <div className="rounded-xl border border-dashed border-[color:rgba(44,36,22,0.15)] bg-white/60 px-4 py-10 text-center text-sm text-sl-ink-muted">
+                  Animation not available yet.
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       ) : null}
 
-      {!hasSections ? (
-        <ChapterEmptyState context={context} />
-      ) : (
+      {hasSections && otherSections.length > 0 ? (
         <div className="space-y-12 sm:space-y-14">
-          {animationSections.map(renderSection)}
-
-          {chapter.summary ? (
-            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-              {chapter.summary}
-            </p>
-          ) : null}
-
           {otherSections.map(renderSection)}
         </div>
-      )}
+      ) : null}
+
+      {!hasSections && !showHeader ? (
+        <ChapterEmptyState context={context} />
+      ) : null}
     </div>
   );
 }

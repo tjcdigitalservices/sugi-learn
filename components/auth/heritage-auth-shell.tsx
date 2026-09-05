@@ -22,7 +22,7 @@ export function HeritageAuthShell({
   return (
     <div
       className={cn(
-        "relative flex min-h-screen flex-col overflow-hidden font-body text-sl-ink",
+        "relative flex min-h-dvh flex-col font-body text-sl-ink",
         className,
       )}
     >
@@ -39,8 +39,8 @@ export function HeritageAuthShell({
         aria-hidden="true"
       />
 
-      <div className="relative z-10 flex min-h-screen flex-1 flex-col px-5 pb-10 pt-10 sm:px-8 lg:pb-20">
-        <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center gap-8">
+      <div className="relative z-10 flex min-h-dvh flex-1 flex-col px-5 pb-[max(2.5rem,env(safe-area-inset-bottom))] pt-[max(2.5rem,env(safe-area-inset-top))] sm:px-8 lg:pb-20">
+        <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center gap-6 sm:gap-8">
           <div className="flex justify-center">
             <SugidanonMark
               light

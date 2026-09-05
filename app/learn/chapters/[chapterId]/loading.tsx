@@ -1,4 +1,14 @@
-export default function LearnerChapterLoading() {
+import { cookies } from "next/headers";
+
+import { STORYBOOK_PAGE_TURN_COOKIE } from "@/lib/chapter/storybook-session";
+
+export default async function LearnerChapterLoading() {
+  const jar = await cookies();
+  if (jar.get(STORYBOOK_PAGE_TURN_COOKIE)?.value === "1") {
+    // Storybook page-turn: keep previous/hold UI; do not flash skeleton.
+    return null;
+  }
+
   return (
     <div
       className="mx-auto max-w-3xl animate-pulse space-y-8 pb-10"

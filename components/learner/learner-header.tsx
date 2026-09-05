@@ -72,15 +72,22 @@ export function LearnerHeader({ userLabel, focused = false }: LearnerHeaderProps
 
   return (
     <header className="bg-sl-navy text-white shadow-md">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-2">
-        <Link href="/learn" className="shrink-0">
+      <div
+        className={cn(
+          "mx-auto grid max-w-6xl items-center gap-3 px-4 py-2",
+          isFocused
+            ? "grid-cols-[1fr_auto]"
+            : "grid-cols-[1fr_auto] md:grid-cols-[1fr_auto_1fr]",
+        )}
+      >
+        <Link href="/learn" className="justify-self-start shrink-0">
           <SugidanonMark light showTagline={false} />
         </Link>
 
         {!isFocused ? (
           <nav
             aria-label="Learner navigation"
-            className="hidden flex-wrap items-center gap-4 text-sm text-white/80 md:flex"
+            className="hidden items-center justify-center gap-5 text-sm text-white/80 md:flex"
           >
             {LEARNER_NAV.map((item) => {
               const active = isNavItemActive(pathname, item.href, item.exact);
@@ -90,7 +97,7 @@ export function LearnerHeader({ userLabel, focused = false }: LearnerHeaderProps
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sl-gold",
+                    "whitespace-nowrap transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sl-gold",
                     active ? "font-semibold text-sl-gold" : null,
                   )}
                 >
@@ -98,19 +105,45 @@ export function LearnerHeader({ userLabel, focused = false }: LearnerHeaderProps
                 </Link>
               );
             })}
-            {userLabel ? (
-              <span className="hidden max-w-[10rem] truncate text-xs text-white/60 lg:inline">
-                {userLabel}
-              </span>
-            ) : null}
-            {userLabel ? (
-              <SignOutButton className="border-white/20 bg-transparent text-white hover:bg-white/10" />
-            ) : null}
           </nav>
+        ) : null}
+
+        {!isFocused ? (
+          <>
+            <div className="hidden items-center justify-self-end gap-3 md:flex">
+              {userLabel ? (
+                <span
+                  className="max-w-[10rem] truncate text-xs text-white/60"
+                  title={userLabel}
+                >
+                  {userLabel}
+                </span>
+              ) : null}
+              {userLabel ? (
+                <SignOutButton className="border-white/20 bg-transparent text-white hover:bg-white/10" />
+              ) : null}
+            </div>
+
+            <div className="flex items-center justify-self-end md:hidden">
+              <button
+                type="button"
+                onClick={() => setOpen(true)}
+                aria-expanded={open}
+                aria-controls="learner-mobile-nav"
+                aria-label="Open navigation menu"
+                className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md text-white/80 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sl-gold"
+              >
+                <Menu className="h-5 w-5" aria-hidden="true" />
+              </button>
+            </div>
+          </>
         ) : (
-          <div className="flex items-center gap-3">
+          <div className="flex items-center justify-self-end gap-3">
             {userLabel ? (
-              <span className="hidden text-xs text-white/70 sm:inline">
+              <span
+                className="hidden max-w-[10rem] truncate text-xs text-white/70 sm:inline"
+                title={userLabel}
+              >
                 {userLabel}
               </span>
             ) : null}
@@ -119,24 +152,6 @@ export function LearnerHeader({ userLabel, focused = false }: LearnerHeaderProps
             ) : null}
           </div>
         )}
-
-        {!isFocused ? (
-          <div className="flex items-center gap-2 md:hidden">
-            {userLabel ? (
-              <SignOutButton className="border-white/20 bg-transparent px-2 py-1 text-xs text-white hover:bg-white/10" />
-            ) : null}
-            <button
-              type="button"
-              onClick={() => setOpen(true)}
-              aria-expanded={open}
-              aria-controls="learner-mobile-nav"
-              aria-label="Open navigation menu"
-              className="rounded-md p-2 text-white/80 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sl-gold"
-            >
-              <Menu className="h-5 w-5" aria-hidden="true" />
-            </button>
-          </div>
-        ) : null}
       </div>
 
       {!isFocused ? (
@@ -155,7 +170,8 @@ export function LearnerHeader({ userLabel, focused = false }: LearnerHeaderProps
             aria-label="Learner navigation"
             aria-hidden={!open}
             className={cn(
-              "fixed inset-y-0 right-0 z-50 flex w-72 max-w-[85vw] flex-col border-l border-white/10 bg-sl-navy shadow-lg transition-transform duration-200 ease-out md:hidden",
+              "fixed inset-y-0 right-0 z-50 flex w-72 max-w-[min(18rem,85vw)] flex-col border-l border-white/10 bg-sl-navy shadow-lg transition-transform duration-200 ease-out md:hidden",
+              "pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]",
               open ? "translate-x-0" : "translate-x-full",
             )}
           >
@@ -185,7 +201,7 @@ export function LearnerHeader({ userLabel, focused = false }: LearnerHeaderProps
                       ? "page"
                       : undefined
                   }
-                  className="rounded-md px-3 py-2 text-sm text-white/85 transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sl-gold"
+                  className="rounded-md px-3 py-3 text-sm text-white/85 transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sl-gold"
                 >
                   {item.label}
                 </Link>
@@ -194,6 +210,11 @@ export function LearnerHeader({ userLabel, focused = false }: LearnerHeaderProps
                 <p className="mt-4 truncate px-3 text-xs text-white/60">
                   {userLabel}
                 </p>
+              ) : null}
+              {userLabel ? (
+                <div className="mt-2 px-3">
+                  <SignOutButton className="w-full justify-center border-white/20 bg-transparent text-white hover:bg-white/10" />
+                </div>
               ) : null}
             </nav>
           </aside>

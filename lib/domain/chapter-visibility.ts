@@ -17,7 +17,7 @@ export function filterChaptersForLearnerJourney(
   );
 }
 
-/** Published chapters available for prev/next navigation. */
+/** Published chapters only — for listings that should hide unpublished content. */
 export function filterChaptersForLearnerNavigation(
   chapters: ChapterSummary[],
 ): ChapterSummary[] {
