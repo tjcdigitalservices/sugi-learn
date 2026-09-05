@@ -212,6 +212,7 @@ export function StorybookSpread({
       return;
     }
 
+    const notifyReady = onSpreadReady;
     let cancelled = false;
     let attempts = 0;
 
@@ -226,7 +227,7 @@ export function StorybookSpread({
       const frameWidth = frame?.getBoundingClientRect().width ?? 0;
       if (frame && frameWidth > 0 && title && rightChrome) {
         readyFired.current = true;
-        onSpreadReady();
+        notifyReady();
         return;
       }
       attempts += 1;
@@ -235,7 +236,7 @@ export function StorybookSpread({
       } else {
         // Layout should have settled; avoid blocking the turn forever.
         readyFired.current = true;
-        onSpreadReady();
+        notifyReady();
       }
     }
 
