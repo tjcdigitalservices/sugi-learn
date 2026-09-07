@@ -197,7 +197,7 @@ export function StorybookTransitionProvider({
       {children}
       {hold ? (
         <div
-          className="pointer-events-none fixed inset-0 z-[60] overflow-hidden bg-[var(--sl-cream)] pt-[max(4.5rem,env(safe-area-inset-top))] md:pt-[max(0.75rem,env(safe-area-inset-top))]"
+          className="pointer-events-none fixed inset-0 z-[60] overflow-hidden bg-[var(--sl-cream)] pt-[max(0.75rem,env(safe-area-inset-top))]"
           aria-hidden="true"
         >
           <div className="sb-book-view flex h-full min-h-0 flex-col">

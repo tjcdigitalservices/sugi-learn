@@ -12,12 +12,12 @@ const MIN_SPREAD_OPEN_W = 720;
 /** Horizontal padding from learner shell. */
 const SHELL_PAD_X = 24;
 /**
- * Vertical chrome: desktop book view is headerless (~2.75rem); mobile includes
- * the learner header. Prefer a slightly generous estimate so we switch to
- * paged before pages become unreadably narrow.
+ * Vertical chrome: book view is headerless on all breakpoints.
+ * Prefer a slightly generous estimate so we switch to paged before
+ * pages become unreadably narrow.
  */
 const BOOK_VIEW_CHROME_Y_DESKTOP = 44;
-const BOOK_VIEW_CHROME_Y_MOBILE = 184;
+const BOOK_VIEW_CHROME_Y_MOBILE = 52;
 
 function computeLayoutMode(): StorybookLayoutMode {
   if (typeof window === "undefined") {

@@ -484,7 +484,7 @@ export function StorybookSpread({
 
   const videoPage = (
     <div className={`${paged ? pageChromePaged : pageChromeRight} gap-1.5 sm:gap-2`}>
-      <div className="sb-media-host flex min-h-0 flex-1 items-center justify-center overflow-hidden">
+      <div className="sb-media-host flex min-h-0 flex-1 items-center justify-center">
         {renderRightMedia()}
       </div>
 
@@ -548,7 +548,7 @@ export function StorybookSpread({
             <div className="sb-book-chrome sb-book-chrome--internal">{chrome}</div>
           ) : null}
           <div className={spreadClass}>
-            {!paged ? <div className="sb-spine" aria-hidden="true" /> : null}
+            <div className="sb-spine" aria-hidden="true" />
             <div className="sb-spread-grid">
               {paged ? (leaf === "text" ? textPage : videoPage) : null}
               {!paged ? (

@@ -30,10 +30,9 @@
  * (~15.5rem), capping the book near ~1218×684 instead of ~1400×786.
  */
 .sb-book-view {
-  /* Mobile: header visible */
+  /* Immersive book view (cover + open) — no learner header on any breakpoint */
   --sb-viewport-chrome: calc(
-    4.75rem + 2.75rem + 4rem + env(safe-area-inset-top, 0px) +
-      env(safe-area-inset-bottom, 0px)
+    2.75rem + env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px)
   );
   --sb-book-max-h: min(
     var(--sb-page-max-h),
@@ -42,7 +41,7 @@
   );
 }
 
-/* Desktop book view: no header — maximize book toward 1400×786 */
+/* Desktop book view: maximize book toward 1400×786 */
 @media (min-width: 768px) {
   .sb-book-view {
     --sb-viewport-chrome: calc(
@@ -131,8 +130,8 @@
 /* Keep chrome on the cream page block; side lips only */
 .sb-spread-shell--primary > .sb-book-chrome--internal {
   top: 0;
-  left: var(--sb-cover-lip-x, 0px);
-  right: var(--sb-cover-lip-x, 0px);
+  left: var(--sb-cover-lip-left, var(--sb-cover-lip-x, 0px));
+  right: var(--sb-cover-lip-right, var(--sb-cover-lip-x, 0px));
 }
 
 .sb-book-chrome--internal > * {
@@ -517,76 +516,97 @@
 }
 
 /*
- * Primary open book — physical construction:
- *   hardcover on LEFT/RIGHT only → page stacks → cream page surface
- *   TOP/BOTTOM: soft shadow only (no navy rim)
+ * Primary open book — refined digital spread:
+ * clean ivory pages, clear gutter separation, subtle outer paper edges.
+ * Not a 3D book-on-table mockup.
  */
 .sb-spread-shell--primary {
   --sb-cover-lip: 0px;
-  --sb-cover-lip-x: 0.72rem;
+  --sb-cover-lip-x: 0.94rem;
+  --sb-cover-lip-left: var(--sb-cover-lip-x);
+  --sb-cover-lip-right: var(--sb-cover-lip-x);
+  --sb-cover-lip-top: 0px;
+  --sb-cover-lip-bottom: 0px;
+  --sb-cover-radius: 1rem;
+  --sb-page-radius-top: 1.05rem;
+  --sb-page-radius-bottom: 0.9rem;
+  position: relative;
+  /* Same navy as .sb-cover-face so lips read as the book cover */
   background:
     linear-gradient(
-      90deg,
-      var(--sl-navy-deep) 0%,
-      var(--sl-navy) 8%,
-      var(--sl-navy) 92%,
-      var(--sl-navy-deep) 100%
+      165deg,
+      #0f2748 0%,
+      var(--sl-navy-deep) 42%,
+      #081628 100%
     );
-  /* Navy visible only on the sides; top/bottom flush with pages */
-  padding: 0 var(--sb-cover-lip-x);
-  border-radius: 0.75rem;
-  /* Ambient object shadow — soft top/bottom + slight right cast */
+  padding: var(--sb-cover-lip-top) var(--sb-cover-lip-right)
+    var(--sb-cover-lip-bottom) var(--sb-cover-lip-left);
+  border-radius: var(--sb-cover-radius);
+  /* Light interface depth — top/bottom via soft page-edge shadow, not navy lips */
   box-shadow:
-    0 -2px 6px -2px rgba(11, 29, 58, 0.1),
-    0 2px 4px rgba(11, 29, 58, 0.12),
-    0 12px 24px -12px rgba(11, 29, 58, 0.28),
-    0 28px 48px -22px rgba(11, 29, 58, 0.22),
-    12px 10px 32px -18px rgba(11, 29, 58, 0.2);
-  overflow: visible;
+    0 -2px 5px -2px rgba(11, 29, 58, 0.1),
+    0 2px 6px rgba(11, 29, 58, 0.12),
+    0 10px 24px -14px rgba(11, 29, 58, 0.18);
+  overflow: hidden;
+}
+
+.sb-spread-shell--primary::before,
+.sb-spread-shell--primary::after {
+  content: none;
 }
 
 .sb-spread-shell--primary > .sb-spread {
   z-index: 1;
   height: 100%;
-  border-radius: 0.75rem;
-  /* Allow page-stack shadows to paint into the side hardcover lip */
+  border-radius: var(--sb-page-radius-top) var(--sb-page-radius-top)
+    var(--sb-page-radius-bottom) var(--sb-page-radius-bottom);
   overflow: visible;
-  /* Continuous open pages with soft mid-fold + slight outer lift */
+  /*
+   * Nearly flat warm ivory with a soft warmer valley at the gutter only.
+   */
   background:
     linear-gradient(
       90deg,
-      #fbf7f0 0%,
-      #fcf9f3 10%,
-      #fbf6ef 38%,
-      #f3ebe0 48.6%,
-      #ebe2d4 50%,
-      #f3ebe0 51.4%,
-      #fbf6ef 61.5%,
-      #fcf9f3 90%,
-      #fbf7f0 100%
+      #fcf9f3 0%,
+      #fbf7f0 12%,
+      #faf5ed 36%,
+      #f5eee4 46%,
+      #efe6d8 49.2%,
+      #eadfcf 50%,
+      #efe6d8 50.8%,
+      #f5eee4 54%,
+      #faf5ed 64%,
+      #fbf7f0 88%,
+      #fcf9f3 100%
     );
-  border: 1px solid rgba(44, 36, 22, 0.055);
-  /* Cream page stacks on L/R — leave navy lip visible beyond them */
+  border: 1px solid rgba(44, 36, 22, 0.04);
+  /*
+   * Visible stacked page edges (L/R) — 5–6 thin warm-beige sheet lines
+   * between the open page and navy cover. X-offset follows border-radius.
+   * Edge lines are slightly darker ivory/beige so they stay readable.
+   */
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.78) inset,
-    0 -1px 2px rgba(44, 36, 22, 0.035) inset,
-    /* Left layered page edges */
-    -1px 0 0 #faf5ed,
-    -2px 0.4px 0 rgba(44, 36, 22, 0.045),
-    -3px 0.8px 0 #f4ebe0,
-    -4px 1.2px 0 rgba(44, 36, 22, 0.04),
-    -5px 1.6px 0 #efe5d6,
-    -6px 2px 0 #ebe0cf,
-    /* Right layered page edges */
-    1px 0 0 #faf5ed,
-    2px 0.4px 0 rgba(44, 36, 22, 0.045),
-    3px 0.8px 0 #f4ebe0,
-    4px 1.2px 0 rgba(44, 36, 22, 0.04),
-    5px 1.6px 0 #efe5d6,
-    6px 2px 0 #ebe0cf,
-    /* Soft top/bottom page edge depth (shadow, not navy) */
-    0 -1px 2px rgba(11, 29, 58, 0.06),
-    0 2px 3px rgba(11, 29, 58, 0.1);
+    /* Left outer edge */
+    -1px 0 0 0 #e5d8c4,
+    -2px 0 0 0 #f4ebe0,
+    -3px 0 0 0 #dfd1bb,
+    -4px 0 0 0 #f1e8db,
+    -5px 0 0 0 #d9cbb3,
+    -6px 0 0 0 #efe6d7,
+    -7px 0 0 0 #d4c5ab,
+    -8px 0 0 0 #ebe0cf,
+    /* Right outer edge — mirrored */
+    1px 0 0 0 #e5d8c4,
+    2px 0 0 0 #f4ebe0,
+    3px 0 0 0 #dfd1bb,
+    4px 0 0 0 #f1e8db,
+    5px 0 0 0 #d9cbb3,
+    6px 0 0 0 #efe6d7,
+    7px 0 0 0 #d4c5ab,
+    8px 0 0 0 #ebe0cf,
+    0 1px 0 rgba(255, 255, 255, 0.65) inset,
+    0 -1px 2px rgba(44, 36, 22, 0.04) inset,
+    0 0 0 1px rgba(44, 36, 22, 0.015);
 }
 
 .sb-spread-shell--primary > .sb-spread .sb-spread-grid {
@@ -596,113 +616,150 @@
 
 .sb-spread-shell--primary > .sb-spread::before {
   z-index: 0;
-  opacity: 0.22;
+  opacity: 0.1;
 }
 
-/* Paged / mobile: quieter side hardcover + thinner stacks */
+/*
+ * Paged / one-page book:
+ * bound on the LEFT; free edge on the RIGHT.
+ */
 .sb-spread-shell--primary:has(.sb-spread--paged) {
   --sb-cover-lip: 0px;
-  --sb-cover-lip-x: 0.5rem;
-  border-radius: 0.75rem;
+  --sb-cover-lip-x: 0.85rem;
+  --sb-cover-lip-left: 0px;
+  --sb-cover-lip-right: 0.85rem;
+  --sb-cover-lip-top: 0px;
+  --sb-cover-lip-bottom: 0px;
+  --sb-cover-radius: 0.9rem;
+  --sb-page-radius-top: 0.95rem;
+  --sb-page-radius-bottom: 0.8rem;
+  border-radius: 0.12rem var(--sb-cover-radius) var(--sb-cover-radius) 0.12rem;
+  box-shadow:
+    0 -2px 5px -2px rgba(11, 29, 58, 0.1),
+    0 2px 6px rgba(11, 29, 58, 0.12),
+    0 10px 22px -14px rgba(11, 29, 58, 0.16);
 }
 
 .sb-spread-shell--primary > .sb-spread.sb-spread--paged {
-  border-radius: 0.55rem;
-  background: linear-gradient(180deg, #fbf6ef 0%, #f7efe4 100%);
+  border-radius: 0.1rem var(--sb-page-radius-top) var(--sb-page-radius-bottom)
+    0.1rem;
+  overflow: visible;
+  background: linear-gradient(
+    90deg,
+    #efe6d8 0%,
+    #f5eee4 12%,
+    #faf5ed 36%,
+    #fbf7f0 72%,
+    #fcf9f3 100%
+  );
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.78) inset,
-    -1px 0 0 #faf5ed,
-    -2px 0.4px 0 rgba(44, 36, 22, 0.045),
-    -3px 0.9px 0 #f4ebe0,
-    -4px 1.4px 0 #efe5d6,
-    -5px 1.8px 0 #ebe0cf,
-    1px 0 0 #faf5ed,
-    2px 0.4px 0 rgba(44, 36, 22, 0.045),
-    3px 0.9px 0 #f4ebe0,
-    4px 1.4px 0 #efe5d6,
-    5px 1.8px 0 #ebe0cf,
-    0 -1px 2px rgba(11, 29, 58, 0.06),
-    0 2px 3px rgba(11, 29, 58, 0.1);
+    /* Right outer edge only — same visible stacked sheets as desktop */
+    1px 0 0 0 #e5d8c4,
+    2px 0 0 0 #f4ebe0,
+    3px 0 0 0 #dfd1bb,
+    4px 0 0 0 #f1e8db,
+    5px 0 0 0 #d9cbb3,
+    6px 0 0 0 #efe6d7,
+    7px 0 0 0 #d4c5ab,
+    8px 0 0 0 #ebe0cf,
+    0 1px 0 rgba(255, 255, 255, 0.65) inset,
+    0 -1px 2px rgba(44, 36, 22, 0.04) inset,
+    0 0 0 1px rgba(44, 36, 22, 0.015);
+}
+
+/* Mobile: flush left so it reads as a bound leaf, not a floating card */
+@media (max-width: 767px) {
+  .sb-book-view-main {
+    padding-left: 0;
+    padding-right: 0.4rem;
+  }
+
+  .sb-book-view .sb-chapter-stage-book {
+    max-width: none;
+    align-items: stretch;
+    padding-block: 0;
+  }
+
+  .sb-book-view .sb-book-shell--open.sb-book-shell--paged,
+  .sb-book-view .sb-book-shell--paged {
+    width: 100%;
+    margin-inline: 0;
+  }
+
+  .sb-book-view .sb-spread-shell--primary:has(.sb-spread--paged) {
+    border-radius: 0 var(--sb-cover-radius) var(--sb-cover-radius) 0;
+  }
+
+  .sb-book-view .sb-spread-shell--primary > .sb-spread.sb-spread--paged {
+    border-radius: 0 var(--sb-page-radius-top) var(--sb-page-radius-bottom) 0;
+  }
+
+  .sb-book-view
+    .sb-spread-shell--primary
+    > .sb-spread.sb-spread--paged
+    .sb-spread-grid {
+    border-radius: inherit;
+  }
 }
 
 @media (max-width: 1023px) and (min-width: 768px) {
   .sb-spread-shell--primary:not(:has(.sb-spread--paged)) {
     --sb-cover-lip: 0px;
-    --sb-cover-lip-x: 0.6rem;
-  }
-
-  .sb-spread-shell--primary > .sb-spread:not(.sb-spread--paged) {
-    box-shadow:
-      0 1px 0 rgba(255, 255, 255, 0.78) inset,
-      0 -1px 2px rgba(44, 36, 22, 0.035) inset,
-      -1px 0 0 #faf5ed,
-      -2px 0.4px 0 rgba(44, 36, 22, 0.045),
-      -3px 0.8px 0 #f4ebe0,
-      -4px 1.2px 0 rgba(44, 36, 22, 0.04),
-      -5px 1.6px 0 #efe5d6,
-      -6px 2px 0 #ebe0cf,
-      1px 0 0 #faf5ed,
-      2px 0.4px 0 rgba(44, 36, 22, 0.045),
-      3px 0.8px 0 #f4ebe0,
-      4px 1.2px 0 rgba(44, 36, 22, 0.04),
-      5px 1.6px 0 #efe5d6,
-      6px 2px 0 #ebe0cf,
-      0 -1px 2px rgba(11, 29, 58, 0.06),
-      0 2px 3px rgba(11, 29, 58, 0.1);
+    --sb-cover-lip-x: 1.31rem;
   }
 }
 
 .sb-spine {
   display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 3;
+  /*
+   * Clear but elegant gutter — two pages meet at a soft crease.
+   * Slightly stronger separation without a thick divider.
+   */
+  background: linear-gradient(
+    90deg,
+    rgba(44, 36, 22, 0) 0%,
+    rgba(44, 36, 22, 0.03) 20%,
+    rgba(44, 36, 22, 0.07) 38%,
+    rgba(255, 252, 247, 0.35) 46%,
+    rgba(44, 36, 22, 0.16) 50%,
+    rgba(255, 252, 247, 0.35) 54%,
+    rgba(44, 36, 22, 0.07) 62%,
+    rgba(44, 36, 22, 0.03) 80%,
+    rgba(44, 36, 22, 0) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0.55) 12%,
+    rgba(0, 0, 0, 0.95) 34%,
+    rgba(0, 0, 0, 1) 50%,
+    rgba(0, 0, 0, 0.95) 66%,
+    rgba(0, 0, 0, 0.55) 88%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0.55) 12%,
+    rgba(0, 0, 0, 0.95) 34%,
+    rgba(0, 0, 0, 1) 50%,
+    rgba(0, 0, 0, 0.95) 66%,
+    rgba(0, 0, 0, 0.55) 88%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
 }
 
 @media (min-width: 768px) {
-  /*
-   * Narrow recessed binding (~2–3% visual width).
-   * Soft valley into the fold — not a divider bar.
-   */
-  .sb-spine {
+  .sb-spread--fixed:not(.sb-spread--paged) .sb-spine {
     display: block;
-    position: absolute;
-    top: 0;
-    bottom: 0;
     left: 50%;
-    width: clamp(0.45rem, 2.4%, 0.85rem);
+    width: clamp(0.5rem, 2.4%, 0.88rem);
     transform: translateX(-50%);
-    background: linear-gradient(
-      90deg,
-      rgba(44, 36, 22, 0) 0%,
-      rgba(44, 36, 22, 0.025) 22%,
-      rgba(44, 36, 22, 0.055) 40%,
-      rgba(255, 252, 247, 0.3) 47%,
-      rgba(44, 36, 22, 0.095) 50%,
-      rgba(255, 252, 247, 0.3) 53%,
-      rgba(44, 36, 22, 0.055) 60%,
-      rgba(44, 36, 22, 0.025) 78%,
-      rgba(44, 36, 22, 0) 100%
-    );
-    -webkit-mask-image: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0.2) 0%,
-      rgba(0, 0, 0, 0.55) 12%,
-      rgba(0, 0, 0, 0.95) 34%,
-      rgba(0, 0, 0, 1) 50%,
-      rgba(0, 0, 0, 0.95) 66%,
-      rgba(0, 0, 0, 0.55) 88%,
-      rgba(0, 0, 0, 0.2) 100%
-    );
-    mask-image: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0.2) 0%,
-      rgba(0, 0, 0, 0.55) 12%,
-      rgba(0, 0, 0, 0.95) 34%,
-      rgba(0, 0, 0, 1) 50%,
-      rgba(0, 0, 0, 0.95) 66%,
-      rgba(0, 0, 0, 0.55) 88%,
-      rgba(0, 0, 0, 0.2) 100%
-    );
-    pointer-events: none;
-    z-index: 2;
   }
 }
 
@@ -711,11 +768,20 @@
   z-index: 1;
 }
 
-/* Soft curvature into the binding (desktop open spread only) */
+/*
+ * Extremely subtle inward curvature toward the spine (desktop).
+ * Pages stay clean and nearly flat — soft warm shade near the gutter only.
+ */
 @media (min-width: 768px) {
   .sb-spread--fixed:not(.sb-spread--paged) .sb-spread-grid > .sb-page {
     border-right-width: 0;
     border-right-color: transparent;
+  }
+
+  /* No full-page lighting wash — keep surfaces bright and flat */
+  .sb-spread--fixed:not(.sb-spread--paged) .sb-spread-grid > .sb-page:first-child::before,
+  .sb-spread--fixed:not(.sb-spread--paged) .sb-spread-grid > .sb-page:last-child::after {
+    content: none;
   }
 
   .sb-spread--fixed:not(.sb-spread--paged) .sb-spread-grid > .sb-page:first-child::after,
@@ -724,24 +790,24 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    width: min(9%, 2.5rem);
+    width: min(14%, 3.5rem);
     pointer-events: none;
     z-index: 2;
     -webkit-mask-image: linear-gradient(
       180deg,
-      rgba(0, 0, 0, 0.3) 0%,
-      rgba(0, 0, 0, 0.8) 22%,
+      rgba(0, 0, 0, 0.25) 0%,
+      rgba(0, 0, 0, 0.75) 18%,
       rgba(0, 0, 0, 1) 50%,
-      rgba(0, 0, 0, 0.8) 78%,
-      rgba(0, 0, 0, 0.3) 100%
+      rgba(0, 0, 0, 0.75) 82%,
+      rgba(0, 0, 0, 0.25) 100%
     );
     mask-image: linear-gradient(
       180deg,
-      rgba(0, 0, 0, 0.3) 0%,
-      rgba(0, 0, 0, 0.8) 22%,
+      rgba(0, 0, 0, 0.25) 0%,
+      rgba(0, 0, 0, 0.75) 18%,
       rgba(0, 0, 0, 1) 50%,
-      rgba(0, 0, 0, 0.8) 78%,
-      rgba(0, 0, 0, 0.3) 100%
+      rgba(0, 0, 0, 0.75) 82%,
+      rgba(0, 0, 0, 0.25) 100%
     );
   }
 
@@ -750,8 +816,8 @@
     background: linear-gradient(
       90deg,
       rgba(44, 36, 22, 0) 0%,
-      rgba(44, 36, 22, 0.012) 45%,
-      rgba(44, 36, 22, 0.04) 100%
+      rgba(44, 36, 22, 0.025) 55%,
+      rgba(44, 36, 22, 0.06) 100%
     );
   }
 
@@ -760,8 +826,8 @@
     background: linear-gradient(
       270deg,
       rgba(44, 36, 22, 0) 0%,
-      rgba(44, 36, 22, 0.012) 45%,
-      rgba(44, 36, 22, 0.04) 100%
+      rgba(44, 36, 22, 0.025) 55%,
+      rgba(44, 36, 22, 0.06) 100%
     );
   }
 }
@@ -777,6 +843,7 @@
   overflow: hidden;
 }
 
+/* Keep page-edge stack shadows visible in the cover lip */
 .sb-spread-shell--primary > .sb-spread.sb-spread--fixed {
   overflow: visible;
 }
@@ -797,8 +864,46 @@
   background: linear-gradient(180deg, #fbf6ef 0%, #f7efe4 100%);
 }
 
+/* Left binding for one-page book */
 .sb-spread--paged .sb-spine {
-  display: none;
+  display: block;
+  left: 0;
+  width: clamp(0.5rem, 2.8%, 0.85rem);
+  transform: none;
+}
+
+/* Soft page curvature into the left binding */
+.sb-spread--paged::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: min(14%, 3.25rem);
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(
+    90deg,
+    rgba(44, 36, 22, 0.055) 0%,
+    rgba(44, 36, 22, 0.02) 45%,
+    rgba(44, 36, 22, 0) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.25) 0%,
+    rgba(0, 0, 0, 0.75) 18%,
+    rgba(0, 0, 0, 1) 50%,
+    rgba(0, 0, 0, 0.75) 82%,
+    rgba(0, 0, 0, 0.25) 100%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.25) 0%,
+    rgba(0, 0, 0, 0.75) 18%,
+    rgba(0, 0, 0, 1) 50%,
+    rgba(0, 0, 0, 0.75) 82%,
+    rgba(0, 0, 0, 0.25) 100%
+  );
 }
 
 .sb-spread--paged .sb-spread-grid {
@@ -929,19 +1034,30 @@
 .sb-media-host {
   width: 100%;
   min-height: 0;
+  overflow: visible;
 }
 
 .sb-media-slot {
-  width: 94%;
+  /* ~10% larger than the previous 94% inset */
+  width: min(100%, calc(94% * 1.1));
   max-width: 100%;
   max-height: 100%;
   aspect-ratio: 16 / 9;
   overflow: hidden;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   flex-shrink: 1;
   min-height: 0;
   margin-inline: auto;
-  background: rgba(44, 36, 22, 0.03);
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+/* Reclaim page padding so the larger media can use the full leaf */
+.sb-spread-shell--primary .sb-page--fixed:has(.sb-media-host),
+.sb-spread-shell--primary .sb-page--fixed:has(.sb-media-slot) {
+  padding-left: 0.35rem;
+  padding-right: 0.35rem;
 }
 
 .sb-spread--paged .sb-media-slot {
@@ -967,6 +1083,10 @@
   height: 100% !important;
   max-height: none !important;
   aspect-ratio: auto !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0.25rem !important;
 }
 
 .sb-media-slot video,
@@ -975,6 +1095,10 @@
   max-height: none !important;
   width: 100% !important;
   object-fit: contain;
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  border-radius: 0.25rem !important;
 }
 
 .sb-media-slot-empty {
