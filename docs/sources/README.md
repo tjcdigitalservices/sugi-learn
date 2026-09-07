@@ -4,7 +4,7 @@
 
 | Document | Path | Status |
 |----------|------|--------|
-| Tikum Kadlum / Sugidanon (Epics) of Panay — 13 chapter summaries | [`docs/sources/Tikum-Kadlum-Sugidanon-Source.docx`](./Tikum-Kadlum-Sugidanon-Source.docx) | **Present** |
+| Tikum Kadlum / Suguidanon (Epics) of Panay — 13 chapter summaries | [`docs/sources/Tikum-Kadlum-Suguidanon-Source.docx`](./Tikum-Kadlum-Suguidanon-Source.docx) | **Present** |
 
 This document is the authority for M10 content mapping and Chapter 1 implementation.
 

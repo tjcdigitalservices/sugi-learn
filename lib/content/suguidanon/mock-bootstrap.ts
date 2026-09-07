@@ -1,25 +1,25 @@
-import { buildChapterContent } from "@/lib/content/sugidanon/build-chapter-content";
+import { buildChapterContent } from "@/lib/content/suguidanon/build-chapter-content";
 import {
   CHAPTERS_2_13,
   getChapterContentDefinition,
-} from "@/lib/content/sugidanon/chapters/index";
+} from "@/lib/content/suguidanon/chapters/index";
 import type { Character } from "@/types/chapter";
 
 const initializedChapters = new Set<string>();
 
-export function isSugidanonChapterInitialized(chapterId: string): boolean {
+export function isSuguidanonChapterInitialized(chapterId: string): boolean {
   return initializedChapters.has(chapterId);
 }
 
-export function markSugidanonChapterInitialized(chapterId: string): void {
+export function markSuguidanonChapterInitialized(chapterId: string): void {
   initializedChapters.add(chapterId);
 }
 
-export function isSugidanonExpansionChapter(chapterId: string): boolean {
+export function isSuguidanonExpansionChapter(chapterId: string): boolean {
   return CHAPTERS_2_13.some((chapter) => chapter.id === chapterId);
 }
 
-export function bootstrapSugidanonChapter(
+export function bootstrapSuguidanonChapter(
   chapterId: string,
   characterRegistry: Character[],
 ): ReturnType<typeof buildChapterContent> | null {
@@ -31,7 +31,7 @@ export function bootstrapSugidanonChapter(
   return buildChapterContent(definition, characterRegistry);
 }
 
-export function registerAllSugidanonCharacters(
+export function registerAllSuguidanonCharacters(
   characterRegistry: Character[],
 ): void {
   for (const definition of CHAPTERS_2_13) {
@@ -39,6 +39,6 @@ export function registerAllSugidanonCharacters(
   }
 }
 
-export function resetSugidanonBootstrapForTests(): void {
+export function resetSuguidanonBootstrapForTests(): void {
   initializedChapters.clear();
 }

@@ -1,9 +1,9 @@
-# Sugidanon — Architecture
+# Suguidanon — Architecture
 
 **Version:** M15 (Analytics & Admin Reporting)  
 **Last updated:** 2026-08-15
 
-This document describes the production architecture for Sugidanon. It is written for human developers and AI coding agents.
+This document describes the production architecture for Suguidanon. It is written for human developers and AI coding agents.
 
 ---
 
@@ -21,7 +21,7 @@ This document describes the production architecture for Sugidanon. It is written
 └─────────────────────────────────────────────────────────┘
 ```
 
-**Core principle:** Sugidanon is **content-driven**. One reusable **Chapter Engine** renders any chapter from data. No `Chapter1.tsx`, `Chapter2.tsx`, etc.
+**Core principle:** Suguidanon is **content-driven**. One reusable **Chapter Engine** renders any chapter from data. No `Chapter1.tsx`, `Chapter2.tsx`, etc.
 
 ---
 
@@ -197,9 +197,9 @@ ChapterEngine
 | Layer | Location | Scope |
 |-------|----------|-------|
 | Chapter 1 vertical slice | `lib/content/tikum-kadlum/` | Approved learner slice (M10–M12) |
-| Chapters 2–13 expansion | `lib/content/sugidanon/chapters/` | Draft CMS-ready content (M13) |
-| Shared builders | `lib/content/sugidanon/build-chapter-content.ts`, `character-registry.ts` | Section assembly, character reuse |
-| Mock bootstrap | `lib/content/sugidanon/mock-bootstrap.ts` | Lazy init on first chapter access |
+| Chapters 2–13 expansion | `lib/content/suguidanon/chapters/` | Draft CMS-ready content (M13) |
+| Shared builders | `lib/content/suguidanon/build-chapter-content.ts`, `character-registry.ts` | Section assembly, character reuse |
+| Mock bootstrap | `lib/content/suguidanon/mock-bootstrap.ts` | Lazy init on first chapter access |
 | Supabase seed | `supabase/seed-chapters-2-13.sql` | Generated via `scripts/generate-chapters-2-13-seed.ts` |
 
 **Rules:** Do not invent story content. New M13 content defaults to `draft`. Only `approved` content is learner-visible via `filterChapterForLearner()`.
@@ -316,7 +316,7 @@ See `docs/AUTHENTICATION.md` for auth architecture.
 
 ## Related Documentation
 
-- `docs/Sugidanon_Project_Specification.md` — product specification
+- `docs/Suguidanon_Project_Specification.md` — product specification
 - `docs/PROTOTYPE_REFERENCE.md` — prototype analysis
 - `docs/LEARNER_JOURNEY.md` — M7 learner home, progress, Continue Learning
 - `docs/PRE_ASSESSMENT.md` — M8 pre-assessment engine, scoring, security

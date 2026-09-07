@@ -1,8 +1,8 @@
-import { CHAPTERS_BATCH_1 } from "@/lib/content/sugidanon/chapters/batch-1";
-import { CHAPTERS_BATCH_2 } from "@/lib/content/sugidanon/chapters/batch-2";
-import { CHAPTERS_BATCH_3 } from "@/lib/content/sugidanon/chapters/batch-3";
-import { CHAPTERS_BATCH_4 } from "@/lib/content/sugidanon/chapters/batch-4";
-import type { ChapterContentDefinition } from "@/lib/content/sugidanon/types";
+import { CHAPTERS_BATCH_1 } from "@/lib/content/suguidanon/chapters/batch-1";
+import { CHAPTERS_BATCH_2 } from "@/lib/content/suguidanon/chapters/batch-2";
+import { CHAPTERS_BATCH_3 } from "@/lib/content/suguidanon/chapters/batch-3";
+import { CHAPTERS_BATCH_4 } from "@/lib/content/suguidanon/chapters/batch-4";
+import type { ChapterContentDefinition } from "@/lib/content/suguidanon/types";
 
 export const CHAPTERS_2_13: ChapterContentDefinition[] = [
   ...CHAPTERS_BATCH_1,

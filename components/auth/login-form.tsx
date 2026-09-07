@@ -27,8 +27,8 @@ function safeNextPath(value: string | null): string | null {
 }
 
 export function LoginForm({
-  title = "Welcome to Sugidanon",
-  description = "Continue your learning journey through the Sugidanon Epic Story. Administrator sign-in.",
+  title = "Welcome to Suguidanon",
+  description = "Continue your learning journey through the Suguidanon Epic Story. Administrator sign-in.",
 }: LoginFormProps) {
   const router = useRouter();
   const searchParams = useSearchParams();

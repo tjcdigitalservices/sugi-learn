@@ -1,7 +1,7 @@
 import type { ChapterSummary } from "@/types/chapter";
 
 /**
- * Canonical catalog of the 13 Sugidanon chapters (titles from AGENTS.md / README).
+ * Canonical catalog of the 13 Suguidanon chapters (titles from AGENTS.md / README).
  * Detailed content is added per chapter in later milestones.
  */
 export const CHAPTER_CATALOG: readonly ChapterSummary[] = [

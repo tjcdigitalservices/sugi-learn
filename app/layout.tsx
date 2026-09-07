@@ -16,9 +16,9 @@ const body = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Sugidanon",
+  title: "Suguidanon",
   description:
-    "Stories Today, Heritage Always. An interactive learning journey through the Sugidanon of Panay.",
+    "Stories Today, Heritage Always. An interactive learning journey through the Suguidanon of Panay.",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "32x32" },
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     ],
     apple: [{ url: "/apple-icon.png", type: "image/png", sizes: "180x180" }],
   },
-  applicationName: "Sugidanon",
+  applicationName: "Suguidanon",
 };
 
 export const viewport: Viewport = {

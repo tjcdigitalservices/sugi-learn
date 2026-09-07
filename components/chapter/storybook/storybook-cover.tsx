@@ -57,7 +57,7 @@ export function StorybookCover({
 
               <div className="sb-cover-body">
                 <div className="sb-cover-brand">
-                  <p className="sb-cover-brand-title">Sugidanon</p>
+                  <p className="sb-cover-brand-title">Suguidanon</p>
                   <p className="sb-cover-brand-sub">Epics of Panay</p>
                   <div className="sb-cover-gold-rule" aria-hidden="true" />
                 </div>

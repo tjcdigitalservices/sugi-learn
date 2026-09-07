@@ -1,4 +1,4 @@
-# Sugidanon — Learner Journey & Progress
+# Suguidanon — Learner Journey & Progress
 
 **Version:** M7  
 **Last updated:** 2026-08-15

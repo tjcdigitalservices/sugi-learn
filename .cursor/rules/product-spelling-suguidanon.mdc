@@ -1,0 +1,12 @@
+---
+description: Correct product spelling is Suguidanon
+alwaysApply: true
+---
+
+# Product spelling: Suguidanon
+
+The product and epic name spelling is **Suguidanon** (with "u" after "Sug").
+
+- Use `Suguidanon` in user-facing copy, docs, brand components, and comments.
+- Use `suguidanon` for package/module paths, asset filenames, and storage keys.
+- Do not reintroduce `Sugidanon` / `sugidanon`.

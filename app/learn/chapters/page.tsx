@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { ChapterCoverGrid } from "@/components/learner/chapter-cover-grid";
+import { CharacterRepresentationNotice } from "@/components/learner/character-representation-notice";
 import { ContinueLearningButton } from "@/components/learner/continue-learning-button";
 import { OverallProgress } from "@/components/learner/overall-progress";
 import { PageHeader } from "@/components/shared/page-header";
@@ -20,9 +21,11 @@ export default async function ChaptersPage() {
   return (
     <div className="mx-auto max-w-6xl space-y-8 pb-10">
       <PageHeader
-        title="Sugidanon (Epics) of Panay"
+        title="Suguidanon (Epics) of Panay"
         description="Watch each chapter’s 2D animation. Finish a video to unlock the next chapter."
       />
+
+      <CharacterRepresentationNotice />
 
       <OverallProgress
         completedCount={journey.completedCount}

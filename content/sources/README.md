@@ -2,7 +2,7 @@
 
 The Tikum Kadlum client source document lives at:
 
-**`docs/sources/Tikum-Kadlum-Sugidanon-Source.docx`**
+**`docs/sources/Tikum-Kadlum-Suguidanon-Source.docx`**
 
 See `docs/sources/README.md` for details.
 

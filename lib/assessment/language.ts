@@ -2,7 +2,7 @@ import type { LearnerAssessmentQuestion, QuestionOption } from "@/types/assessme
 
 export type AssessmentLanguage = "en" | "hil";
 
-export const ASSESSMENT_LANGUAGE_STORAGE_KEY = "sugidanon:assessment-lang";
+export const ASSESSMENT_LANGUAGE_STORAGE_KEY = "suguidanon:assessment-lang";
 
 export function resolveAssessmentPrompt(
   question: Pick<LearnerAssessmentQuestion, "prompt" | "promptHiligaynon">,

@@ -47,6 +47,10 @@ import type {
   ChapterProgressRecord,
   LearnerProgress,
 } from "@/types/progress";
+import type {
+  CharacterRepresentationNoticeCopy,
+  UpdateCharacterRepresentationNoticeInput,
+} from "@/types/site-notice";
 
 /** Data-access contracts. Implementations swap in M2 (Supabase). */
 
@@ -200,6 +204,13 @@ export interface MediaRepository {
   listMediaForChapter(chapterSlug: string): Promise<MediaAsset[]>;
 }
 
+export interface SiteNoticeRepository {
+  getCharacterRepresentationNotice(): Promise<CharacterRepresentationNoticeCopy>;
+  updateCharacterRepresentationNotice(
+    input: UpdateCharacterRepresentationNoticeInput,
+  ): Promise<CharacterRepresentationNoticeCopy>;
+}
+
 export interface DataRepositories {
   chapters: ChapterRepository;
   chapterManagement: ChapterManagementRepository;
@@ -208,4 +219,5 @@ export interface DataRepositories {
   adminDashboard: AdminDashboardRepository;
   adminAnalytics: AdminAnalyticsRepository;
   media: MediaRepository;
+  siteNotices: SiteNoticeRepository;
 }

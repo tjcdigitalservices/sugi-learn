@@ -14,8 +14,8 @@ export default function LoginPage() {
         }
       >
         <LoginForm
-          title="Welcome to Sugidanon"
-          description="Continue your learning journey through the Sugidanon Epic Story. Administrator sign-in."
+          title="Welcome to Suguidanon"
+          description="Continue your learning journey through the Suguidanon Epic Story. Administrator sign-in."
         />
       </Suspense>
     </HeritageAuthShell>

@@ -495,6 +495,30 @@ export interface Database {
         };
         Relationships: [];
       };
+      site_notices: {
+        Row: {
+          key: string;
+          title: string;
+          body: string;
+          short_text: string;
+          updated_at: string;
+        };
+        Insert: {
+          key: string;
+          title: string;
+          body: string;
+          short_text: string;
+          updated_at?: string;
+        };
+        Update: {
+          key?: string;
+          title?: string;
+          body?: string;
+          short_text?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -524,3 +548,4 @@ export type AssessmentRow = Tables<"assessments">;
 export type QuestionRow = Tables<"questions">;
 export type QuestionOptionRow = Tables<"question_options">;
 export type LearnerChapterProgressRow = Tables<"learner_chapter_progress">;
+export type SiteNoticeRow = Tables<"site_notices">;

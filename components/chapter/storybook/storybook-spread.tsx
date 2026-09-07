@@ -24,6 +24,7 @@ import { useStorybookLayoutMode } from "@/lib/chapter/storybook-layout-mode";
 import { ChapterSummaryExpandable } from "@/components/chapter/chapter-summary-expandable";
 import { MediaRenderer } from "@/components/chapter/media-renderer";
 import { SectionRenderer } from "@/components/chapter/section-renderer";
+import { useCharacterRepresentationNotice } from "@/components/learner/character-representation-provider";
 import { resolveMediaUrl } from "@/lib/media/resolve-media-url";
 
 type PagedLeaf = "text" | "video";
@@ -170,6 +171,8 @@ export function StorybookSpread({
 }: StorybookSpreadProps) {
   const detectedMode = useStorybookLayoutMode();
   const layoutMode = layoutModeProp ?? detectedMode;
+  const { shortText: characterRepresentationShort } =
+    useCharacterRepresentationNotice();
   const { rightAnimation, rightIllustration, continuationSections } =
     partitionSections(chapter.sections, chapter.media);
   const continuationSpreads = chunkIntoPairs(continuationSections);
@@ -416,6 +419,10 @@ export function StorybookSpread({
             <ChapterSummaryExpandable summary={chapter.summary} />
           </div>
         ) : null}
+
+        <p className="shrink-0 text-[0.7rem] leading-snug text-sl-ink-muted/80 sm:text-xs">
+          {characterRepresentationShort}
+        </p>
       </div>
 
       {paged ? (

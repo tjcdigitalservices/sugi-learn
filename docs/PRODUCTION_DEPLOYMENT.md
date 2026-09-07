@@ -1,8 +1,8 @@
-# Sugidanon — Production Deployment Guide
+# Suguidanon — Production Deployment Guide
 
 **Last updated:** 2026-08-15 (M18)
 
-This guide describes how to deploy Sugidanon to a production or staging environment.
+This guide describes how to deploy Suguidanon to a production or staging environment.
 
 **Architecture:**
 

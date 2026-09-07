@@ -1,10 +1,10 @@
-# Sugidanon
+# Suguidanon
 
-A multimedia learning system for the Panay Bukidnon Sugidanon.
+A multimedia learning system for the Panay Bukidnon Suguidanon.
 
 ## Project Overview
 
-Sugidanon is a responsive web-based learning platform presenting selected Sugidanon material as a structured multimedia learning experience.
+Suguidanon is a responsive web-based learning platform presenting selected Suguidanon material as a structured multimedia learning experience.
 
 ### 13 Chapters
 
@@ -28,7 +28,7 @@ The four Humadapnon entries represent four volumes of the longer Humadapnon epic
 
 ## Product Goal
 
-Sugidanon should allow:
+Suguidanon should allow:
 - learners to complete a pre-assessment
 - learners to progress through 13 multimedia chapters
 - learners to read/explore story content
@@ -41,7 +41,7 @@ Sugidanon should allow:
 
 ## Core Principle
 
-**Sugidanon is content-driven.**
+**Suguidanon is content-driven.**
 
 The application should not depend on content being hardcoded into Next.js components.
 
@@ -120,9 +120,9 @@ Questions should be stored as data and traceable to their source/chapter.
 
 ## Source and Content Policy
 
-Client-provided source materials are the primary basis for Sugidanon content.
+Client-provided source materials are the primary basis for Suguidanon content.
 
-The Aswang Project's "Summary of the Sugidanon (Epics) of Central Panay" is also a project reference.
+The Aswang Project's "Summary of the Suguidanon (Epics) of Central Panay" is also a project reference.
 
 **Do not invent story, cultural, historical, linguistic, ritual, or character details.**
 
@@ -199,7 +199,7 @@ AI tools must not be treated as authoritative sources for cultural content.
 
 Production content lives in Supabase. Client source documents:
 
-- **`docs/sources/Tikum-Kadlum-Sugidanon-Source.docx`** — 13-chapter summaries (Chapter 1 vertical slice: M10)
+- **`docs/sources/Tikum-Kadlum-Suguidanon-Source.docx`** — 13-chapter summaries (Chapter 1 vertical slice: M10)
 
 See `docs/M10_VERTICAL_SLICE.md`, `docs/M12_CHAPTER_1_MULTIMEDIA.md`, and `docs/TIKUM_KADLUM_CONTENT_MAP.md`.
 

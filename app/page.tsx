@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BookOpen, Lock, Users } from "lucide-react";
 
-import { HeritageWave, SugidanonMark } from "@/components/brand/heritage-wave";
+import { HeritageWave, SuguidanonMark } from "@/components/brand/heritage-wave";
 import { StartPreTestButton } from "@/components/learner/start-pre-test-button";
 
 export default function HomePage() {
@@ -10,7 +10,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-sl-cream font-body text-sl-ink">
       <header className="relative z-20 bg-sl-navy">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2.5 sm:gap-4 sm:px-6">
-          <SugidanonMark light showTagline={false} />
+          <SuguidanonMark light showTagline={false} />
           <div className="flex shrink-0 items-center gap-3 sm:gap-6">
             <a
               href="#about"
@@ -52,7 +52,7 @@ export default function HomePage() {
               Discover the Stories of Panay
             </h1>
             <p className="max-w-md text-base leading-relaxed text-white/85 sm:text-lg">
-              An interactive learning experience that brings the Sugidanon to
+              An interactive learning experience that brings the Suguidanon to
               life — for greater learners, a brighter tomorrow.
             </p>
             <div className="space-y-3 pt-1">
@@ -93,7 +93,7 @@ export default function HomePage() {
             A World of Stories Awaits
           </h2>
           <p className="mx-auto max-w-2xl text-sm leading-relaxed text-sl-ink-muted sm:text-base">
-            Explore narratives from the Sugidanon of Panay through animation,
+            Explore narratives from the Suguidanon of Panay through animation,
             assessment, and guided learning.
           </p>
         </div>

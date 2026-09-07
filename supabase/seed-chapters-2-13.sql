@@ -1,5 +1,5 @@
--- M13 — Chapters 2–13 content seed (generated from lib/content/sugidanon/)
--- Source: docs/sources/Tikum-Kadlum-Sugidanon-Source.docx
+-- M13 — Chapters 2–13 content seed (generated from lib/content/suguidanon/)
+-- Source: docs/sources/Tikum-Kadlum-Suguidanon-Source.docx
 -- Run: psql $DATABASE_URL -f supabase/seed-chapters-2-13.sql
 -- Skips chapters that already have sections.
 
@@ -14,7 +14,7 @@ BEGIN
     SELECT COUNT(*) INTO section_count FROM public.chapter_sections WHERE chapter_id = ch_id;
     IF section_count = 0 THEN
       UPDATE public.chapters SET
-        subtitle = 'Sugidanon (Epics) of Panay Book II',
+        subtitle = 'Suguidanon (Epics) of Panay Book II',
         summary = 'Amburukay raises Matan-ayon and Saranggaon as her own daughters, keeping them in a golden chamber as binukot. She makes an extraordinary vow: her adopted daughters will marry whoever succeeds in stealing her golden pubic hair. When a string on Labaw Donggon''s musical instrument breaks, he learns that Amburukay''s hair can replace it. He enchants her into sleep and cuts the hair, only to discover that taking it has bound him to her condition. Believing he must marry the frightening hermit herself, he approaches the wedding reluctantly. Amburukay instead presents the daughters she has raised and judges Labaw Donggon worthy to marry them.',
         updated_at = now()
       WHERE id = ch_id;
@@ -36,7 +36,7 @@ BEGIN
     SELECT COUNT(*) INTO section_count FROM public.chapter_sections WHERE chapter_id = ch_id;
     IF section_count = 0 THEN
       UPDATE public.chapters SET
-        subtitle = 'Sugidanon (Epics) of Panay Book III',
+        subtitle = 'Suguidanon (Epics) of Panay Book III',
         summary = 'Before Matan-ayon is born, she has already been promised in marriage to Labaw Donggon. A gold medallion is given as the sign of this agreement. When she reaches marriageable age, Sinagnayan also seeks her. He is connected to Paglambuhan, who has taken an heirloom sailboat belonging to Matan-ayon''s parents. The recovery of the vessel becomes the condition by which a suitor may prove his right to marry her. Labaw Donggon is caught between a prior promise and a new test. Marriage here is not simply private romance: it joins families, wealth, reputation, inherited objects, and promises made before the individuals concerned are old enough to act for themselves.',
         updated_at = now()
       WHERE id = ch_id;
@@ -58,7 +58,7 @@ BEGIN
     SELECT COUNT(*) INTO section_count FROM public.chapter_sections WHERE chapter_id = ch_id;
     IF section_count = 0 THEN
       UPDATE public.chapters SET
-        subtitle = 'Sugidanon (Epics) of Panay Book VII',
+        subtitle = 'Suguidanon (Epics) of Panay Book VII',
         summary = 'Balanakon is a dalagangan, a person possessing extraordinary innate power. Taghuy persuades him to challenge Labaw Donggon and seek Matan-ayon. During his journey, Balanakon is stopped by Sarandihon, Labaw Donggon''s brother, but Sarandihon cannot defeat him. Taghuy summons Labaw Donggon, yet even the brothers'' combined strength is insufficient. The conflict ends only when Laon Sina intervenes. Balanakon''s power is genuine, and victory cannot be secured through force alone; an authoritative intermediary must restore order before rivalry destroys the relationships surrounding the fighters.',
         updated_at = now()
       WHERE id = ch_id;
@@ -84,7 +84,7 @@ BEGIN
     SELECT COUNT(*) INTO section_count FROM public.chapter_sections WHERE chapter_id = ch_id;
     IF section_count = 0 THEN
       UPDATE public.chapters SET
-        subtitle = 'Sugidanon (Epics) of Panay Book V',
+        subtitle = 'Suguidanon (Epics) of Panay Book V',
         summary = 'Masangladon, a being of extraordinary power associated with the underworld, desires Matan-ayon. He transforms a kalampay, or crab, into an island covered with fruit trees. Matan-ayon is made to feel unbearably warm and goes to the island to bathe. As she gathers fruit, she is unknowingly carried toward the panibyungan, the source of waters descending into the underworld. Taghuy informs Labaw Donggon. Labaw and Paubare attempt to descend after her, but the enormous crab blocks their way. Katnub Magkaruan dives beneath it and makes an opening in its joints through which Labaw Donggon can pass. Labaw Donggon cannot defeat Masangladon. Luyong Kabig, sister of Laon Sina and a judge in the underworld, must mediate an agreement permitting Matan-ayon to return.',
         updated_at = now()
       WHERE id = ch_id;
@@ -114,7 +114,7 @@ BEGIN
     SELECT COUNT(*) INTO section_count FROM public.chapter_sections WHERE chapter_id = ch_id;
     IF section_count = 0 THEN
       UPDATE public.chapters SET
-        subtitle = 'Sugidanon (Epics) of Panay Book IV',
+        subtitle = 'Suguidanon (Epics) of Panay Book IV',
         summary = 'Labaw Donggon asks his wives, Matan-ayon and Padilagong Bulan, for permission to sail. Matan-ayon agrees, while Padilagong Bulan insists on accompanying him. When he refuses, she gives him lime and betel quid prepared from the bones of a giant turtle. Eating it transforms him into a pawikan. Matan-ayon and her brother Paubare follow the transformed hero. Pahagunong sees Matan-ayon bathing, desires her, and defeats Paubare in combat. Matan-ayon does not remain a passive prize: she transforms herself into a man and enters the conflict to assist her brother. Laon Sina eventually restores Labaw Donggon and mediates the dispute.',
         updated_at = now()
       WHERE id = ch_id;
@@ -140,7 +140,7 @@ BEGIN
     SELECT COUNT(*) INTO section_count FROM public.chapter_sections WHERE chapter_id = ch_id;
     IF section_count = 0 THEN
       UPDATE public.chapters SET
-        subtitle = 'Sugidanon (Epics) of Panay Book VI',
+        subtitle = 'Suguidanon (Epics) of Panay Book VI',
         summary = 'Matan-ayon urges Labaw Donggon to confront Sinagnayan so that Pinailog sa Pinggan—Sinagnayan''s wife and Matan-ayon''s sister—can be brought into Labaw Donggon''s household. Before reaching Sinagnayan, Labaw Donggon fights Sarandihon without either man realizing they are brothers. Laon Sina intervenes, reveals their relationship, and explains that Sinagnayan''s life-force is concealed in an eggshell inside the heart of a lion guarded by his mother, Minayunmon. Sarandihon transforms himself into Sinagnayan, uses a magical taghuy to put Minayunmon to sleep, kills the lion, and removes the eggshell. Labaw Donggon can then defeat Sinagnayan and bring Pinailog home.',
         updated_at = now()
       WHERE id = ch_id;
@@ -168,7 +168,7 @@ BEGIN
     SELECT COUNT(*) INTO section_count FROM public.chapter_sections WHERE chapter_id = ch_id;
     IF section_count = 0 THEN
       UPDATE public.chapters SET
-        subtitle = 'Sugidanon (Epics) of Panay Book VIII, Volume 1',
+        subtitle = 'Suguidanon (Epics) of Panay Book VIII, Volume 1',
         summary = 'Humadapnon is the longest title in the series and occupies four published volumes. Its narrative follows Humadapnon''s search for a suitable wife, his courtship of Nagmalitong Yawa—frequently called Mali—and the promises, rivalries, separations, and reconciliations that follow. Mali is not merely the woman Humadapnon seeks. Throughout these episodes she disguises herself, performs ritual and magical actions, rescues Humadapnon, helps him defeat opponents, makes strategic decisions, and answers humiliation and betrayal.',
         updated_at = now()
       WHERE id = ch_id;
@@ -186,7 +186,7 @@ BEGIN
     SELECT COUNT(*) INTO section_count FROM public.chapter_sections WHERE chapter_id = ch_id;
     IF section_count = 0 THEN
       UPDATE public.chapters SET
-        subtitle = 'Sugidanon (Epics) of Panay Book VIII, Volume 2',
+        subtitle = 'Suguidanon (Epics) of Panay Book VIII, Volume 2',
         summary = 'To continue his courtship, Humadapnon must retrieve the heirloom boat serving as Mali''s tuos, or mark of engagement. Paglambuhan possesses the vessel. Humadapnon fights Paglambuhan and Sumagulong but cannot defeat them unaided. Mali intervenes, distracting Paglambuhan so that Humadapnon can wound him. Custom then requires Humadapnon to stay with the defeated man''s wife. When he remains longer than expected, Mali becomes jealous. She takes both Humadapnon''s golden boat and the recovered heirloom vessel and departs, leaving him in a golden basket. Taghuy attempts to reconcile them. Humadapnon later challenges Mali''s father, but the confrontation is reframed as a test of the suitor''s strength.',
         updated_at = now()
       WHERE id = ch_id;
@@ -210,7 +210,7 @@ BEGIN
     SELECT COUNT(*) INTO section_count FROM public.chapter_sections WHERE chapter_id = ch_id;
     IF section_count = 0 THEN
       UPDATE public.chapters SET
-        subtitle = 'Sugidanon (Epics) of Panay Book VIII, Volume 3',
+        subtitle = 'Suguidanon (Epics) of Panay Book VIII, Volume 3',
         summary = 'After recovering the biday serving as Mali''s engagement token, Humadapnon formally seeks her hand. An initial misunderstanding arises with Labaw Donggon, but Humadapnon is welcomed by Mali''s relatives. Their marriage is arranged and attended by respected guests. The volume gives particular attention to the hungaw wedding ceremony and to hospitality, kinship, marriage, prestige, and the supernatural.',
         updated_at = now()
       WHERE id = ch_id;
@@ -230,7 +230,7 @@ BEGIN
     SELECT COUNT(*) INTO section_count FROM public.chapter_sections WHERE chapter_id = ch_id;
     IF section_count = 0 THEN
       UPDATE public.chapters SET
-        subtitle = 'Sugidanon (Epics) of Panay Book VIII, Volume 4',
+        subtitle = 'Suguidanon (Epics) of Panay Book VIII, Volume 4',
         summary = 'Humadapnon and Dumalapdap return to sea to find a suitable marriage match for Dumalapdap. During their absence, Taghoy plots with Paglambuhan and Sumagulong to take Mali from Humadapnon. Sumagulong persuades Mali''s relatives to accept the match, and a wedding feast begins. Humadapnon returns during the festivities, and the conflict leads to Mali''s death. Remorseful, he restores her to life and asks forgiveness from Mali and her parents. Resurrection does not erase the humiliation and resentment, however, and the couple separates. Ginlawan refers to a public punishment or reckoning imposed when a tuos has been violated.',
         updated_at = now()
       WHERE id = ch_id;
@@ -256,7 +256,7 @@ BEGIN
     SELECT COUNT(*) INTO section_count FROM public.chapter_sections WHERE chapter_id = ch_id;
     IF section_count = 0 THEN
       UPDATE public.chapters SET
-        subtitle = 'Sugidanon (Epics) of Panay Book IX',
+        subtitle = 'Suguidanon (Epics) of Panay Book IX',
         summary = 'Humadapnon wants to see Mali, but she is secluded in her family''s burukutan. Laon Sina advises him to plant an alayaw tree in the yard of Mali''s parents. Its sweet-smelling flowers are expected to entice Mali to leave her enclosure and gather the blossoms, allowing Humadapnon to see the woman he hopes to court. The fragrant tree becomes an intermediary that crosses the boundary the suitor cannot cross.',
         updated_at = now()
       WHERE id = ch_id;
@@ -276,7 +276,7 @@ BEGIN
     SELECT COUNT(*) INTO section_count FROM public.chapter_sections WHERE chapter_id = ch_id;
     IF section_count = 0 THEN
       UPDATE public.chapters SET
-        subtitle = 'Sugidanon (Epics) of Panay Book X',
+        subtitle = 'Suguidanon (Epics) of Panay Book X',
         summary = 'Matan-ayon has become ill and extremely thin. Ginduluman is summoned to conduct ceremonies required for her recovery. Matan-ayon also wants Mali initiated more fully into ritual knowledge so that Mali may inherit powers and a spirit guide. When the community goes to the seashore for the ceremony, Humadapnon prevents Mali from attending. She later discovers that he is courting another secluded woman. Mali answers through deception and magic, creating an enchanted pillow substitute and departing in a golden basket while the magical substitute continues the performance below.',
         updated_at = now()
       WHERE id = ch_id;

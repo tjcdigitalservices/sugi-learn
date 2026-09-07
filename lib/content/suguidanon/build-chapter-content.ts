@@ -7,8 +7,8 @@ import type { ReviewStatus } from "@/types/review";
 import {
   getCharacterId,
   registerChapterCharacters,
-} from "@/lib/content/sugidanon/character-registry";
-import type { ChapterContentDefinition } from "@/lib/content/sugidanon/types";
+} from "@/lib/content/suguidanon/character-registry";
+import type { ChapterContentDefinition } from "@/lib/content/suguidanon/types";
 import type { Character } from "@/types/chapter";
 
 const DEFAULT_SECTION_STATUS: ReviewStatus = "draft";

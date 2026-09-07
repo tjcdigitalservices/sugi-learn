@@ -1,0 +1,26 @@
+---
+description: All data/text is editable; only UI/UX is hardcoded
+alwaysApply: true
+---
+
+# Editable Content vs Hardcoded UI
+
+Suguidanon is content-driven. Persist this split:
+
+- **Editable (must not stay hardcoded permanently):** titles, body copy, notices, chapter text, assessment questions/options/explanations, labels that are product content, cultural notes, short disclaimers, and similar learner-facing strings.
+- **Hardcoded (OK):** layout, navigation chrome, interaction patterns, motion, component structure, and visual design system.
+
+## Practice
+
+1. Store content in the database (or admin-managed repository) with approved defaults as fallback.
+2. Expose an admin edit path for new learner-facing copy.
+3. Learner UI reads content; it does not own the wording.
+4. Do not invent cultural content — editable still means client-approved / source-backed.
+
+```tsx
+// ❌ BAD — permanent hardcoded product copy with no admin path
+const NOTICE = "Characters shown throughout...";
+
+// ✅ GOOD — load editable copy; default only as fallback
+const notice = await getCharacterRepresentationNotice();
+```

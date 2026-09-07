@@ -33,7 +33,7 @@ import { isPublishedReviewStatus } from "@/types/review";
 import { isLocalMockDevelopment } from "@/lib/runtime/environment";
 
 /**
- * Official Sugidanon assessment content for mock mode (no Supabase).
+ * Official Suguidanon assessment content for mock mode (no Supabase).
  * Sourced from lib/assessment/official-question-bank.json
  */
 const DEV_PRE_ASSESSMENT_ID = OFFICIAL_PRE_ASSESSMENT_ID;

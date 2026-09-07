@@ -1,19 +1,19 @@
 # Tikum Kadlum — Chapter 1 Source Traceability Map
 
-**Source:** `docs/sources/Tikum-Kadlum-Sugidanon-Source.docx`  
-**Section:** Opening entry — *Tikum Kadlum: Sugidanon (Epics) of Panay Book I*  
+**Source:** `docs/sources/Tikum-Kadlum-Suguidanon-Source.docx`  
+**Section:** Opening entry — *Tikum Kadlum: Suguidanon (Epics) of Panay Book I*  
 **Authors (as supplied):** Magos, Alicia P. et al.
 
-This map links Sugidanon Chapter 1 CMS content to the client source. The source is a **summary**, not the full epic text. Sugidanon presents **educational adaptation/summary content** — not original epic dialogue.
+This map links Suguidanon Chapter 1 CMS content to the client source. The source is a **summary**, not the full epic text. Suguidanon presents **educational adaptation/summary content** — not original epic dialogue.
 
 ---
 
 ## Chapter metadata
 
-| Sugidanon field | Source basis | CMS / DB |
+| Suguidanon field | Source basis | CMS / DB |
 |-----------------|--------------|----------|
 | Title: Tikum Kadlum | Source heading | `chapters.title` |
-| Subtitle: Sugidanon (Epics) of Panay Book I | Source heading | `chapters.subtitle` |
+| Subtitle: Suguidanon (Epics) of Panay Book I | Source heading | `chapters.subtitle` |
 | Summary paragraph | Full source paragraph for Book I | `chapters.summary` |
 | Authors | "By Magos, Alicia P. et al." | Referenced in introduction section body |
 

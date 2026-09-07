@@ -1,4 +1,4 @@
-# Sugidanon — Authentication
+# Suguidanon — Authentication
 
 **Version:** M3  
 **Last updated:** 2026-08-15
@@ -7,7 +7,7 @@
 
 ## Overview
 
-Sugidanon uses **Supabase Auth** for credentials and **application profiles** (`public.profiles`) for roles.
+Suguidanon uses **Supabase Auth** for credentials and **application profiles** (`public.profiles`) for roles.
 
 ```
 Supabase Auth (credentials, sessions)

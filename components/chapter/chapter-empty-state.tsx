@@ -20,7 +20,7 @@ export function ChapterEmptyState({
       <p className="text-sm font-medium">{message}</p>
       {context === "learner" ? (
         <p className="mt-2 text-sm text-muted-foreground">
-          Check back later as approved Sugidanon content is added.
+          Check back later as approved Suguidanon content is added.
         </p>
       ) : null}
     </div>

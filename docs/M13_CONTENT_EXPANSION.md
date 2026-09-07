@@ -11,11 +11,11 @@ Establish a repeatable, source-grounded workflow for expanding Chapters 2–13 u
 ## Architecture
 
 ```
-SOURCE (Tikum-Kadlum-Sugidanon-Source.docx)
+SOURCE (Tikum-Kadlum-Suguidanon-Source.docx)
   ↓
 CONTENT MAP (docs/CHAPTERS_2_13_CONTENT_MAP.md)
   ↓
-TypeScript definitions (lib/content/sugidanon/chapters/)
+TypeScript definitions (lib/content/suguidanon/chapters/)
   ↓
 Mock bootstrap / Supabase seed
   ↓
@@ -26,7 +26,7 @@ ChapterEngine → Learner
 
 ## What Was Implemented
 
-### Content layer (`lib/content/sugidanon/`)
+### Content layer (`lib/content/suguidanon/`)
 
 | File | Purpose |
 |------|---------|
@@ -54,7 +54,7 @@ Section structure varies only where source material warrants fewer sections (not
 
 ### Mock repository wiring
 
-`lib/data/mock/chapter-management-repository.ts` bootstraps Chapters 2–13 on first admin/learner access via `bootstrapSugidanonChapter()`.
+`lib/data/mock/chapter-management-repository.ts` bootstraps Chapters 2–13 on first admin/learner access via `bootstrapSuguidanonChapter()`.
 
 ### Supabase seed
 

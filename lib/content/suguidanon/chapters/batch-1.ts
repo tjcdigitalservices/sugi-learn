@@ -1,4 +1,4 @@
-import type { ChapterContentDefinition } from "@/lib/content/sugidanon/types";
+import type { ChapterContentDefinition } from "@/lib/content/suguidanon/types";
 
 const PENDING = "PENDING CLIENT APPROVAL — " as const;
 
@@ -9,7 +9,7 @@ export const CHAPTERS_BATCH_1: ChapterContentDefinition[] = [
     number: 2,
     metadata: {
       title: "Amburukay",
-      subtitle: "Sugidanon (Epics) of Panay Book II",
+      subtitle: "Suguidanon (Epics) of Panay Book II",
       summary:
         "Amburukay raises Matan-ayon and Saranggaon as her own daughters, keeping them in a golden chamber as binukot. She makes an extraordinary vow: her adopted daughters will marry whoever succeeds in stealing her golden pubic hair. When a string on Labaw Donggon's musical instrument breaks, he learns that Amburukay's hair can replace it. He enchants her into sleep and cuts the hair, only to discover that taking it has bound him to her condition. Believing he must marry the frightening hermit herself, he approaches the wedding reluctantly. Amburukay instead presents the daughters she has raised and judges Labaw Donggon worthy to marry them.",
       authors: "Magos, Alicia P. et al.",
@@ -69,14 +69,14 @@ export const CHAPTERS_BATCH_1: ChapterContentDefinition[] = [
       ],
     },
     completionMessage:
-      "You have reached the end of this chapter summary. Continue the Sugidanon journey in the next chapter.",
+      "You have reached the end of this chapter summary. Continue the Suguidanon journey in the next chapter.",
   },
   {
     id: "derikaryong-pada",
     number: 3,
     metadata: {
       title: "Derikaryong Pada",
-      subtitle: "Sugidanon (Epics) of Panay Book III",
+      subtitle: "Suguidanon (Epics) of Panay Book III",
       summary:
         "Before Matan-ayon is born, she has already been promised in marriage to Labaw Donggon. A gold medallion is given as the sign of this agreement. When she reaches marriageable age, Sinagnayan also seeks her. He is connected to Paglambuhan, who has taken an heirloom sailboat belonging to Matan-ayon's parents. The recovery of the vessel becomes the condition by which a suitor may prove his right to marry her. Labaw Donggon is caught between a prior promise and a new test. Marriage here is not simply private romance: it joins families, wealth, reputation, inherited objects, and promises made before the individuals concerned are old enough to act for themselves.",
       authors: "Magos, Alicia P.",
@@ -135,14 +135,14 @@ export const CHAPTERS_BATCH_1: ChapterContentDefinition[] = [
       ],
     },
     completionMessage:
-      "You have reached the end of this chapter summary. Continue the Sugidanon journey in the next chapter.",
+      "You have reached the end of this chapter summary. Continue the Suguidanon journey in the next chapter.",
   },
   {
     id: "balanakon",
     number: 4,
     metadata: {
       title: "Balanakon",
-      subtitle: "Sugidanon (Epics) of Panay Book VII",
+      subtitle: "Suguidanon (Epics) of Panay Book VII",
       summary:
         "Balanakon is a dalagangan, a person possessing extraordinary innate power. Taghuy persuades him to challenge Labaw Donggon and seek Matan-ayon. During his journey, Balanakon is stopped by Sarandihon, Labaw Donggon's brother, but Sarandihon cannot defeat him. Taghuy summons Labaw Donggon, yet even the brothers' combined strength is insufficient. The conflict ends only when Laon Sina intervenes. Balanakon's power is genuine, and victory cannot be secured through force alone; an authoritative intermediary must restore order before rivalry destroys the relationships surrounding the fighters.",
       authors: "Magos, Alicia P. & Ramirez, Anna Razel Limoso",
@@ -213,6 +213,6 @@ export const CHAPTERS_BATCH_1: ChapterContentDefinition[] = [
       ],
     },
     completionMessage:
-      "You have reached the end of this chapter summary. Continue the Sugidanon journey in the next chapter.",
+      "You have reached the end of this chapter summary. Continue the Suguidanon journey in the next chapter.",
   },
 ];

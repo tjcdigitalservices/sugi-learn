@@ -1,7 +1,7 @@
-# Sugidanon — Final Content Status
+# Suguidanon — Final Content Status
 
 **Date:** 2026-08-15  
-**Authority:** `docs/sources/Tikum-Kadlum-Sugidanon-Source.docx`, `docs/TIKUM_KADLUM_CONTENT_MAP.md`
+**Authority:** `docs/sources/Tikum-Kadlum-Suguidanon-Source.docx`, `docs/TIKUM_KADLUM_CONTENT_MAP.md`
 
 This report records content status at M19 handover. **Do not claim “final” where status is pending client approval.**
 
@@ -78,7 +78,7 @@ Development test questions exist for local dev only and must **not** be used in 
 - Story bodies for Chapters 2–13 are **derived from source summaries** in the client document — not full epic text, not invented dialogue.
 - Learning points are prefixed **PENDING CLIENT APPROVAL** in seed data.
 - No fabricated assessment questions in production path.
-- Chapter order matches client catalog (not Sugidanon book numbering for all titles).
+- Chapter order matches client catalog (not Suguidanon book numbering for all titles).
 
 ---
 

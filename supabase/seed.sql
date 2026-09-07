@@ -1,4 +1,4 @@
--- Sugidanon development seed (M2)
+-- Suguidanon development seed (M2)
 -- Seeds ONLY the 13 official chapter titles and numbers.
 -- No story content, characters, questions, or assessments.
 

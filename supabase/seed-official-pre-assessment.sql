@@ -1,4 +1,4 @@
--- Official Sugidanon Pre-Assessment content (client PDF question bank).
+-- Official Suguidanon Pre-Assessment content (client PDF question bank).
 -- Source of truth for initial content: lib/assessment/official-question-bank.json
 -- Regenerate: node scripts/generate-official-assessment-seeds.mjs
 -- Safe for staging/production. Admins may edit further in /admin/assessments.

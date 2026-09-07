@@ -3,7 +3,7 @@
 **Status:** Complete (M10)  
 **Last updated:** 2026-08-15
 
-First real-content vertical slice for **Chapter 1 — Tikum Kadlum**, proving the full Sugidanon architecture from client source through CMS, database, ChapterEngine, learner experience, and progress.
+First real-content vertical slice for **Chapter 1 — Tikum Kadlum**, proving the full Suguidanon architecture from client source through CMS, database, ChapterEngine, learner experience, and progress.
 
 ---
 
@@ -11,7 +11,7 @@ First real-content vertical slice for **Chapter 1 — Tikum Kadlum**, proving th
 
 | Item | Location |
 |------|----------|
-| Client document | `docs/sources/Tikum-Kadlum-Sugidanon-Source.docx` |
+| Client document | `docs/sources/Tikum-Kadlum-Suguidanon-Source.docx` |
 | 13-chapter map | `docs/TIKUM_KADLUM_CONTENT_MAP.md` |
 | Chapter 1 traceability | `docs/TIKUM_KADLUM_CHAPTER_1_SOURCE_MAP.md` |
 | Content module | `lib/content/tikum-kadlum/chapter-1.ts` |
@@ -23,7 +23,7 @@ Content is **source-based summary/adaptation** — not the complete published ep
 ## Architecture flow (Chapter 1)
 
 ```
-docs/sources/Tikum-Kadlum-Sugidanon-Source.docx
+docs/sources/Tikum-Kadlum-Suguidanon-Source.docx
     ↓
 Content mapping (docs + lib/content/tikum-kadlum/)
     ↓

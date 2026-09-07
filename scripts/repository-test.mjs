@@ -19,7 +19,7 @@ const supabase = createClient(url, serviceKey, {
 });
 
 async function main() {
-  console.log("Sugidanon M2 — repository smoke test\n");
+  console.log("Suguidanon M2 — repository smoke test\n");
 
   const { data: chapters, error } = await supabase
     .from("chapters")

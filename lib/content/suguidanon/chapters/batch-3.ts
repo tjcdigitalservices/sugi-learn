@@ -1,4 +1,4 @@
-import type { ChapterContentDefinition } from "@/lib/content/sugidanon/types";
+import type { ChapterContentDefinition } from "@/lib/content/suguidanon/types";
 
 const PENDING = "PENDING CLIENT APPROVAL — " as const;
 
@@ -9,7 +9,7 @@ export const CHAPTERS_BATCH_3: ChapterContentDefinition[] = [
     number: 8,
     metadata: {
       title: "Humadapnon: Tarangban",
-      subtitle: "Sugidanon (Epics) of Panay Book VIII, Volume 1",
+      subtitle: "Suguidanon (Epics) of Panay Book VIII, Volume 1",
       summary:
         "Humadapnon is the longest title in the series and occupies four published volumes. Its narrative follows Humadapnon's search for a suitable wife, his courtship of Nagmalitong Yawa—frequently called Mali—and the promises, rivalries, separations, and reconciliations that follow. Mali is not merely the woman Humadapnon seeks. Throughout these episodes she disguises herself, performs ritual and magical actions, rescues Humadapnon, helps him defeat opponents, makes strategic decisions, and answers humiliation and betrayal.",
       authors: "Magos, Alicia P. et al.",
@@ -64,7 +64,7 @@ export const CHAPTERS_BATCH_3: ChapterContentDefinition[] = [
     number: 9,
     metadata: {
       title: "Humadapnon: Pagbalukat ka Biday",
-      subtitle: "Sugidanon (Epics) of Panay Book VIII, Volume 2",
+      subtitle: "Suguidanon (Epics) of Panay Book VIII, Volume 2",
       summary:
         "To continue his courtship, Humadapnon must retrieve the heirloom boat serving as Mali's tuos, or mark of engagement. Paglambuhan possesses the vessel. Humadapnon fights Paglambuhan and Sumagulong but cannot defeat them unaided. Mali intervenes, distracting Paglambuhan so that Humadapnon can wound him. Custom then requires Humadapnon to stay with the defeated man's wife. When he remains longer than expected, Mali becomes jealous. She takes both Humadapnon's golden boat and the recovered heirloom vessel and departs, leaving him in a golden basket. Taghuy attempts to reconcile them. Humadapnon later challenges Mali's father, but the confrontation is reframed as a test of the suitor's strength.",
       authors: "Magos, Alicia P. et al.",
@@ -134,7 +134,7 @@ export const CHAPTERS_BATCH_3: ChapterContentDefinition[] = [
     number: 10,
     metadata: {
       title: "Humadapnon: Hungaw",
-      subtitle: "Sugidanon (Epics) of Panay Book VIII, Volume 3",
+      subtitle: "Suguidanon (Epics) of Panay Book VIII, Volume 3",
       summary:
         "After recovering the biday serving as Mali's engagement token, Humadapnon formally seeks her hand. An initial misunderstanding arises with Labaw Donggon, but Humadapnon is welcomed by Mali's relatives. Their marriage is arranged and attended by respected guests. The volume gives particular attention to the hungaw wedding ceremony and to hospitality, kinship, marriage, prestige, and the supernatural.",
       authors: "Magos, Alicia P. et al.",
@@ -193,7 +193,7 @@ export const CHAPTERS_BATCH_3: ChapterContentDefinition[] = [
     number: 11,
     metadata: {
       title: "Humadapnon: Ginlawan",
-      subtitle: "Sugidanon (Epics) of Panay Book VIII, Volume 4",
+      subtitle: "Suguidanon (Epics) of Panay Book VIII, Volume 4",
       summary:
         "Humadapnon and Dumalapdap return to sea to find a suitable marriage match for Dumalapdap. During their absence, Taghoy plots with Paglambuhan and Sumagulong to take Mali from Humadapnon. Sumagulong persuades Mali's relatives to accept the match, and a wedding feast begins. Humadapnon returns during the festivities, and the conflict leads to Mali's death. Remorseful, he restores her to life and asks forgiveness from Mali and her parents. Resurrection does not erase the humiliation and resentment, however, and the couple separates. Ginlawan refers to a public punishment or reckoning imposed when a tuos has been violated.",
       authors: "Magos, Alicia P. et al.",
@@ -263,6 +263,6 @@ export const CHAPTERS_BATCH_3: ChapterContentDefinition[] = [
       ],
     },
     completionMessage:
-      "You have reached the end of this Humadapnon volume. Continue the Sugidanon journey in the next chapter.",
+      "You have reached the end of this Humadapnon volume. Continue the Suguidanon journey in the next chapter.",
   },
 ];

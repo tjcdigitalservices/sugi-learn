@@ -38,7 +38,7 @@ export function MetricsGrid({ summary }: MetricsGridProps) {
         <Metric
           label="Total chapters"
           value={chapters.total}
-          detail="Official Sugidanon catalog"
+          detail="Official Suguidanon catalog"
         />
         <Metric
           label="Chapters with content"

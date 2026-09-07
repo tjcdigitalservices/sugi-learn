@@ -5,8 +5,8 @@
 import { writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-import { buildChapterContent } from "../lib/content/sugidanon/build-chapter-content";
-import { CHAPTERS_2_13 } from "../lib/content/sugidanon/chapters/index";
+import { buildChapterContent } from "../lib/content/suguidanon/build-chapter-content";
+import { CHAPTERS_2_13 } from "../lib/content/suguidanon/chapters/index";
 import type { Character } from "../types/chapter";
 
 function sqlEscape(value: string): string {
@@ -16,8 +16,8 @@ function sqlEscape(value: string): string {
 function generateSeed(): string {
   const characters: Character[] = [];
   const lines: string[] = [
-    "-- M13 — Chapters 2–13 content seed (generated from lib/content/sugidanon/)",
-    "-- Source: docs/sources/Tikum-Kadlum-Sugidanon-Source.docx",
+    "-- M13 — Chapters 2–13 content seed (generated from lib/content/suguidanon/)",
+    "-- Source: docs/sources/Tikum-Kadlum-Suguidanon-Source.docx",
     "-- Run: psql $DATABASE_URL -f supabase/seed-chapters-2-13.sql",
     "-- Skips chapters that already have sections.",
     "",

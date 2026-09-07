@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 
-import { SugidanonMark } from "@/components/brand/heritage-wave";
+import { SuguidanonMark } from "@/components/brand/heritage-wave";
 import { SignOutButton } from "@/components/auth/sign-out-button";
 import { cn } from "@/lib/utils";
 
@@ -81,7 +81,7 @@ export function LearnerHeader({ userLabel, focused = false }: LearnerHeaderProps
         )}
       >
         <Link href="/learn" className="justify-self-start shrink-0">
-          <SugidanonMark light showTagline={false} />
+          <SuguidanonMark light showTagline={false} />
         </Link>
 
         {!isFocused ? (
@@ -177,7 +177,7 @@ export function LearnerHeader({ userLabel, focused = false }: LearnerHeaderProps
           >
             <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
               <p className="font-display text-lg font-semibold text-white">
-                Sugidanon
+                Suguidanon
               </p>
               <button
                 ref={closeButtonRef}

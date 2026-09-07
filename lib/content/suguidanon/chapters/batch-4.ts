@@ -1,4 +1,4 @@
-import type { ChapterContentDefinition } from "@/lib/content/sugidanon/types";
+import type { ChapterContentDefinition } from "@/lib/content/suguidanon/types";
 
 const PENDING = "PENDING CLIENT APPROVAL — " as const;
 
@@ -9,7 +9,7 @@ export const CHAPTERS_BATCH_4: ChapterContentDefinition[] = [
     number: 12,
     metadata: {
       title: "Alayaw",
-      subtitle: "Sugidanon (Epics) of Panay Book IX",
+      subtitle: "Suguidanon (Epics) of Panay Book IX",
       summary:
         "Humadapnon wants to see Mali, but she is secluded in her family's burukutan. Laon Sina advises him to plant an alayaw tree in the yard of Mali's parents. Its sweet-smelling flowers are expected to entice Mali to leave her enclosure and gather the blossoms, allowing Humadapnon to see the woman he hopes to court. The fragrant tree becomes an intermediary that crosses the boundary the suitor cannot cross.",
       authors: "Magos, Alicia P. et al.",
@@ -62,14 +62,14 @@ export const CHAPTERS_BATCH_4: ChapterContentDefinition[] = [
       ],
     },
     completionMessage:
-      "You have reached the end of this chapter summary. Continue the Sugidanon journey in the next chapter.",
+      "You have reached the end of this chapter summary. Continue the Suguidanon journey in the next chapter.",
   },
   {
     id: "nagbuhis",
     number: 13,
     metadata: {
       title: "Nagbuhis",
-      subtitle: "Sugidanon (Epics) of Panay Book X",
+      subtitle: "Suguidanon (Epics) of Panay Book X",
       summary:
         "Matan-ayon has become ill and extremely thin. Ginduluman is summoned to conduct ceremonies required for her recovery. Matan-ayon also wants Mali initiated more fully into ritual knowledge so that Mali may inherit powers and a spirit guide. When the community goes to the seashore for the ceremony, Humadapnon prevents Mali from attending. She later discovers that he is courting another secluded woman. Mali answers through deception and magic, creating an enchanted pillow substitute and departing in a golden basket while the magical substitute continues the performance below.",
       authors: "Magos, Alicia P. et al.",
@@ -128,6 +128,6 @@ export const CHAPTERS_BATCH_4: ChapterContentDefinition[] = [
       ],
     },
     completionMessage:
-      "You have reached the end of this chapter summary. You have completed the mapped Sugidanon chapter journey.",
+      "You have reached the end of this chapter summary. You have completed the mapped Suguidanon chapter journey.",
   },
 ];

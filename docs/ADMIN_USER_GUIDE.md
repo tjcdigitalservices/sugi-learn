@@ -1,15 +1,15 @@
-# Sugidanon — Administrator User Guide
+# Suguidanon — Administrator User Guide
 
 **Audience:** Content administrators and project staff  
 **Last updated:** 2026-08-15
 
-This guide explains how to manage Sugidanon using the admin website. It does not include passwords or technical secrets.
+This guide explains how to manage Suguidanon using the admin website. It does not include passwords or technical secrets.
 
 ---
 
 ## 1. Logging In
 
-1. Open your Sugidanon website address in a browser.
+1. Open your Suguidanon website address in a browser.
 2. Go to **Sign in** (`/login`).
 3. Enter the admin email and password provided by your project team.
 4. You will arrive at the **Dashboard**.

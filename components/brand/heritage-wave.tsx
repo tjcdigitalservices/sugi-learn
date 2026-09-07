@@ -47,7 +47,7 @@ export function HeritageWave({
   );
 }
 
-export function SugidanonMark({
+export function SuguidanonMark({
   className,
   light = false,
   showTagline = true,
@@ -75,7 +75,7 @@ export function SugidanonMark({
       )}
     >
       <Image
-        src="/brand/sugidanon-icon.png"
+        src="/brand/suguidanon-icon.png"
         alt=""
         width={iconSize}
         height={iconSize}
@@ -101,7 +101,7 @@ export function SugidanonMark({
             light ? "text-white" : "text-sl-navy",
           )}
         >
-          Sugidanon
+          Suguidanon
         </span>
         {showTagline ? (
           <span

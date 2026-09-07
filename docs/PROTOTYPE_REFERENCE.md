@@ -1,4 +1,4 @@
-# Sugidanon — Prototype Reference Analysis
+# Suguidanon — Prototype Reference Analysis
 
 **Source:** `reference/claude-prototype/` (Claude-generated HTML/CSS/JS SPA)  
 **Analysis date:** 2026-08-15  
@@ -15,7 +15,7 @@ This document analyzes the prototype as a **functional UX reference**. It is not
 | **Format** | Single-page app (`index.html` + `styles.css` + `app.js`) |
 | **Persistence** | None — state resets on reload |
 | **Auth** | Fake admin login (any credentials) |
-| **Content** | Generic placeholders; no validated Sugidanon narrative |
+| **Content** | Generic placeholders; no validated Suguidanon narrative |
 | **Lesson model** | One demo lesson with 4 sections (not 13 chapters) |
 | **Assessments** | 15 generic pre/post questions (hardcoded in JS) |
 
@@ -85,7 +85,7 @@ Prototype-only details that must **not** become production requirements:
 ### Fake data & assumptions
 - Sample learner names and scores (`LEARNERS_MOCK`, KPI values like "248 learners")
 - Generic assessment question text and fixed correct-answer index
-- Mock lesson titles ("Discovering the Sugidanon — Orientation Module") as final content
+- Mock lesson titles ("Discovering the Suguidanon — Orientation Module") as final content
 - Prototype body copy in `LESSON_SECTIONS` as validated narrative
 - Sample admin content list entries and review notes
 - Question performance percentages (`perf = [92,88,...]`)

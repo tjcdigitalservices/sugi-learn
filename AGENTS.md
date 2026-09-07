@@ -1,9 +1,9 @@
-# Sugidanon — LLM / Agent Development Guide
+# Suguidanon — LLM / Agent Development Guide
 
 ## Project Purpose
-Sugidanon is a multimedia learning system for the Panay Bukidnon Sugidanon.
+Suguidanon is a multimedia learning system for the Panay Bukidnon Suguidanon.
 
-The system is organized into 13 chapters based on the 13 published Sugidanon volumes:
+The system is organized into 13 chapters based on the 13 published Suguidanon volumes:
 1. Tikum Kadlum
 2. Amburukay
 3. Derikaryong Pada
@@ -21,7 +21,9 @@ The system is organized into 13 chapters based on the 13 published Sugidanon vol
 The four Humadapnon entries represent four volumes of the longer Humadapnon epic.
 
 ## Core Architecture Rule
-Build Sugidanon as a **content-driven platform**, not 13 hardcoded pages.
+Build Suguidanon as a **content-driven platform**, not 13 hardcoded pages.
+
+**Data vs UI:** All learner-facing data and text must be editable (admin/CMS → database). Only UI structure, layout, interaction patterns, and visual chrome may be hardcoded. Do not ship permanent hardcoded copy when an admin-editable store (with approved defaults as fallback) is appropriate.
 
 Preferred flow:
 
@@ -60,7 +62,7 @@ Exact multimedia allocation remains subject to client confirmation.
 
 Use supplied client/source materials as the basis for content. The supplied Tikum Kadlum document is the current detailed source for Chapter 1.
 
-The Aswang Project's "Summary of the Sugidanon (Epics) of Central Panay" is a project reference source. Its summaries are not automatically complete replacement text for the published epics.
+The Aswang Project's "Summary of the Suguidanon (Epics) of Central Panay" is a project reference source. Its summaries are not automatically complete replacement text for the published epics.
 
 If a source does not establish a fact:
 - Do not invent it.
@@ -254,7 +256,7 @@ Remaining chapters may initially exist as records marked `Pending Source Content
 Maintain:
 - `README.md`
 - `AGENTS.md`
-- `docs/Sugidanon_Project_Specification.md`
+- `docs/Suguidanon_Project_Specification.md`
 
 ## Non-Negotiable Rules
 1. Do not invent client content.
@@ -266,4 +268,5 @@ Maintain:
 7. Do not create work outside agreed multimedia scope without approval.
 8. Do not assume missing client requirements.
 9. Mark unknown requirements as `Pending Client Confirmation`.
-10. Keep Sugidanon maintainable by a small team using AI-assisted development.
+10. Keep Suguidanon maintainable by a small team using AI-assisted development.
+11. Hardcode UI/UX only — learner-facing data and text must be admin-editable (with approved defaults as fallback).

@@ -1,7 +1,7 @@
 import type { ReviewStatus } from "@/types/review";
 
-export const SUGIDANON_SOURCE = {
-  documentPath: "docs/sources/Tikum-Kadlum-Sugidanon-Source.docx",
+export const SUGUIDANON_SOURCE = {
+  documentPath: "docs/sources/Tikum-Kadlum-Suguidanon-Source.docx",
 } as const;
 
 export interface ChapterCharacterDefinition {

@@ -31,7 +31,7 @@ export default async function LearnHomePage() {
     postSession.questions,
   );
 
-  const greeting = displayName ? `Welcome back, ${displayName}` : "Welcome to Sugidanon";
+  const greeting = displayName ? `Welcome back, ${displayName}` : "Welcome to Suguidanon";
 
   return (
     <div className="mx-auto max-w-4xl space-y-10">
@@ -43,7 +43,7 @@ export default async function LearnHomePage() {
           {greeting}
         </h1>
         <p className="max-w-2xl text-sm text-sl-ink-muted sm:text-base">
-          Complete the Pre-Test, then watch the Sugidanon chapter animations in
+          Complete the Pre-Test, then watch the Suguidanon chapter animations in
           order. Finishing a video unlocks the next chapter. When all chapters
           are done, you can revisit any animation freely.
         </p>
@@ -138,7 +138,7 @@ export default async function LearnHomePage() {
           <p className="text-sm text-muted-foreground">
             {journey.preAssessmentCompleted
               ? "Chapters unlock in order after you finish each animation. Once all are complete, every cover stays open for replay."
-              : "Complete the Pre-Test to unlock Chapter 1 and begin the Sugidanon journey."}
+              : "Complete the Pre-Test to unlock Chapter 1 and begin the Suguidanon journey."}
           </p>
         </div>
         {journey.preAssessmentCompleted ? (

@@ -33,7 +33,7 @@ export default async function ProgressPage() {
     <div className="mx-auto max-w-4xl space-y-8">
       <PageHeader
         title="Learning Progress"
-        description="Your chapter completion across the Sugidanon journey."
+        description="Your chapter completion across the Suguidanon journey."
       />
 
       <section className="rounded-lg border bg-card p-6">

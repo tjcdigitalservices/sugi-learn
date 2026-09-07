@@ -30,7 +30,7 @@ export function AdminShellClient({ children, userLabel }: AdminShellClientProps)
         </button>
         <div className="min-w-0 flex-1">
           <p className="truncate font-display text-sm font-semibold text-sl-navy">
-            Sugidanon Admin
+            Suguidanon Admin
           </p>
           {userLabel ? (
             <p className="truncate text-xs text-sl-ink-muted" title={userLabel}>

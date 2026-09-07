@@ -1,20 +1,20 @@
 /**
  * Chapter 1 (Tikum Kadlum) content derived from:
- * docs/sources/Tikum-Kadlum-Sugidanon-Source.docx
+ * docs/sources/Tikum-Kadlum-Suguidanon-Source.docx
  *
  * Educational summary/adaptation — not the full epic text.
  * Wording traceable to the client source; final publication pending client approval.
  */
 
 export const TIKUM_KADLUM_SOURCE = {
-  documentPath: "docs/sources/Tikum-Kadlum-Sugidanon-Source.docx",
-  book: "Sugidanon (Epics) of Panay Book I",
+  documentPath: "docs/sources/Tikum-Kadlum-Suguidanon-Source.docx",
+  book: "Suguidanon (Epics) of Panay Book I",
   authors: "Magos, Alicia P. et al.",
 } as const;
 
 export const TIKUM_KADLUM_CHAPTER_METADATA = {
   title: "Tikum Kadlum",
-  subtitle: "Sugidanon (Epics) of Panay Book I",
+  subtitle: "Suguidanon (Epics) of Panay Book I",
   summary:
     "Datu Paiburong goes hunting with his brother Dumaraog and his extraordinary dog, Tikum Kadlum. The dog repeatedly draws their attention to an unusual bamboo tree, but Paiburong does not understand the warning and cuts it down. The bamboo belongs to Makabagting, a dangerous man-eating being, and his hermit sister Amburukay. Paiburong has entered another being's territory and destroyed something that was not his. After negotiation, the owners agree to accept Paiburong's daughters, Matan-ayon and Saranggaon, as compensation. Paiburong and Bulawanon try to hide the girls by disguising them with soot, but Makabagting sees through the deception.",
   reviewStatus: "draft" as const,

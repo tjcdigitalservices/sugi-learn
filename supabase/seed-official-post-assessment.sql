@@ -1,4 +1,4 @@
--- Official Sugidanon Post-Assessment content (client PDF question bank).
+-- Official Suguidanon Post-Assessment content (client PDF question bank).
 -- Source of truth for initial content: lib/assessment/official-question-bank.json
 -- Regenerate: node scripts/generate-official-assessment-seeds.mjs
 -- Safe for staging/production. Admins may edit further in /admin/assessments.
@@ -12,7 +12,7 @@ VALUES (
   'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2',
   'post',
   'Post-Assessment',
-  'Measure understanding after completing the Sugidanon learning experience. Choose the best answer for each question. 1 point per question.',
+  'Measure understanding after completing the Suguidanon learning experience. Choose the best answer for each question. 1 point per question.',
   'approved'
 )
 ON CONFLICT (type) DO UPDATE

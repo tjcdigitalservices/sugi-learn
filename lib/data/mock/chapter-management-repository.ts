@@ -3,11 +3,11 @@ import { randomUUID } from "node:crypto";
 import { resolveChapterCoverUrl } from "@/lib/chapter/cover";
 import { CHAPTER_CATALOG } from "@/lib/constants/chapters";
 import {
-  bootstrapSugidanonChapter,
-  isSugidanonChapterInitialized,
-  isSugidanonExpansionChapter,
-  markSugidanonChapterInitialized,
-} from "@/lib/content/sugidanon/mock-bootstrap";
+  bootstrapSuguidanonChapter,
+  isSuguidanonChapterInitialized,
+  isSuguidanonExpansionChapter,
+  markSuguidanonChapterInitialized,
+} from "@/lib/content/suguidanon/mock-bootstrap";
 import {
   buildTikumKadlumMockBootstrap,
   isTikumKadlumChapter1Initialized,
@@ -128,10 +128,10 @@ function ensureChapterState(chapterId: string): MutableChapterState {
   }
 
   if (
-    isSugidanonExpansionChapter(chapterId) &&
-    !isSugidanonChapterInitialized(chapterId)
+    isSuguidanonExpansionChapter(chapterId) &&
+    !isSuguidanonChapterInitialized(chapterId)
   ) {
-    const bootstrap = bootstrapSugidanonChapter(chapterId, allCharacters);
+    const bootstrap = bootstrapSuguidanonChapter(chapterId, allCharacters);
     if (bootstrap) {
       chapterState.set(chapterId, {
         title: bootstrap.title,
@@ -144,7 +144,7 @@ function ensureChapterState(chapterId: string): MutableChapterState {
         learningPoints: bootstrap.learningPoints,
         updatedAt: new Date().toISOString(),
       });
-      markSugidanonChapterInitialized(chapterId);
+      markSuguidanonChapterInitialized(chapterId);
     }
   }
 

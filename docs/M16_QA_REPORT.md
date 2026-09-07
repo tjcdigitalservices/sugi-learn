@@ -1,7 +1,7 @@
 # M16 — Full System QA & Content Validation Report
 
 **Date:** 2026-08-15  
-**Scope:** M0–M15 existing Sugidanon system  
+**Scope:** M0–M15 existing Suguidanon system  
 **Type:** QA, validation, stabilization (no new major features)
 
 ---
@@ -22,7 +22,7 @@ M16 performed a full-system QA pass across build/static checks, code-path verifi
 | 4 — Chapter management | Code review, mock/Supabase repo paths | **Partial** — **NOT VERIFIED** CRUD in browser |
 | 5 — Chapter engine | Section renderer inventory | **Code verified** — runtime **NOT VERIFIED** |
 | 6 — 13 chapters | `lib/constants/chapters.ts` | **PASS** — exact 13, correct order, no duplicates |
-| 7 — Source content | `TIKUM_KADLUM_CONTENT_MAP.md` vs `lib/content/sugidanon/` | **PASS with flags** — see Content Validation |
+| 7 — Source content | `TIKUM_KADLUM_CONTENT_MAP.md` vs `lib/content/suguidanon/` | **PASS with flags** — see Content Validation |
 | 8 — Content approval | `filterChapterForLearner`, page gates | **Fixed + code verified** |
 | 9 — Media | Admin routes + repository review | **NOT VERIFIED** upload UI |
 | 10–11 — Assessments | Domain/actions review + mock filter fix | **Partial** — submission UI **NOT VERIFIED** |
@@ -94,7 +94,7 @@ M16 performed a full-system QA pass across build/static checks, code-path verifi
 
 ## Content Validation
 
-**Authority:** `docs/sources/Tikum-Kadlum-Sugidanon-Source.docx`, `docs/TIKUM_KADLUM_CONTENT_MAP.md`
+**Authority:** `docs/sources/Tikum-Kadlum-Suguidanon-Source.docx`, `docs/TIKUM_KADLUM_CONTENT_MAP.md`
 
 | Check | Result |
 |-------|--------|

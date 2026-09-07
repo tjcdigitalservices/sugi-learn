@@ -29,7 +29,7 @@ function generateSeed(kind) {
   const optionPrefix = kind === "pre" ? "b2000000-0000-4000-8000-" : "c2000000-0000-4000-8000-";
   const lines = [];
 
-  lines.push(`-- Official Sugidanon ${assessment.title} content (client PDF question bank).`);
+  lines.push(`-- Official Suguidanon ${assessment.title} content (client PDF question bank).`);
   lines.push(`-- Source of truth for initial content: lib/assessment/official-question-bank.json`);
   lines.push(`-- Regenerate: node scripts/generate-official-assessment-seeds.mjs`);
   lines.push(`-- Safe for staging/production. Admins may edit further in /admin/assessments.`);

@@ -141,7 +141,7 @@ score = round((correctCount / totalQuestions) * 100)
 
 ## Development Test Data
 
-Official Sugidanon questions are **not** invented in M8.
+Official Suguidanon questions are **not** invented in M8.
 
 | Environment | Data source |
 |-------------|-------------|

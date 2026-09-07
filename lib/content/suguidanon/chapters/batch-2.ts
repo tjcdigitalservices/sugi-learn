@@ -1,4 +1,4 @@
-import type { ChapterContentDefinition } from "@/lib/content/sugidanon/types";
+import type { ChapterContentDefinition } from "@/lib/content/suguidanon/types";
 
 const PENDING = "PENDING CLIENT APPROVAL — " as const;
 
@@ -9,7 +9,7 @@ export const CHAPTERS_BATCH_2: ChapterContentDefinition[] = [
     number: 5,
     metadata: {
       title: "Kalampay",
-      subtitle: "Sugidanon (Epics) of Panay Book V",
+      subtitle: "Suguidanon (Epics) of Panay Book V",
       summary:
         "Masangladon, a being of extraordinary power associated with the underworld, desires Matan-ayon. He transforms a kalampay, or crab, into an island covered with fruit trees. Matan-ayon is made to feel unbearably warm and goes to the island to bathe. As she gathers fruit, she is unknowingly carried toward the panibyungan, the source of waters descending into the underworld. Taghuy informs Labaw Donggon. Labaw and Paubare attempt to descend after her, but the enormous crab blocks their way. Katnub Magkaruan dives beneath it and makes an opening in its joints through which Labaw Donggon can pass. Labaw Donggon cannot defeat Masangladon. Luyong Kabig, sister of Laon Sina and a judge in the underworld, must mediate an agreement permitting Matan-ayon to return.",
       authors: "Magos, Alicia P. & Ramirez, Anna Razel Limoso",
@@ -90,14 +90,14 @@ export const CHAPTERS_BATCH_2: ChapterContentDefinition[] = [
       ],
     },
     completionMessage:
-      "You have reached the end of this chapter summary. Continue the Sugidanon journey in the next chapter.",
+      "You have reached the end of this chapter summary. Continue the Suguidanon journey in the next chapter.",
   },
   {
     id: "pahagunong",
     number: 6,
     metadata: {
       title: "Pahagunong",
-      subtitle: "Sugidanon (Epics) of Panay Book IV",
+      subtitle: "Suguidanon (Epics) of Panay Book IV",
       summary:
         "Labaw Donggon asks his wives, Matan-ayon and Padilagong Bulan, for permission to sail. Matan-ayon agrees, while Padilagong Bulan insists on accompanying him. When he refuses, she gives him lime and betel quid prepared from the bones of a giant turtle. Eating it transforms him into a pawikan. Matan-ayon and her brother Paubare follow the transformed hero. Pahagunong sees Matan-ayon bathing, desires her, and defeats Paubare in combat. Matan-ayon does not remain a passive prize: she transforms herself into a man and enters the conflict to assist her brother. Laon Sina eventually restores Labaw Donggon and mediates the dispute.",
       authors: "Magos, Alicia P. & Ramirez, Anna Razel Limoso",
@@ -168,14 +168,14 @@ export const CHAPTERS_BATCH_2: ChapterContentDefinition[] = [
       ],
     },
     completionMessage:
-      "You have reached the end of this chapter summary. Continue the Sugidanon journey in the next chapter.",
+      "You have reached the end of this chapter summary. Continue the Suguidanon journey in the next chapter.",
   },
   {
     id: "sinagnayan",
     number: 7,
     metadata: {
       title: "Sinagnayan",
-      subtitle: "Sugidanon (Epics) of Panay Book VI",
+      subtitle: "Suguidanon (Epics) of Panay Book VI",
       summary:
         "Matan-ayon urges Labaw Donggon to confront Sinagnayan so that Pinailog sa Pinggan—Sinagnayan's wife and Matan-ayon's sister—can be brought into Labaw Donggon's household. Before reaching Sinagnayan, Labaw Donggon fights Sarandihon without either man realizing they are brothers. Laon Sina intervenes, reveals their relationship, and explains that Sinagnayan's life-force is concealed in an eggshell inside the heart of a lion guarded by his mother, Minayunmon. Sarandihon transforms himself into Sinagnayan, uses a magical taghuy to put Minayunmon to sleep, kills the lion, and removes the eggshell. Labaw Donggon can then defeat Sinagnayan and bring Pinailog home.",
       authors: "Magos, Alicia P. et al.",
@@ -253,6 +253,6 @@ export const CHAPTERS_BATCH_2: ChapterContentDefinition[] = [
       ],
     },
     completionMessage:
-      "You have reached the end of this chapter summary. Continue the Sugidanon journey in the next chapter.",
+      "You have reached the end of this chapter summary. Continue the Suguidanon journey in the next chapter.",
   },
 ];

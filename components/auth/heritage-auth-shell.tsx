@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { BookOpen } from "lucide-react";
 
-import { HeritageWave, SugidanonMark } from "@/components/brand/heritage-wave";
+import { HeritageWave, SuguidanonMark } from "@/components/brand/heritage-wave";
 import { cn } from "@/lib/utils";
 
 interface HeritageAuthShellProps {
@@ -42,7 +42,7 @@ export function HeritageAuthShell({
       <div className="relative z-10 flex min-h-dvh flex-1 flex-col px-5 pb-[max(2.5rem,env(safe-area-inset-bottom))] pt-[max(2.5rem,env(safe-area-inset-top))] sm:px-8 lg:pb-20">
         <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center gap-6 sm:gap-8">
           <div className="flex justify-center">
-            <SugidanonMark
+            <SuguidanonMark
               light
               stacked
               showTagline
@@ -69,7 +69,7 @@ export function HeritageAuthShell({
               <span className="font-semibold text-sl-gold-soft">
                 Learn. Understand. Carry Forward.
               </span>{" "}
-              An interactive learning journey through the Sugidanon Epic Story.
+              An interactive learning journey through the Suguidanon Epic Story.
             </span>
           </p>
           <nav
@@ -90,7 +90,7 @@ export function HeritageAuthShell({
             <span aria-hidden="true" className="text-white/30">
               ·
             </span>
-            <span className="text-white/50">© 2026 Sugidanon</span>
+            <span className="text-white/50">© 2026 Suguidanon</span>
           </nav>
         </div>
       </footer>

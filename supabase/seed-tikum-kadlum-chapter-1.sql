@@ -1,5 +1,5 @@
 -- M10 — Tikum Kadlum Chapter 1 vertical slice seed
--- Source: docs/sources/Tikum-Kadlum-Sugidanon-Source.docx
+-- Source: docs/sources/Tikum-Kadlum-Suguidanon-Source.docx
 -- Educational summary content — not the full epic text. Final wording: PENDING CLIENT APPROVAL.
 --
 -- Default sections: Animation / Video (Characters and other kinds via admin Add section).
@@ -28,7 +28,7 @@ BEGIN
 
   UPDATE public.chapters
   SET
-    subtitle = 'Sugidanon (Epics) of Panay Book I',
+    subtitle = 'Suguidanon (Epics) of Panay Book I',
     summary = 'Datu Paiburong goes hunting with his brother Dumaraog and his extraordinary dog, Tikum Kadlum. The dog repeatedly draws their attention to an unusual bamboo tree, but Paiburong does not understand the warning and cuts it down. The bamboo belongs to Makabagting, a dangerous man-eating being, and his hermit sister Amburukay. Paiburong has entered another being''s territory and destroyed something that was not his. After negotiation, the owners agree to accept Paiburong''s daughters, Matan-ayon and Saranggaon, as compensation. Paiburong and Bulawanon try to hide the girls by disguising them with soot, but Makabagting sees through the deception.',
     updated_at = now()
   WHERE id = ch_id;

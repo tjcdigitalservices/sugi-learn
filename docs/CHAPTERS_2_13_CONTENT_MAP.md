@@ -1,8 +1,8 @@
 # Chapters 2–13 — Source-Grounded Content Map
 
-**Source document:** `docs/sources/Tikum-Kadlum-Sugidanon-Source.docx`  
+**Source document:** `docs/sources/Tikum-Kadlum-Suguidanon-Source.docx`  
 **Last updated:** 2026-08-15 (M13)  
-**Implementation:** `lib/content/sugidanon/chapters/`
+**Implementation:** `lib/content/suguidanon/chapters/`
 
 This map records exactly what the client-provided source document supplies for Chapters 2–13. Content is mapped into CMS-ready structures without inventing story events, dialogue, or cultural claims.
 
@@ -13,7 +13,7 @@ This map records exactly what the client-provided source document supplies for C
 - **PENDING CLIENT APPROVAL** — candidate learning point or media slot, not an approved outcome
 - **CLIENT SOURCE REQUIRED** — field absent from the supplied document
 
-Chapter order follows the client catalog (not Sugidanon Book numbers).
+Chapter order follows the client catalog (not Suguidanon Book numbers).
 
 ---
 
@@ -26,14 +26,14 @@ Chapter order follows the client catalog (not Sugidanon Book numbers).
 | **ID** | `amburukay` |
 | **Number** | 2 |
 | **Title** | Amburukay |
-| **Subtitle** | Sugidanon (Epics) of Panay Book II |
+| **Subtitle** | Suguidanon (Epics) of Panay Book II |
 | **Authors** | Magos, Alicia P. et al. |
 | **Review status** | `draft` |
 
 ### Source Material
 
-- **Book:** Sugidanon (Epics) of Panay Book II
-- **Document:** `docs/sources/Tikum-Kadlum-Sugidanon-Source.docx`
+- **Book:** Suguidanon (Epics) of Panay Book II
+- **Document:** `docs/sources/Tikum-Kadlum-Suguidanon-Source.docx`
 
 ### Available Story Content
 
@@ -102,13 +102,13 @@ Not provided in source.
 | **ID** | `derikaryong-pada` |
 | **Number** | 3 |
 | **Title** | Derikaryong Pada |
-| **Subtitle** | Sugidanon (Epics) of Panay Book III |
+| **Subtitle** | Suguidanon (Epics) of Panay Book III |
 | **Authors** | Magos, Alicia P. |
 | **Review status** | `draft` |
 
 ### Source Material
 
-- **Book:** Sugidanon (Epics) of Panay Book III
+- **Book:** Suguidanon (Epics) of Panay Book III
 
 ### Available Story Content
 
@@ -161,13 +161,13 @@ Learning points, illustration, review status.
 | **ID** | `balanakon` |
 | **Number** | 4 |
 | **Title** | Balanakon |
-| **Subtitle** | Sugidanon (Epics) of Panay Book VII |
+| **Subtitle** | Suguidanon (Epics) of Panay Book VII |
 | **Authors** | Magos, Alicia P. & Ramirez, Anna Razel Limoso |
 | **Review status** | `draft` |
 
 ### Source Material
 
-- **Book:** Sugidanon (Epics) of Panay Book VII
+- **Book:** Suguidanon (Epics) of Panay Book VII
 
 ### Available Story Content
 
@@ -217,13 +217,13 @@ Learning points, illustration, review status.
 | **ID** | `kalampay` |
 | **Number** | 5 |
 | **Title** | Kalampay |
-| **Subtitle** | Sugidanon (Epics) of Panay Book V |
+| **Subtitle** | Suguidanon (Epics) of Panay Book V |
 | **Authors** | Magos, Alicia P. & Ramirez, Anna Razel Limoso |
 | **Review status** | `draft` |
 
 ### Source Material
 
-- **Book:** Sugidanon (Epics) of Panay Book V
+- **Book:** Suguidanon (Epics) of Panay Book V
 
 ### Available Story Content
 
@@ -266,7 +266,7 @@ Learning points, illustration, review status.
 | **ID** | `pahagunong` |
 | **Number** | 6 |
 | **Title** | Pahagunong |
-| **Subtitle** | Sugidanon (Epics) of Panay Book IV |
+| **Subtitle** | Suguidanon (Epics) of Panay Book IV |
 | **Authors** | Magos, Alicia P. & Ramirez, Anna Razel Limoso |
 | **Review status** | `draft` |
 
@@ -301,7 +301,7 @@ Learning points, illustration, review status.
 | **ID** | `sinagnayan` |
 | **Number** | 7 |
 | **Title** | Sinagnayan |
-| **Subtitle** | Sugidanon (Epics) of Panay Book VI |
+| **Subtitle** | Suguidanon (Epics) of Panay Book VI |
 | **Authors** | Magos, Alicia P. et al. |
 | **Review status** | `draft` |
 
@@ -336,7 +336,7 @@ Learning points, illustration, review status.
 | **ID** | `humadapnon-tarangban` |
 | **Number** | 8 |
 | **Title** | Humadapnon: Tarangban |
-| **Subtitle** | Sugidanon (Epics) of Panay Book VIII, Volume 1 |
+| **Subtitle** | Suguidanon (Epics) of Panay Book VIII, Volume 1 |
 | **Authors** | Magos, Alicia P. et al. |
 | **Review status** | `draft` |
 
@@ -453,7 +453,7 @@ Learning points, illustration, review status.
 | **ID** | `alayaw` |
 | **Number** | 12 |
 | **Title** | Alayaw |
-| **Subtitle** | Sugidanon (Epics) of Panay Book IX |
+| **Subtitle** | Suguidanon (Epics) of Panay Book IX |
 | **Review status** | `draft` |
 
 ### Available Story Content
@@ -477,7 +477,7 @@ Learning points, illustration, review status.
 | **ID** | `nagbuhis` |
 | **Number** | 13 |
 | **Title** | Nagbuhis |
-| **Subtitle** | Sugidanon (Epics) of Panay Book X |
+| **Subtitle** | Suguidanon (Epics) of Panay Book X |
 | **Review status** | `draft` |
 
 ### Available Story Content
@@ -517,5 +517,5 @@ Learning points, illustration, review status.
 
 - `docs/TIKUM_KADLUM_CONTENT_MAP.md` — full 13-chapter overview (M10)
 - `docs/M13_CONTENT_EXPANSION.md` — M13 implementation report
-- `lib/content/sugidanon/chapters/` — TypeScript content definitions
+- `lib/content/suguidanon/chapters/` — TypeScript content definitions
 - `supabase/seed-chapters-2-13.sql` — Supabase seed (generated)

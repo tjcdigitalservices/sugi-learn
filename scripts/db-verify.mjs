@@ -36,7 +36,7 @@ function fail(message) {
 }
 
 async function main() {
-  console.log("Sugidanon M2 — database verification\n");
+  console.log("Suguidanon M2 — database verification\n");
 
   const { data: chapters, error: chaptersError } = await supabase
     .from("chapters")

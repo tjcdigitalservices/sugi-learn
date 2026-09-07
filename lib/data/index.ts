@@ -5,6 +5,7 @@ import { MockChapterManagementRepository } from "@/lib/data/mock/chapter-managem
 import { MockChapterRepository } from "@/lib/data/mock/chapter-repository";
 import { MockMediaRepository } from "@/lib/data/mock/media-repository";
 import { MockProgressRepository } from "@/lib/data/mock/progress-repository";
+import { MockSiteNoticeRepository } from "@/lib/data/mock/site-notice-repository";
 import { SupabaseAdminAnalyticsRepository } from "@/lib/data/supabase/admin-analytics-repository";
 import { SupabaseAdminDashboardRepository } from "@/lib/data/supabase/admin-dashboard-repository";
 import { SupabaseAssessmentRepository } from "@/lib/data/supabase/assessment-repository";
@@ -12,6 +13,7 @@ import { SupabaseChapterManagementRepository } from "@/lib/data/supabase/chapter
 import { SupabaseChapterRepository } from "@/lib/data/supabase/chapter-repository";
 import { SupabaseMediaRepository } from "@/lib/data/supabase/media-repository";
 import { SupabaseProgressRepository } from "@/lib/data/supabase/progress-repository";
+import { SupabaseSiteNoticeRepository } from "@/lib/data/supabase/site-notice-repository";
 import type { DataRepositories } from "@/lib/data/types";
 import { hasSupabaseConfig } from "@/lib/supabase/service";
 
@@ -32,6 +34,7 @@ export function getRepositories(): DataRepositories {
         adminDashboard: new SupabaseAdminDashboardRepository(),
         adminAnalytics: new SupabaseAdminAnalyticsRepository(),
         media: new SupabaseMediaRepository(),
+        siteNotices: new SupabaseSiteNoticeRepository(),
       };
     } else {
       const mockChapterManagement = new MockChapterManagementRepository();
@@ -43,6 +46,7 @@ export function getRepositories(): DataRepositories {
         adminDashboard: new MockAdminDashboardRepository(),
         adminAnalytics: new MockAdminAnalyticsRepository(),
         media: new MockMediaRepository(),
+        siteNotices: new MockSiteNoticeRepository(),
       };
     }
   }

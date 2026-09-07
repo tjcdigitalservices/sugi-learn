@@ -172,7 +172,7 @@ async function seedKind(kind) {
 }
 
 async function main() {
-  console.log("Seeding official Sugidanon assessments…\n");
+  console.log("Seeding official Suguidanon assessments…\n");
   await seedKind("pre");
   await seedKind("post");
   console.log("\nDone.");

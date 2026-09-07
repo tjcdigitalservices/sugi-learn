@@ -1,4 +1,4 @@
-# Sugidanon — Project Specification
+# Suguidanon — Project Specification
 
 **Version:** M1  
 **Last updated:** 2026-08-15
@@ -7,7 +7,7 @@
 
 ## 1. Project Purpose
 
-Sugidanon is a multimedia learning system for the **Panay Bukidnon Sugidanon** — presenting selected epic material as a structured, culturally reviewed learning experience.
+Suguidanon is a multimedia learning system for the **Panay Bukidnon Suguidanon** — presenting selected epic material as a structured, culturally reviewed learning experience.
 
 ---
 
@@ -26,7 +26,7 @@ Sugidanon is a multimedia learning system for the **Panay Bukidnon Sugidanon** �
 
 | User | Description |
 |------|-------------|
-| **Learner** | Individual accessing the Sugidanon learning journey |
+| **Learner** | Individual accessing the Suguidanon learning journey |
 | **Administrator** | Content manager, cultural reviewer, or project staff |
 | **Cultural reviewer** | Validates content before publication (workflow M18) |
 
@@ -70,7 +70,7 @@ Dashboard
 
 ## 6. Thirteen Chapters
 
-Based on the 13 published Sugidanon volumes:
+Based on the 13 published Suguidanon volumes:
 
 | # | Chapter |
 |---|---------|

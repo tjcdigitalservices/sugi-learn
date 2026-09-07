@@ -1,7 +1,7 @@
 import type { Character } from "@/types/chapter";
 import type { ReviewStatus } from "@/types/review";
 
-import type { ChapterCharacterDefinition } from "@/lib/content/sugidanon/types";
+import type { ChapterCharacterDefinition } from "@/lib/content/suguidanon/types";
 
 const SLUG_ALIASES: Record<string, string[]> = {
   amburukay: ["amburukay-ch1"],

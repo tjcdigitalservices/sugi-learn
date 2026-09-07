@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { AdminNavLinks } from "@/components/admin/admin-nav-links";
-import { SugidanonMark } from "@/components/brand/heritage-wave";
+import { SuguidanonMark } from "@/components/brand/heritage-wave";
 import { SignOutButton } from "@/components/auth/sign-out-button";
 import { cn } from "@/lib/utils";
 
@@ -23,10 +23,10 @@ export function AdminSidebar({ userLabel, className }: AdminSidebarProps) {
           href="/admin"
           className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sl-gold focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--sl-navy)]"
         >
-          <SugidanonMark light showTagline={false} size="sm" />
+          <SuguidanonMark light showTagline={false} size="sm" />
         </Link>
         <p className="mt-1 text-xs leading-snug text-white/65">
-          Admin · Panay Bukidnon Sugidanon
+          Admin · Panay Bukidnon Suguidanon
         </p>
       </div>
 

@@ -5,6 +5,7 @@ import {
   Image,
   LayoutDashboard,
   ListChecks,
+  Settings,
   type LucideIcon,
 } from "lucide-react";
 
@@ -23,6 +24,7 @@ export const ADMIN_NAV_ITEMS: AdminNavItem[] = [
   { href: "/admin/assessments", label: "Assessments", icon: ListChecks },
   { href: "/admin/review", label: "Review", icon: ClipboardCheck },
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
+  { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 
 export function getAdminPageTitle(pathname: string): string {

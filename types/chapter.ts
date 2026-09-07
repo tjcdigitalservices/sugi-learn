@@ -1,7 +1,7 @@
 import type { MediaAsset } from "@/types/media";
 import type { ReviewStatus } from "@/types/review";
 
-/** Catalog entry for official Sugidanon chapter metadata (initial content set). */
+/** Catalog entry for official Suguidanon chapter metadata (initial content set). */
 export interface ChapterSummary {
   id: string;
   number: number;

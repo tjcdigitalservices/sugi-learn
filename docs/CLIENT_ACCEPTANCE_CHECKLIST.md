@@ -1,6 +1,6 @@
-# Sugidanon — Client Acceptance Checklist
+# Suguidanon — Client Acceptance Checklist
 
-**Project:** Sugidanon — Panay Bukidnon Sugidanon Learning System  
+**Project:** Suguidanon — Panay Bukidnon Suguidanon Learning System  
 **Date:** 2026-08-15  
 **Version:** M19 Handover
 

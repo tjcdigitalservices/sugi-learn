@@ -1,4 +1,4 @@
-# Sugidanon — Development Status
+# Suguidanon — Development Status
 
 **Last updated:** 2026-08-15
 
@@ -6,9 +6,9 @@
 
 **Implementation milestone sequence M0–M19 is COMPLETE.**
 
-**M18.5 — Dynamic Chapter Scalability Audit** is **COMPLETE**. Sugidanon supports unlimited admin-managed chapters; the 13 Sugidanon stories are initial content only.
+**M18.5 — Dynamic Chapter Scalability Audit** is **COMPLETE**. Suguidanon supports unlimited admin-managed chapters; the 13 Suguidanon stories are initial content only.
 
-The Sugidanon platform has been built, QA'd, prepared for UAT, hardened for production, and documented for final handover. **Production deployment and client acceptance sign-off remain pending** (see Launch Blockers below).
+The Suguidanon platform has been built, QA'd, prepared for UAT, hardened for production, and documented for final handover. **Production deployment and client acceptance sign-off remain pending** (see Launch Blockers below).
 
 There is **no M20** in the project plan.
 

@@ -1,9 +1,9 @@
-# Sugidanon — Chapter Management
+# Suguidanon — Chapter Management
 
 **Version:** M5  
 **Last updated:** 2026-08-15
 
-Administrative chapter management for the 13 official Sugidanon chapters. This document covers behavior, data access, validation, and known limitations.
+Administrative chapter management for the 13 official Suguidanon chapters. This document covers behavior, data access, validation, and known limitations.
 
 ---
 
