@@ -29,6 +29,11 @@ export interface StorybookHoldSnapshot {
   /** Layer B — complete incoming spread, staged hidden until ready + mid-turn. */
   incomingChapter: Chapter;
   reducedMotion?: boolean;
+  /** Keep hold spreads visually matched to the live open book. */
+  chrome?: ReactNode;
+  previousChapterId?: string | null;
+  nextChapterId?: string | null;
+  continueLabel?: string;
 }
 
 interface StorybookTransitionContextValue {
@@ -152,18 +157,20 @@ export function StorybookTransitionProvider({
       if (!stack || !slot) {
         return;
       }
-      const frame = stack.querySelector(
-        ".sb-hold-layer--outgoing .sb-frame",
+      // Size the leaf to the cream page surface, not the hardcover shell,
+      // so left/right navy lips stay visible during the turn.
+      const page = stack.querySelector(
+        ".sb-hold-layer--outgoing .sb-frame > .sb-spread",
       ) as HTMLElement | null;
-      if (!frame) {
+      if (!page) {
         return;
       }
       const stackBox = stack.getBoundingClientRect();
-      const frameBox = frame.getBoundingClientRect();
-      slot.style.top = `${frameBox.top - stackBox.top}px`;
-      slot.style.left = `${frameBox.left - stackBox.left}px`;
-      slot.style.width = `${frameBox.width}px`;
-      slot.style.height = `${frameBox.height}px`;
+      const pageBox = page.getBoundingClientRect();
+      slot.style.top = `${pageBox.top - stackBox.top}px`;
+      slot.style.left = `${pageBox.left - stackBox.left}px`;
+      slot.style.width = `${pageBox.width}px`;
+      slot.style.height = `${pageBox.height}px`;
     }
 
     syncTurnSlot();
@@ -207,7 +214,18 @@ export function StorybookTransitionProvider({
                         <StorybookSpread
                           chapter={hold.incomingChapter}
                           chapterCompleted
-                          nextChapterId={null}
+                          previousChapterId={
+                            hold.direction === "forward"
+                              ? hold.outgoingChapter.id
+                              : hold.previousChapterId ?? null
+                          }
+                          nextChapterId={
+                            hold.direction === "back"
+                              ? hold.outgoingChapter.id
+                              : hold.nextChapterId ?? null
+                          }
+                          continueLabel={hold.continueLabel}
+                          chrome={hold.chrome}
                           onSpreadReady={handleLayerBReady}
                         />
                       </div>
@@ -219,7 +237,10 @@ export function StorybookTransitionProvider({
                         <StorybookSpread
                           chapter={hold.outgoingChapter}
                           chapterCompleted
-                          nextChapterId={null}
+                          previousChapterId={hold.previousChapterId ?? null}
+                          nextChapterId={hold.nextChapterId ?? null}
+                          continueLabel={hold.continueLabel}
+                          chrome={hold.chrome}
                         />
                       </div>
                       {layerBReady ? (

@@ -36,17 +36,22 @@ import {
   countMediaByKind,
   createMediaAssetRecord,
 } from "@/lib/domain/media-management";
+import { MEDIA_STORAGE_BUCKET } from "@/lib/media/constants";
 import {
   buildMockDataUrl,
   buildStorageObjectPath,
-  readUploadBuffer,
-  uploadMediaFile,
 } from "@/lib/media/storage";
 import {
   validateMediaFile,
+  validateMediaFileMeta,
   validateScopeLimit,
 } from "@/lib/media/validation";
-import { hasSupabaseConfig } from "@/lib/supabase/service";
+import { getSupabaseServerClient } from "@/lib/supabase/server";
+import {
+  createSupabaseServiceClient,
+  hasSupabaseConfig,
+  hasSupabaseServiceConfig,
+} from "@/lib/supabase/service";
 import type { Chapter, ChapterSection, LearningPoint } from "@/types/chapter";
 import type {
   ChapterManagementActionResult,
@@ -57,6 +62,13 @@ import type {
   UpdateLearningPointInput,
   UpdateSectionInput,
 } from "@/types/chapter-management";
+
+export type PreparedChapterCoverUpload = {
+  assetId: string;
+  storagePath: string;
+  objectPath: string;
+  token: string;
+};
 
 function adminPaths(chapterId: string) {
   return [
@@ -405,6 +417,131 @@ export async function reloadChapterAction(
   }
 }
 
+export async function prepareChapterCoverUploadAction(input: {
+  chapterId: string;
+  filename: string;
+  contentType: string;
+  fileSize: number;
+}): Promise<ChapterManagementActionResult<PreparedChapterCoverUpload>> {
+  await requireAdmin();
+
+  if (!hasSupabaseConfig()) {
+    return {
+      success: false,
+      error: "Direct uploads require Supabase configuration.",
+    };
+  }
+
+  const fileError = validateMediaFileMeta("illustration", {
+    name: input.filename,
+    type: input.contentType,
+    size: input.fileSize,
+  });
+  if (fileError) {
+    return { success: false, error: fileError };
+  }
+
+  try {
+    const existing = await getChapterForAdmin(input.chapterId);
+    if (!existing) {
+      return { success: false, error: "Chapter not found." };
+    }
+
+    const currentCount = await countMediaByKind("illustration");
+    const scopeError = validateScopeLimit("illustration", currentCount);
+    if (scopeError && !existing.coverMediaAssetId) {
+      return { success: false, error: scopeError };
+    }
+
+    const assetId = randomUUID();
+    const storagePath = buildStorageObjectPath({
+      chapterSlug: input.chapterId,
+      kind: "illustration",
+      assetId,
+      filename: input.filename,
+    });
+    const objectPath = storagePath.replace(/^media\//, "");
+
+    const supabase = hasSupabaseServiceConfig()
+      ? createSupabaseServiceClient()
+      : await getSupabaseServerClient();
+    const { data, error } = await supabase.storage
+      .from(MEDIA_STORAGE_BUCKET)
+      .createSignedUploadUrl(objectPath);
+
+    if (error || !data) {
+      return {
+        success: false,
+        error: "Unable to prepare cover upload. Please try again.",
+      };
+    }
+
+    return {
+      success: true,
+      data: {
+        assetId,
+        storagePath,
+        objectPath,
+        token: data.token,
+      },
+    };
+  } catch (error) {
+    return { success: false, error: safeError(error) };
+  }
+}
+
+export async function finalizeChapterCoverUploadAction(input: {
+  chapterId: string;
+  assetId: string;
+  storagePath: string;
+}): Promise<ChapterManagementActionResult<Chapter>> {
+  await requireAdmin();
+
+  if (!input.assetId.trim() || !input.storagePath.trim()) {
+    return { success: false, error: "Upload session is incomplete." };
+  }
+
+  try {
+    const existing = await getChapterForAdmin(input.chapterId);
+    if (!existing) {
+      return { success: false, error: "Chapter not found." };
+    }
+
+    await createMediaAssetRecord(
+      {
+        id: input.assetId,
+        kind: "illustration",
+        title: `${existing.title} — Cover`,
+        description: "Chapter cover image",
+        altText: `Cover for ${existing.title}`,
+        chapterSlug: input.chapterId,
+        sectionId: null,
+        sourceReference: null,
+        reviewStatus: "approved",
+      },
+      input.storagePath,
+    );
+
+    const chapter = await updateChapterMetadata(input.chapterId, {
+      title: existing.title,
+      subtitle: existing.subtitle,
+      summary: existing.summary,
+      reviewStatus: existing.reviewStatus,
+      coverMediaAssetId: input.assetId,
+    });
+
+    revalidateChapter(input.chapterId);
+    revalidateLearnerPaths();
+    return { success: true, data: chapter };
+  } catch (error) {
+    return { success: false, error: safeError(error) };
+  }
+}
+
+/**
+ * Mock-mode / small-file fallback. Prefer prepare + direct storage upload when
+ * Supabase is configured (avoids Next.js multipart truncation).
+ */
 export async function setChapterCoverAction(
   chapterId: string,
   formData: FormData,
@@ -421,6 +558,14 @@ export async function setChapterCoverAction(
     return { success: false, error: fileError };
   }
 
+  if (hasSupabaseConfig()) {
+    return {
+      success: false,
+      error:
+        "Cover upload should use direct storage. Refresh the page and try again.",
+    };
+  }
+
   try {
     const existing = await getChapterForAdmin(chapterId);
     if (!existing) {
@@ -434,24 +579,7 @@ export async function setChapterCoverAction(
     }
 
     const assetId = randomUUID();
-    let storagePath: string | null = null;
-
-    if (hasSupabaseConfig()) {
-      storagePath = buildStorageObjectPath({
-        chapterSlug: chapterId,
-        kind: "illustration",
-        assetId,
-        filename: file.name,
-      });
-      const buffer = await readUploadBuffer(file);
-      await uploadMediaFile({
-        storagePath,
-        file: buffer,
-        contentType: file.type || "image/png",
-      });
-    } else {
-      storagePath = await buildMockDataUrl(file);
-    }
+    const storagePath = await buildMockDataUrl(file);
 
     await createMediaAssetRecord(
       {

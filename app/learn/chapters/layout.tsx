@@ -17,8 +17,8 @@ export default async function LearnChaptersLayout({
 
   try {
     notice = await getCharacterRepresentationNotice();
-  } catch (error) {
-    console.error("Character representation notice load failed:", error);
+  } catch {
+    // Keep approved defaults if the notice store is unavailable.
   }
 
   return (

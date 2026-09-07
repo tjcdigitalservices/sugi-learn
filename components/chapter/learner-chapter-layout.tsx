@@ -213,6 +213,27 @@ export function LearnerChapterLayout({
           outgoingChapter: chapter,
           incomingChapter: toChapter,
           reducedMotion,
+          previousChapterId,
+          nextChapterId,
+          continueLabel,
+          chrome: (
+            <>
+              <Link
+                href={
+                  previewMode
+                    ? `/admin/chapters/${chapter.id}`
+                    : "/learn/chapters"
+                }
+                className="inline-flex items-center gap-1 text-sm text-sl-ink-muted transition hover:text-sl-navy"
+              >
+                <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+                {previewMode ? "Back to editor" : "All chapters"}
+              </Link>
+              <p className="text-sm tracking-wide text-sl-ink-muted">
+                Chapter {navigation.position} of {navigation.total}
+              </p>
+            </>
+          ),
         });
       });
       markStorybookPageTurnNav();
@@ -223,8 +244,14 @@ export function LearnerChapterLayout({
       beginHold,
       chapter,
       chapterHref,
+      continueLabel,
       ensureChapterCompleted,
       isHolding,
+      navigation.position,
+      navigation.total,
+      nextChapterId,
+      previewMode,
+      previousChapterId,
       rollbackTurn,
       router,
     ],

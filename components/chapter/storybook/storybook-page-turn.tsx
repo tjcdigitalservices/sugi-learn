@@ -13,6 +13,7 @@ export type StorybookTurnDirection = "forward" | "back";
 
 export interface StorybookPageTurnProps {
   direction: StorybookTurnDirection;
+  /** Kept for API compatibility; leaf faces are plain paper. */
   fromChapter: Pick<Chapter, "number" | "title" | "subtitle">;
   /** Kept for API compatibility; destination content comes from Layer B, not faces. */
   toChapter?: Pick<Chapter, "number" | "title" | "subtitle"> | null;
@@ -24,25 +25,38 @@ export interface StorybookPageTurnProps {
 
 const TURN_FALLBACK_MS = 900;
 const REDUCED_FALLBACK_MS = 280;
-const MID_REVEAL_MS = 340;
+/** After ~90° so Layer B does not ghost through the edge-on leaf. */
+const MID_REVEAL_MS = 480;
 const MID_REVEAL_REDUCED_MS = 40;
 
 /**
  * CSS 3D page-turn leaf for chapter-to-chapter navigation.
  * Destination pages are NOT drawn here — the hold reveals a full staged spread.
+ *
+ * An opaque shield sits under the 3D leaf (same half) so destination Layer B
+ * cannot ghost/mirror through the flipping face mid-turn.
  */
 export function StorybookPageTurn({
   direction,
-  fromChapter,
   reducedMotion = false,
   onMidReveal,
   onComplete,
 }: StorybookPageTurnProps) {
   const [active, setActive] = useState(false);
+  const [shieldOpen, setShieldOpen] = useState(true);
   const completed = useRef(false);
   const midRevealed = useRef(false);
   const fallbackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const midTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  function revealDestination() {
+    if (midRevealed.current) {
+      return;
+    }
+    midRevealed.current = true;
+    setShieldOpen(false);
+    onMidReveal?.();
+  }
 
   function finish() {
     if (completed.current) {
@@ -57,10 +71,7 @@ export function StorybookPageTurn({
       clearTimeout(midTimer.current);
       midTimer.current = null;
     }
-    if (!midRevealed.current) {
-      midRevealed.current = true;
-      onMidReveal?.();
-    }
+    revealDestination();
     onComplete();
   }
 
@@ -70,10 +81,7 @@ export function StorybookPageTurn({
     });
 
     midTimer.current = setTimeout(() => {
-      if (!midRevealed.current) {
-        midRevealed.current = true;
-        onMidReveal?.();
-      }
+      revealDestination();
     }, reducedMotion ? MID_REVEAL_REDUCED_MS : MID_REVEAL_MS);
 
     fallbackTimer.current = setTimeout(
@@ -112,27 +120,19 @@ export function StorybookPageTurn({
     direction === "forward" ? "sb-turn-forward" : "sb-turn-back",
     reducedMotion ? "sb-turn-reduced" : null,
     active ? "is-turning" : null,
+    shieldOpen ? null : "is-mid-revealed",
   ]
     .filter(Boolean)
     .join(" ");
 
-  const fromLabel =
-    fromChapter.number > 0 ? `Chapter ${fromChapter.number}` : "Chapter";
-
   return (
     <div className={rootClass} aria-hidden="true">
-      {/* Transparent underlay — destination Layer B shows through. */}
-      <div className="sb-turn-underlay sb-turn-underlay--clear" />
+      {/* Opaque paper under the 3D leaf — blocks Layer B compositor ghosting. */}
+      <div className="sb-turn-shield">
+        <div className="sb-turn-shield-spine" />
+      </div>
       <div className="sb-turn-leaf" onTransitionEnd={handleTransitionEnd}>
-        <div className="sb-turn-face sb-turn-face-front">
-          <div className="sb-turn-face-inner">
-            <div className="sb-turn-face-copy">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sl-navy/80">
-                {fromLabel}
-              </p>
-            </div>
-          </div>
-        </div>
+        <div className="sb-turn-face sb-turn-face-front" />
         <div className="sb-turn-face sb-turn-face-back sb-turn-face-back--plain" />
       </div>
     </div>

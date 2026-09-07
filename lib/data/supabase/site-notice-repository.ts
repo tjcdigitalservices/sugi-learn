@@ -26,6 +26,19 @@ function mapRow(row: {
   };
 }
 
+function isMissingSiteNoticesTable(error: {
+  message?: string;
+  code?: string;
+}): boolean {
+  const message = (error.message ?? "").toLowerCase();
+  return (
+    message.includes("site_notices") &&
+    (message.includes("schema cache") ||
+      message.includes("does not exist") ||
+      message.includes("could not find the table"))
+  );
+}
+
 export class SupabaseSiteNoticeRepository implements SiteNoticeRepository {
   constructor(
     private readonly clientFactory: ClientFactory = getSupabaseServerClient,
@@ -41,6 +54,10 @@ export class SupabaseSiteNoticeRepository implements SiteNoticeRepository {
       .maybeSingle();
 
     if (error) {
+      // Migration not applied yet — keep learner UI working with approved defaults.
+      if (isMissingSiteNoticesTable(error)) {
+        return { ...DEFAULT_CHARACTER_REPRESENTATION_NOTICE };
+      }
       throw new Error(
         `Failed to load character representation notice: ${error.message}`,
       );
@@ -77,6 +94,11 @@ export class SupabaseSiteNoticeRepository implements SiteNoticeRepository {
       .single();
 
     if (error || !data) {
+      if (error && isMissingSiteNoticesTable(error)) {
+        throw new Error(
+          "Site notices table is missing. Run `supabase db push` (migration 0017_site_notices.sql), then try again.",
+        );
+      }
       throw new Error(
         `Unable to save character representation notice: ${error?.message ?? "unknown error"}`,
       );

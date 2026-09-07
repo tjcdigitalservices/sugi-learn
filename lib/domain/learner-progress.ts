@@ -140,7 +140,10 @@ export async function getLearnerJourneySummary(
     records,
     preAssessmentCompleted,
   );
-  const completedCount = journeyItems.filter(
+  const publishedJourneyItems = journeyItems.filter(
+    (chapter) => chapter.hasPublishedContent,
+  );
+  const completedCount = publishedJourneyItems.filter(
     (chapter) => chapter.status === "completed",
   ).length;
 
@@ -148,13 +151,14 @@ export async function getLearnerJourneySummary(
     learnerId,
     chapters: journeyItems,
     completedCount,
-    totalChapters: journeyItems.length,
+    totalChapters: publishedJourneyItems.length,
     inProgressCount: journeyItems.filter(
       (chapter) => chapter.status === "in_progress",
     ).length,
     continueChapterId: resolveContinueChapterId(journeyItems),
     allChaptersCompleted:
-      journeyItems.length > 0 && completedCount === journeyItems.length,
+      publishedJourneyItems.length > 0 &&
+      completedCount === publishedJourneyItems.length,
     preAssessmentCompleted,
     postAssessmentCompleted: Boolean(postAttempt),
     lastActivityAt: aggregate?.lastActivityAt ?? null,

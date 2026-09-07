@@ -17,8 +17,9 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   experimental: {
     serverActions: {
-      // Default Next.js limit is 1mb; animation uploads allow up to 200mb.
-      bodySizeLimit: "210mb",
+      // Default Next.js limit is 1mb; keep headroom for small form uploads.
+      // Large media/covers use direct Supabase signed uploads instead.
+      bodySizeLimit: "55mb",
     },
   },
   images: {

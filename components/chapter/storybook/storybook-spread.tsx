@@ -13,6 +13,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import type {
   AnimationSection,
+  AudioSection,
   Chapter,
   ChapterSection,
   IllustrationSection,
@@ -51,11 +52,37 @@ interface StorybookSpreadProps {
 }
 
 function sectionHasRenderableMedia(
-  section: AnimationSection | IllustrationSection,
+  section: AnimationSection | IllustrationSection | AudioSection,
   mediaAssets: MediaAsset[],
 ): boolean {
   const asset = mediaAssets.find((item) => item.id === section.mediaAssetId);
   return Boolean(asset && resolveMediaUrl(asset.storagePath));
+}
+
+/** Skip empty draft-like slots so unfinished chapters don’t open a second book. */
+function sectionHasContinuationContent(
+  section: ChapterSection,
+  mediaAssets: MediaAsset[],
+): boolean {
+  switch (section.kind) {
+    case "animation":
+    case "illustration":
+    case "audio":
+      return sectionHasRenderableMedia(section, mediaAssets);
+    case "introduction":
+    case "story":
+    case "cultural_context":
+    case "activity":
+      return Boolean(section.body.trim());
+    case "characters":
+      return section.characterIds.length > 0;
+    case "learning_points":
+      return true;
+    case "completion":
+      return false;
+    default:
+      return true;
+  }
 }
 
 function chunkIntoPairs<T>(items: T[]): T[][] {
@@ -112,7 +139,7 @@ function partitionSections(
         return false;
       }
     }
-    return true;
+    return sectionHasContinuationContent(section, mediaAssets);
   });
 
   return {

@@ -49,6 +49,12 @@ export function ChapterCoverGrid({ chapters }: ChapterCoverGridProps) {
               </div>
             ) : null}
 
+            {!chapter.hasPublishedContent ? (
+              <div className="absolute left-2 top-2 rounded bg-black/55 px-1.5 py-0.5 text-[0.65rem] font-medium text-white sm:left-3 sm:top-3 sm:px-2 sm:text-xs">
+                Coming soon
+              </div>
+            ) : null}
+
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent px-2 pb-1.5 pt-5 sm:px-3 sm:pb-2.5 sm:pt-8">
               <p className="truncate text-[0.7rem] font-medium text-white sm:text-sm">
                 {chapter.title}
