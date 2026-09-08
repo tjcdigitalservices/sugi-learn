@@ -38,11 +38,11 @@ export default function HomePage() {
           sizes="100vw"
         />
         <div
-          className="absolute inset-0 bg-gradient-to-r from-[rgba(6,16,28,0.88)] via-[rgba(6,16,28,0.55)] to-[rgba(6,16,28,0.15)]"
+          className="absolute inset-0 bg-gradient-to-r from-[rgba(6,16,28,0.62)] via-[rgba(6,16,28,0.32)] to-[rgba(6,16,28,0.06)]"
           aria-hidden="true"
         />
         <div
-          className="absolute inset-0 bg-gradient-to-t from-[rgba(6,16,28,0.55)] via-transparent to-[rgba(6,16,28,0.25)]"
+          className="absolute inset-0 bg-gradient-to-t from-[rgba(6,16,28,0.35)] via-transparent to-[rgba(6,16,28,0.12)]"
           aria-hidden="true"
         />
 
@@ -53,9 +53,13 @@ export default function HomePage() {
             </h1>
             <p className="max-w-md text-base leading-relaxed text-white/85 sm:text-lg">
               An interactive learning experience that brings the Suguidanon to
-              life — for greater learners, a brighter tomorrow.
+              life — helping learners discover, understand, and carry forward
+              the stories of Panay.
             </p>
             <div className="space-y-3 pt-1">
+              <h2 className="font-display text-[0.75rem] font-normal tracking-[0.12em] sm:text-[0.9rem]">
+                Begin your learning journey
+              </h2>
               <StartPreTestButton />
               <p className="flex items-center gap-2 text-sm text-white/70">
                 <Lock className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />

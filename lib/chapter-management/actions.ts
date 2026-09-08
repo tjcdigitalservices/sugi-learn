@@ -18,6 +18,7 @@ import {
   createChapter,
   createLearningPoint,
   createSection,
+  deleteChapter,
   deleteLearningPoint,
   deleteSection,
   getChapterForAdmin,
@@ -396,6 +397,24 @@ export async function setChapterActiveAction(
     revalidateLearnerPaths();
     revalidateChapter(chapterId);
     return { success: true, data: chapter };
+  } catch (error) {
+    return { success: false, error: safeError(error) };
+  }
+}
+
+export async function deleteChapterAction(
+  chapterId: string,
+): Promise<ChapterManagementActionResult> {
+  await requireAdmin();
+
+  try {
+    await deleteChapter(chapterId);
+    revalidateLearnerPaths();
+    revalidatePath("/admin/chapters");
+    revalidatePath(`/admin/chapters/${chapterId}`);
+    revalidatePath(`/admin/chapters/${chapterId}/preview`);
+    revalidatePath(`/learn/chapters/${chapterId}`);
+    return { success: true, data: undefined };
   } catch (error) {
     return { success: false, error: safeError(error) };
   }

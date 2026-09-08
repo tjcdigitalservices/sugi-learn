@@ -163,3 +163,7 @@ export async function setChapterActive(
     isActive,
   );
 }
+
+export async function deleteChapter(chapterId: string): Promise<void> {
+  return getRepositories().chapterManagement.deleteChapter(chapterId);
+}

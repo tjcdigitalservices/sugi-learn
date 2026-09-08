@@ -107,6 +107,7 @@ export interface ChapterManagementRepository {
   createChapter(input: CreateChapterInput): Promise<Chapter>;
   reorderChapters(orderedChapterSlugs: string[]): Promise<void>;
   setChapterActive(chapterId: string, isActive: boolean): Promise<Chapter>;
+  deleteChapter(chapterId: string): Promise<void>;
 }
 
 export interface AssessmentRepository {

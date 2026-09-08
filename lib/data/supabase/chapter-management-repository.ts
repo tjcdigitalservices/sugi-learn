@@ -1101,4 +1101,55 @@ export class SupabaseChapterManagementRepository
 
     return chapter;
   }
+
+  async deleteChapter(chapterId: string): Promise<void> {
+    const supabase = (await this.clientFactory()) as TypedSupabaseClient;
+    const chapterRow = await getChapterRowBySlug(supabase, chapterId);
+
+    // Clear cover pointer first so FK SET NULL paths stay clean under RLS.
+    const { error: clearCoverError } = await supabase
+      .from("chapters")
+      .update({ cover_media_asset_id: null })
+      .eq("id", chapterRow.id);
+
+    if (clearCoverError) {
+      throw managementError(
+        `Unable to prepare chapter for deletion: ${clearCoverError.message}`,
+      );
+    }
+
+    // Require a returned row — RLS can otherwise "succeed" with 0 deletes.
+    const { data: deletedRows, error: deleteError } = await supabase
+      .from("chapters")
+      .delete()
+      .eq("id", chapterRow.id)
+      .select("id");
+
+    if (deleteError) {
+      throw managementError(`Unable to delete chapter: ${deleteError.message}`);
+    }
+
+    if (!deletedRows?.length) {
+      throw managementError(
+        "Unable to delete chapter. Check that you are signed in as an admin.",
+      );
+    }
+
+    // Keep chapter numbers contiguous after hard delete.
+    const { data: remaining, error: listError } = await supabase
+      .from("chapters")
+      .select("id")
+      .order("chapter_number", { ascending: true });
+
+    if (listError) {
+      throw managementError("Chapter deleted, but renumbering failed.");
+    }
+
+    if (remaining && remaining.length > 0) {
+      await applyChapterNumberOrder(
+        supabase,
+        remaining.map((row) => row.id),
+      );
+    }
+  }
 }

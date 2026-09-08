@@ -7,11 +7,15 @@ import {
   ArchiveRestore,
   Eye,
   Pencil,
+  Trash2,
 } from "lucide-react";
 
 import { AdminTableActionsMenu } from "@/components/admin/admin-table-actions-menu";
 import { ReviewStatusBadge } from "@/components/admin/review-status-badge";
-import { setChapterActiveAction } from "@/lib/chapter-management/actions";
+import {
+  deleteChapterAction,
+  setChapterActiveAction,
+} from "@/lib/chapter-management/actions";
 import { formatDateTime } from "@/lib/chapter-management/constants";
 import type { AdminChapterListItem } from "@/types/chapter-management";
 
@@ -37,6 +41,34 @@ export function ChapterListTable({ chapters }: ChapterListTableProps) {
     setError(null);
 
     const result = await setChapterActiveAction(slug, isActive);
+    setPendingSlug(null);
+
+    if (!result.success) {
+      setError(result.error);
+      return;
+    }
+
+    router.refresh();
+  }
+
+  async function handleDelete(chapter: AdminChapterListItem) {
+    const typed = window.prompt(
+      `Permanently delete “${chapter.title}”?\n\nThis cannot be undone. Sections, learning points, character links, and learner progress for this chapter will be removed. Media stays in the library (unlinked). Assessment questions keep their text but lose this chapter link.\n\nPrefer Archive if you only want to hide it from learners.\n\nType the exact chapter title to confirm:`,
+    );
+
+    if (typed === null) {
+      return;
+    }
+
+    if (typed.trim() !== chapter.title.trim()) {
+      setError("Deletion cancelled — chapter title did not match.");
+      return;
+    }
+
+    setPendingSlug(chapter.id);
+    setError(null);
+
+    const result = await deleteChapterAction(chapter.id);
     setPendingSlug(null);
 
     if (!result.success) {
@@ -163,6 +195,19 @@ export function ChapterListTable({ chapters }: ChapterListTableProps) {
                               />
                             ) : (
                               <Archive
+                                className="h-3.5 w-3.5"
+                                aria-hidden="true"
+                              />
+                            ),
+                          },
+                          {
+                            type: "button",
+                            label: "Delete",
+                            disabled: isPending,
+                            destructive: true,
+                            onClick: () => handleDelete(chapter),
+                            icon: (
+                              <Trash2
                                 className="h-3.5 w-3.5"
                                 aria-hidden="true"
                               />

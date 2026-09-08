@@ -60,12 +60,13 @@ const dynamicChapterMeta = new Map<
   string,
   { number: number; isActive: boolean; dbId: string }
 >();
+const deletedChapterIds = new Set<string>();
 
 function getKnownChapterIds(): string[] {
   return [
     ...CHAPTER_CATALOG.map((chapter) => chapter.id),
     ...dynamicChapterMeta.keys(),
-  ];
+  ].filter((id) => !deletedChapterIds.has(id));
 }
 
 function getCatalogEntry(chapterId: string) {
@@ -661,6 +662,10 @@ export class MockChapterManagementRepository
     chapterId: string,
     isActive: boolean,
   ): Promise<Chapter> {
+    if (deletedChapterIds.has(chapterId)) {
+      throw new Error("Chapter not found.");
+    }
+
     const meta = dynamicChapterMeta.get(chapterId);
     if (meta) {
       dynamicChapterMeta.set(chapterId, { ...meta, isActive });
@@ -669,5 +674,23 @@ export class MockChapterManagementRepository
     }
 
     return buildChapterRecord(chapterId);
+  }
+
+  async deleteChapter(chapterId: string): Promise<void> {
+    if (!getKnownChapterIds().includes(chapterId)) {
+      throw new Error("Chapter not found.");
+    }
+
+    deletedChapterIds.add(chapterId);
+    chapterState.delete(chapterId);
+    dynamicChapterMeta.delete(chapterId);
+
+    const remaining = getKnownChapterIds();
+    remaining.forEach((slug, index) => {
+      const meta = dynamicChapterMeta.get(slug);
+      if (meta) {
+        dynamicChapterMeta.set(slug, { ...meta, number: index + 1 });
+      }
+    });
   }
 }

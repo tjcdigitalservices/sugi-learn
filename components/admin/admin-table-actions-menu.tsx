@@ -25,6 +25,7 @@ export type AdminTableActionItem =
       onClick: () => void;
       icon?: ReactNode;
       disabled?: boolean;
+      destructive?: boolean;
     };
 
 interface AdminTableActionsMenuProps {
@@ -207,7 +208,11 @@ export function AdminTableActionsMenu({
                 type="button"
                 role="menuitem"
                 disabled={disabled || item.disabled}
-                className={itemClassName}
+                className={`${itemClassName}${
+                  item.destructive
+                    ? " text-destructive hover:bg-destructive/10"
+                    : ""
+                }`}
                 onClick={() => {
                   setOpen(false);
                   item.onClick();
