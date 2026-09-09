@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { ArrowRight, Eye, EyeOff, Loader2, Lock, User } from "lucide-react";
+import { ArrowRight, Eye, EyeOff, Lock, User } from "lucide-react";
 
 import { HeritageAuthCard } from "@/components/auth/heritage-auth-shell";
+import { BusyButton } from "@/components/shared/busy-button";
 import {
   defaultPostLoginPath,
   resolvePostLoginPath,
@@ -169,20 +170,15 @@ export function LoginForm({
           </p>
         ) : null}
 
-        <button
+        <BusyButton
           type="submit"
-          disabled={isLoading}
-          aria-busy={isLoading}
-          className="sl-btn-gold w-full rounded-xl py-3.5 text-sm font-semibold shadow-md disabled:cursor-wait"
+          busy={isLoading}
+          busyLabel="Signing in…"
+          trailingIcon={<ArrowRight className="h-4 w-4" aria-hidden="true" />}
+          className="sl-btn-gold w-full rounded-xl py-3.5 text-sm font-semibold shadow-md"
         >
-          {isLoading ? (
-            <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-          ) : null}
-          {isLoading ? "Signing in…" : "Sign In"}
-          {!isLoading ? (
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
-          ) : null}
-        </button>
+          Sign In
+        </BusyButton>
       </form>
 
       <p className="text-center text-xs text-white/75">

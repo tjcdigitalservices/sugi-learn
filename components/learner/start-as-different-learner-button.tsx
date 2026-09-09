@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
 
+import { BusyButton } from "@/components/shared/busy-button";
 import { startFreshGuestSession } from "@/lib/auth/guest-session";
 
 export function StartAsDifferentLearnerButton() {
@@ -24,7 +24,7 @@ export function StartAsDifferentLearnerButton() {
       }
       router.push("/learn/onboarding");
       router.refresh();
-      // Keep loading until navigation unmounts this button.
+      // Keep busy until navigation unmounts this button.
     } catch {
       setError("Unable to start a new session. Please try again.");
       setIsLoading(false);
@@ -33,18 +33,14 @@ export function StartAsDifferentLearnerButton() {
 
   return (
     <div className="space-y-1">
-      <button
-        type="button"
+      <BusyButton
+        busy={isLoading}
+        busyLabel="Starting new session…"
         onClick={handleClick}
-        disabled={isLoading}
-        aria-busy={isLoading}
-        className="inline-flex items-center gap-1.5 text-sm font-medium text-sl-ink-muted underline-offset-4 transition hover:text-sl-navy hover:underline disabled:cursor-wait disabled:opacity-60"
+        className="inline-flex items-center gap-1.5 text-sm font-medium text-sl-ink-muted underline-offset-4 transition hover:text-sl-navy hover:underline disabled:opacity-60"
       >
-        {isLoading ? (
-          <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
-        ) : null}
-        {isLoading ? "Starting new session…" : "Start as a different learner"}
-      </button>
+        Start as a different learner
+      </BusyButton>
       {error ? (
         <p className="text-xs text-destructive" role="alert">
           {error}

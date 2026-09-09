@@ -205,8 +205,7 @@ export function StorybookSpread({
   const continuationSpreads = chunkIntoPairs(continuationSections);
   const eyebrow =
     chapter.number > 0 ? `Chapter ${chapter.number}` : "Chapter";
-  const hasPlayableVideo = Boolean(rightAnimation);
-  const incompleteFallbackFired = useRef(false);
+  const openCompleteFired = useRef(false);
   const readyFired = useRef(false);
   const localRootRef = useRef<HTMLDivElement | null>(null);
   const paged = layoutMode === "paged";
@@ -235,6 +234,7 @@ export function StorybookSpread({
     setLeafTurn(null);
     pendingLeaf.current = null;
     readyFired.current = false;
+    openCompleteFired.current = false;
   }, [chapter.id]);
 
   useLayoutEffect(() => {
@@ -288,13 +288,14 @@ export function StorybookSpread({
     };
   }, []);
 
+  // Opening the book (summary visible) is enough to unlock Continue.
   useEffect(() => {
-    if (chapterCompleted || hasPlayableVideo || incompleteFallbackFired.current) {
+    if (chapterCompleted || openCompleteFired.current) {
       return;
     }
-    incompleteFallbackFired.current = true;
+    openCompleteFired.current = true;
     onRequiredContentComplete?.();
-  }, [chapterCompleted, hasPlayableVideo, onRequiredContentComplete]);
+  }, [chapterCompleted, onRequiredContentComplete]);
 
   useLayoutEffect(() => {
     if (!leafTurn || leafTurn.active) {
@@ -379,7 +380,6 @@ export function StorybookSpread({
               asset={asset}
               kind="animation"
               emptyMessage="Animation not available yet."
-              onEnded={onRequiredContentComplete}
             />
           </div>
         </div>
@@ -411,7 +411,7 @@ export function StorybookSpread({
   }
 
   function handleContinue() {
-    if (!chapterCompleted || turning) {
+    if (turning) {
       return;
     }
     if (nextChapterId) {
@@ -423,6 +423,7 @@ export function StorybookSpread({
 
   const navBusy = turning || Boolean(leafTurn);
   const busyClass = navBusy ? " is-busy" : "";
+  const continueBusyLabel = leafTurn ? "Turning…" : "Opening…";
 
   const textPage = (
     <div className={`${paged ? pageChromePaged : pageChrome} gap-2`}>
@@ -524,15 +525,15 @@ export function StorybookSpread({
           </button>
           <button
             type="button"
-            disabled={!chapterCompleted || navBusy}
+            disabled={navBusy}
             aria-busy={navBusy}
             onClick={handleContinue}
-            className={`sb-nav-btn sb-nav-btn--next${chapterCompleted ? " is-ready" : ""}${busyClass}`}
+            className={`sb-nav-btn sb-nav-btn--next${chapterCompleted && !navBusy ? " is-ready" : ""}${busyClass}`}
           >
             {navBusy ? (
               <>
                 <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
-                Opening…
+                {continueBusyLabel}
               </>
             ) : (
               <>
@@ -546,15 +547,15 @@ export function StorybookSpread({
         <div className="sb-page-nav sb-page-nav--next shrink-0 pt-2">
           <button
             type="button"
-            disabled={!chapterCompleted || turning}
+            disabled={turning}
             aria-busy={turning}
             onClick={handleContinue}
-            className={`sb-nav-btn sb-nav-btn--next${chapterCompleted ? " is-ready" : ""}${turning ? " is-busy" : ""}`}
+            className={`sb-nav-btn sb-nav-btn--next${chapterCompleted && !turning ? " is-ready" : ""}${turning ? " is-busy" : ""}`}
           >
             {turning ? (
               <>
                 <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
-                Opening…
+                {continueBusyLabel}
               </>
             ) : (
               <>

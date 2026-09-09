@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { CheckCircle2, Lock } from "lucide-react";
 
+import { BusyButton } from "@/components/shared/busy-button";
 import { completeChapterAction } from "@/lib/progress/actions";
 
 interface CompleteChapterButtonProps {
@@ -67,14 +68,14 @@ export function CompleteChapterButton({
           {error}
         </p>
       ) : null}
-      <button
-        type="button"
+      <BusyButton
+        busy={isPending}
+        busyLabel="Saving…"
         onClick={handleComplete}
-        disabled={isPending}
         className="sl-btn-gold"
       >
-        {isPending ? "Saving…" : "I've finished this chapter"}
-      </button>
+        I&apos;ve finished this chapter
+      </BusyButton>
     </div>
   );
 }

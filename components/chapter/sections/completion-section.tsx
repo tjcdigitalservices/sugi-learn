@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { SectionEmptyState } from "@/components/chapter/sections/section-empty-state";
+import { BusyButton } from "@/components/shared/busy-button";
 import { completeChapterAction } from "@/lib/progress/actions";
 import type { CompletionSection } from "@/types/chapter";
 
@@ -90,14 +91,14 @@ export function CompletionSectionView({
                   {error}
                 </p>
               ) : null}
-              <button
-                type="button"
-                className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
+              <BusyButton
+                busy={isPending}
+                busyLabel="Saving…"
                 onClick={handleComplete}
-                disabled={isPending}
+                className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
               >
-                {isPending ? "Saving…" : "I've finished this chapter"}
-              </button>
+                I&apos;ve finished this chapter
+              </BusyButton>
             </>
           )}
         </div>

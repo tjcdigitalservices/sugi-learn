@@ -14,11 +14,10 @@ export type ProgressActionResult<T = void> =
   | { success: true; data: T }
   | { success: false; error: string };
 
-function revalidateLearnerProgress(chapterSlug: string) {
-  revalidatePath("/learn");
-  revalidatePath("/learn/chapters");
+function revalidateLearnerProgress(_chapterSlug: string) {
+  // Only refresh the progress index. Revalidating chapter routes mid-turn
+  // remounted the open book and cleared local busy UI too early.
   revalidatePath("/learn/progress");
-  revalidatePath(`/learn/chapters/${chapterSlug}`);
 }
 
 export async function completeChapterAction(

@@ -81,7 +81,9 @@ function warmDestinationMedia(destination: Chapter): void {
 
 /**
  * Learner chapter view — storybook cover → open spread with in-book prev/next.
- * Chapter completes via required media (video end, or open when no video).
+ * Opening the book unlocks Continue immediately; progress saves in the background.
+ * Turn busy state lives in StorybookTransitionProvider so it survives remounts
+ * and stays visible on the hold overlay until the destination book is ready.
  */
 export function LearnerChapterLayout({
   chapter,
@@ -91,9 +93,14 @@ export function LearnerChapterLayout({
   previewMode = false,
 }: LearnerChapterLayoutProps) {
   const router = useRouter();
-  const { beginHold, releaseHold, isHolding } = useStorybookTransition();
+  const {
+    beginHold,
+    releaseHold,
+    beginTurnBusy,
+    endTurnBusy,
+    turnBusy,
+  } = useStorybookTransition();
   const [turnError, setTurnError] = useState<string | null>(null);
-  const [navBusy, setNavBusy] = useState(false);
   const [chapterDone, setChapterDone] = useState(
     progressStatus === "completed",
   );
@@ -102,6 +109,9 @@ export function LearnerChapterLayout({
   const completionPromise = useRef<Promise<void> | null>(
     progressStatus === "completed" ? Promise.resolve() : null,
   );
+  const completingForSlug = useRef<string | null>(
+    progressStatus === "completed" ? chapter.id : null,
+  );
   const previousChapterId = navigation.previous?.id ?? null;
   const nextTitle = navigation.next?.title ?? null;
   const continueLabel = nextChapterId
@@ -109,8 +119,6 @@ export function LearnerChapterLayout({
       ? `Continue to ${nextTitle}`
       : "Continue to next chapter"
     : "Continue to Post-Test";
-  // Busy while prefetching / completing before the hold layer takes over.
-  const turning = isHolding || navBusy;
 
   const chapterHref = useCallback(
     (slug: string) =>
@@ -124,191 +132,236 @@ export function LearnerChapterLayout({
     const done = progressStatus === "completed";
     setChapterDone(done);
     completionPromise.current = done ? Promise.resolve() : null;
+    completingForSlug.current = done ? chapter.id : null;
     setTurnError(null);
-    setNavBusy(false);
     setPreviewPostTest(false);
+    // Do not clear turnBusy here — it lives in the provider and must stay
+    // until onOpened on the destination chapter.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chapter.id]);
+
+  useEffect(() => {
+    if (progressStatus === "completed") {
+      setChapterDone(true);
+      completionPromise.current = Promise.resolve();
+      completingForSlug.current = chapter.id;
+    }
   }, [chapter.id, progressStatus]);
 
   useEffect(() => {
-    if (!isHolding) {
+    if (!turnBusy) {
       turnLock.current = false;
     }
-  }, [isHolding]);
+  }, [turnBusy]);
 
   const ensureChapterCompleted = useCallback(async () => {
-    if (completionPromise.current) {
+    if (
+      completionPromise.current &&
+      completingForSlug.current === chapter.id
+    ) {
       await completionPromise.current;
       return;
     }
 
     if (previewMode) {
+      completingForSlug.current = chapter.id;
       completionPromise.current = Promise.resolve();
       setChapterDone(true);
       return;
     }
 
+    if (chapterDone && completingForSlug.current === chapter.id) {
+      return;
+    }
+
+    const chapterSlug = chapter.id;
+    completingForSlug.current = chapterSlug;
+    setChapterDone(true);
+
     completionPromise.current = (async () => {
-      const result = await completeChapterAction(chapter.id);
-      if (!result.success) {
-        completionPromise.current = null;
+      const result = await completeChapterAction(chapterSlug);
+      if (completingForSlug.current !== chapterSlug) {
         return;
       }
-      setChapterDone(true);
-      router.refresh();
+      if (!result.success) {
+        completionPromise.current = null;
+        completingForSlug.current = null;
+        setTurnError(result.error);
+      }
     })();
 
     await completionPromise.current;
-  }, [chapter.id, previewMode, router]);
+  }, [chapter.id, chapterDone, previewMode]);
 
   const handleRequiredContentComplete = useCallback(() => {
     void ensureChapterCompleted();
   }, [ensureChapterCompleted]);
 
+  /** Destination open book is painted and interactive — drop the turn spinner. */
+  const handleOpened = useCallback(() => {
+    endTurnBusy();
+    turnLock.current = false;
+    void ensureChapterCompleted();
+  }, [endTurnBusy, ensureChapterCompleted]);
+
   const rollbackTurn = useCallback(() => {
     turnLock.current = false;
+    endTurnBusy();
     clearStorybookPageTurnNav();
     releaseHold();
-  }, [releaseHold]);
+  }, [endTurnBusy, releaseHold]);
 
   const beginChapterTurn = useCallback(
-    async (direction: StorybookTurnDirection, targetSlug: string) => {
-      if (!targetSlug || turnLock.current || isHolding || navBusy) {
+    async (direction: StorybookTurnDirection, targetSlugValue: string) => {
+      if (!targetSlugValue || turnLock.current || turnBusy) {
         return;
       }
       turnLock.current = true;
-      setNavBusy(true);
-      setTurnError(null);
+      flushSync(() => {
+        beginTurnBusy();
+        setTurnError(null);
+      });
 
-      if (direction === "forward") {
-        await ensureChapterCompleted();
-      }
-
-      const href = chapterHref(targetSlug);
       try {
-        router.prefetch(href);
-      } catch {
-        // Prefetch is best-effort.
-      }
+        if (direction === "forward") {
+          await ensureChapterCompleted();
+        }
 
-      const reducedMotion = prefersReducedMotion();
-      let toChapter: Chapter | null = null;
-      try {
-        toChapter = await prefetchChapterForStorybook(targetSlug);
-      } catch {
-        toChapter = null;
-      }
+        const href = chapterHref(targetSlugValue);
+        try {
+          router.prefetch(href);
+        } catch {
+          // Prefetch is best-effort.
+        }
 
-      if (!toChapter) {
+        const reducedMotion = prefersReducedMotion();
+        let toChapter: Chapter | null = null;
+        try {
+          toChapter = await prefetchChapterForStorybook(targetSlugValue);
+        } catch {
+          toChapter = null;
+        }
+
+        if (!toChapter) {
+          rollbackTurn();
+          setTurnError(
+            "Unable to open the next chapter right now. Please try again.",
+          );
+          return;
+        }
+
+        warmDestinationMedia(toChapter);
+
+        flushSync(() => {
+          beginHold({
+            direction,
+            targetSlug: targetSlugValue,
+            outgoingChapter: chapter,
+            incomingChapter: toChapter,
+            reducedMotion,
+            previousChapterId,
+            nextChapterId,
+            continueLabel,
+            chrome: (
+              <>
+                <Link
+                  href={
+                    previewMode
+                      ? `/admin/chapters/${chapter.id}`
+                      : "/learn/chapters"
+                  }
+                  className="inline-flex items-center gap-1 text-sm text-sl-ink-muted transition hover:text-sl-navy"
+                >
+                  <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+                  {previewMode ? "Back to editor" : "All chapters"}
+                </Link>
+                <p className="text-sm tracking-wide text-sl-ink-muted">
+                  Chapter {navigation.position} of {navigation.total}
+                </p>
+              </>
+            ),
+          });
+        });
+        markStorybookPageTurnNav();
+        markStorybookArriveOpen();
+        router.push(href);
+        // turnBusy stays true until handleOpened on the destination.
+      } catch {
         rollbackTurn();
-        setNavBusy(false);
         setTurnError(
           "Unable to open the next chapter right now. Please try again.",
         );
-        return;
       }
-
-      warmDestinationMedia(toChapter);
-
-      // Freeze the outgoing book + run the turn on the persistent hold layer,
-      // then navigate underneath so the animation never dies mid-route.
-      flushSync(() => {
-        beginHold({
-          direction,
-          targetSlug,
-          outgoingChapter: chapter,
-          incomingChapter: toChapter,
-          reducedMotion,
-          previousChapterId,
-          nextChapterId,
-          continueLabel,
-          chrome: (
-            <>
-              <Link
-                href={
-                  previewMode
-                    ? `/admin/chapters/${chapter.id}`
-                    : "/learn/chapters"
-                }
-                className="inline-flex items-center gap-1 text-sm text-sl-ink-muted transition hover:text-sl-navy"
-              >
-                <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
-                {previewMode ? "Back to editor" : "All chapters"}
-              </Link>
-              <p className="text-sm tracking-wide text-sl-ink-muted">
-                Chapter {navigation.position} of {navigation.total}
-              </p>
-            </>
-          ),
-        });
-      });
-      markStorybookPageTurnNav();
-      markStorybookArriveOpen();
-      router.push(href);
-      // Hold layer owns the busy state from here; drop local flag.
-      setNavBusy(false);
     },
     [
       beginHold,
+      beginTurnBusy,
       chapter,
       chapterHref,
       continueLabel,
       ensureChapterCompleted,
-      isHolding,
-      navBusy,
       navigation.position,
       navigation.total,
       nextChapterId,
-      previewMode,
       previousChapterId,
+      previewMode,
       rollbackTurn,
       router,
+      turnBusy,
     ],
   );
 
   const handlePrevious = useCallback(() => {
-    if (!previousChapterId) {
+    if (!previousChapterId || turnBusy) {
       return;
     }
     void beginChapterTurn("back", previousChapterId);
-  }, [beginChapterTurn, previousChapterId]);
+  }, [beginChapterTurn, previousChapterId, turnBusy]);
 
   const handleNext = useCallback(() => {
-    if (!chapterDone || !nextChapterId) {
+    if (!nextChapterId || turnBusy) {
       return;
     }
     void beginChapterTurn("forward", nextChapterId);
-  }, [beginChapterTurn, chapterDone, nextChapterId]);
+  }, [beginChapterTurn, nextChapterId, turnBusy]);
 
   const handlePostTest = useCallback(() => {
-    if (!chapterDone || navBusy || isHolding) {
+    if (turnBusy) {
       return;
     }
     void (async () => {
       setTurnError(null);
-      setNavBusy(true);
+      turnLock.current = true;
+      flushSync(() => {
+        beginTurnBusy();
+      });
       try {
         await ensureChapterCompleted();
         if (previewMode) {
           setPreviewPostTest(true);
-          setNavBusy(false);
+          turnLock.current = false;
+          endTurnBusy();
           return;
         }
         router.push("/learn/assessment/post");
-        // Keep busy until route unmounts this layout.
+        // Route change unmounts this tree; busy flag resets with provider stay
+        // on chapters layout — clear once we're leaving the book.
+        endTurnBusy();
       } catch {
-        setNavBusy(false);
+        turnLock.current = false;
+        endTurnBusy();
         setTurnError(
           "Unable to open the Post-Test right now. Please try again.",
         );
       }
     })();
   }, [
-    chapterDone,
+    beginTurnBusy,
+    endTurnBusy,
     ensureChapterCompleted,
-    isHolding,
-    navBusy,
     previewMode,
     router,
+    turnBusy,
   ]);
 
   if (previewMode && previewPostTest) {
@@ -338,7 +391,7 @@ export function LearnerChapterLayout({
   }
 
   return (
-    <div className="sb-chapter-stage">
+    <div className="sb-chapter-stage" aria-busy={turnBusy || undefined}>
       <div className="sb-chapter-stage-book">
         <StorybookChapterExperience
           chapter={chapter}
@@ -346,7 +399,8 @@ export function LearnerChapterLayout({
           nextChapterId={nextChapterId}
           previousChapterId={previousChapterId}
           continueLabel={continueLabel}
-          turning={turning}
+          turning={turnBusy}
+          onOpened={handleOpened}
           onRequiredContentComplete={handleRequiredContentComplete}
           onPrevious={handlePrevious}
           onNext={handleNext}

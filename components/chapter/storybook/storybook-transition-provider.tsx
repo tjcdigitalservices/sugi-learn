@@ -26,7 +26,7 @@ export interface StorybookHoldSnapshot {
   targetSlug: string;
   /** Layer A — complete outgoing spread, visible until mid-turn reveal. */
   outgoingChapter: Chapter;
-  /** Layer B — complete incoming spread, staged hidden until ready + mid-turn. */
+  /** Layer B — complete incoming spread, staged hidden until mid-turn. */
   incomingChapter: Chapter;
   reducedMotion?: boolean;
   /** Keep hold spreads visually matched to the live open book. */
@@ -40,7 +40,13 @@ interface StorybookTransitionContextValue {
   beginHold: (snapshot: StorybookHoldSnapshot) => void;
   /** Live destination route open spread has painted. */
   releaseHold: () => void;
+  /** Lock open-book controls for a user-started chapter turn. */
+  beginTurnBusy: () => void;
+  /** Clear after the destination book is interactive. */
+  endTurnBusy: () => void;
   isHolding: boolean;
+  /** Survives LearnerChapterLayout remounts during navigation. */
+  turnBusy: boolean;
   targetSlug: string | null;
 }
 
@@ -60,6 +66,7 @@ export function StorybookTransitionProvider({
   children: ReactNode;
 }) {
   const [hold, setHold] = useState<StorybookHoldSnapshot | null>(null);
+  const [turnBusy, setTurnBusy] = useState(false);
   const [layerBReady, setLayerBReady] = useState(false);
   const [revealIncoming, setRevealIncoming] = useState(false);
   const holdRef = useRef<StorybookHoldSnapshot | null>(null);
@@ -107,6 +114,14 @@ export function StorybookTransitionProvider({
     trySettle();
   }, [trySettle]);
 
+  const beginTurnBusy = useCallback(() => {
+    setTurnBusy(true);
+  }, []);
+
+  const endTurnBusy = useCallback(() => {
+    setTurnBusy(false);
+  }, []);
+
   const handleLayerBReady = useCallback(() => {
     layerBReadyRef.current = true;
     setLayerBReady(true);
@@ -119,7 +134,6 @@ export function StorybookTransitionProvider({
 
   const handleTurnComplete = useCallback(() => {
     turnCompleteRef.current = true;
-    // Ensure destination layer is visible if mid-reveal was skipped.
     setRevealIncoming(true);
     trySettle();
   }, [trySettle]);
@@ -131,11 +145,13 @@ export function StorybookTransitionProvider({
       destinationReadyRef.current = false;
       layerBReadyRef.current = false;
       holdRef.current = snapshot;
+      setTurnBusy(true);
       setLayerBReady(false);
       setRevealIncoming(false);
       setHold(snapshot);
       safetyTimer.current = setTimeout(() => {
         clearHold();
+        setTurnBusy(false);
       }, HOLD_SAFETY_MS);
     },
     [clearHold, clearSafety],
@@ -145,7 +161,6 @@ export function StorybookTransitionProvider({
     return () => clearSafety();
   }, [clearSafety]);
 
-  // Position the leaf over the outgoing frame.
   useLayoutEffect(() => {
     if (!hold || !layerBReady) {
       return;
@@ -157,8 +172,6 @@ export function StorybookTransitionProvider({
       if (!stack || !slot) {
         return;
       }
-      // Size the leaf to the cream page surface, not the hardcover shell,
-      // so left/right navy lips stay visible during the turn.
       const page = stack.querySelector(
         ".sb-hold-layer--outgoing .sb-frame > .sb-spread",
       ) as HTMLElement | null;
@@ -186,10 +199,13 @@ export function StorybookTransitionProvider({
     () => ({
       beginHold,
       releaseHold,
+      beginTurnBusy,
+      endTurnBusy,
       isHolding: Boolean(hold),
+      turnBusy: turnBusy || Boolean(hold),
       targetSlug: hold?.targetSlug ?? null,
     }),
-    [beginHold, releaseHold, hold],
+    [beginHold, beginTurnBusy, endTurnBusy, hold, releaseHold, turnBusy],
   );
 
   return (
@@ -199,6 +215,7 @@ export function StorybookTransitionProvider({
         <div
           className="pointer-events-none fixed inset-0 z-[60] overflow-hidden bg-[var(--sl-cream)] pt-[max(0.75rem,env(safe-area-inset-top))]"
           aria-hidden="true"
+          aria-busy="true"
         >
           <div className="sb-book-view flex h-full min-h-0 flex-col">
             <div className="flex min-h-0 flex-1 flex-col px-2 py-1 sm:px-3 md:px-3 md:py-1">
@@ -214,6 +231,7 @@ export function StorybookTransitionProvider({
                         <StorybookSpread
                           chapter={hold.incomingChapter}
                           chapterCompleted
+                          turning
                           previousChapterId={
                             hold.direction === "forward"
                               ? hold.outgoingChapter.id
@@ -237,6 +255,7 @@ export function StorybookTransitionProvider({
                         <StorybookSpread
                           chapter={hold.outgoingChapter}
                           chapterCompleted
+                          turning
                           previousChapterId={hold.previousChapterId ?? null}
                           nextChapterId={hold.nextChapterId ?? null}
                           continueLabel={hold.continueLabel}
@@ -274,7 +293,10 @@ export function useStorybookTransition(): StorybookTransitionContextValue {
     return {
       beginHold: () => undefined,
       releaseHold: () => undefined,
+      beginTurnBusy: () => undefined,
+      endTurnBusy: () => undefined,
       isHolding: false,
+      turnBusy: false,
       targetSlug: null,
     };
   }

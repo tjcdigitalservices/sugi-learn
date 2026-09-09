@@ -8,6 +8,7 @@ import {
   type AssessmentLanguage,
 } from "@/lib/assessment/language";
 import { HeritageWave } from "@/components/brand/heritage-wave";
+import { BusyButton } from "@/components/shared/busy-button";
 import { cn } from "@/lib/utils";
 import type { LearnerAssessmentQuestion } from "@/types/assessment";
 
@@ -195,25 +196,28 @@ export function AssessmentQuestionPanel({
 
           <div className="flex flex-wrap items-center gap-2">
             {isLast ? (
-              <button
-                type="button"
+              <BusyButton
+                busy={isSubmitting}
+                busyLabel="Submitting…"
+                trailingIcon={
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                }
                 onClick={onSubmit}
-                disabled={isSubmitting}
                 className="sl-btn-gold"
               >
-                {isSubmitting ? "Submitting…" : "Submit"}
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </button>
+                Submit
+              </BusyButton>
             ) : (
-              <button
-                type="button"
+              <BusyButton
+                busy={isSubmitting}
+                trailingIcon={
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                }
                 onClick={onNext}
-                disabled={isSubmitting}
                 className="sl-btn-gold"
               >
                 Next
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </button>
+              </BusyButton>
             )}
           </div>
         </footer>
