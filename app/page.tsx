@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import { ArrowRight, BookOpen, Lock, Users } from "lucide-react";
 
 import { HeritageWave, SuguidanonMark } from "@/components/brand/heritage-wave";
@@ -18,12 +17,6 @@ export default function HomePage() {
             >
               About
             </a>
-            <Link
-              href="/login"
-              className="inline-flex min-h-10 items-center gap-2 rounded-full border border-sl-gold px-3 py-2 text-sm font-medium text-sl-gold transition hover:bg-sl-gold/10 sm:px-4"
-            >
-              Sign in
-            </Link>
           </div>
         </div>
       </header>
