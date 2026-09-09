@@ -279,9 +279,8 @@ export const mockMediaStore = {
     }
 
     if (asset.sectionId) {
-      throw new Error(
-        "This asset is linked to a chapter section. Unlink it before deleting.",
-      );
+      sectionMediaLinks.delete(asset.sectionId);
+      asset.sectionId = null;
     }
 
     mediaAssets.delete(mediaId);

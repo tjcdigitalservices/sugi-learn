@@ -75,6 +75,10 @@ export function MediaLibrary({ chapters }: MediaLibraryProps) {
     setShowUpload(false);
   }
 
+  function handleDeleted(mediaId: string) {
+    setAssets((current) => current.filter((item) => item.id !== mediaId));
+  }
+
   return (
     <div className="space-y-6">
       {loadError ? (
@@ -184,7 +188,7 @@ export function MediaLibrary({ chapters }: MediaLibraryProps) {
           </label>
         </div>
 
-        <MediaListTable assets={filteredAssets} />
+        <MediaListTable assets={filteredAssets} onDeleted={handleDeleted} />
       </div>
     </div>
   );

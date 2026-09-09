@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowRight, BookOpen } from "lucide-react";
+import { ArrowRight, BookOpen, Loader2 } from "lucide-react";
 
 import { startFreshGuestSession } from "@/lib/auth/guest-session";
 import { cn } from "@/lib/utils";
@@ -30,14 +30,15 @@ export function StartPreTestButton({
       const result = await startFreshGuestSession();
       if (result.error) {
         setError(result.error);
+        setIsLoading(false);
         return;
       }
 
       router.push("/learn/onboarding");
       router.refresh();
+      // Keep loading until navigation unmounts this button.
     } catch {
       setError("Unable to start right now. Please try again.");
-    } finally {
       setIsLoading(false);
     }
   }
@@ -48,13 +49,20 @@ export function StartPreTestButton({
         type="button"
         onClick={handleClick}
         disabled={isLoading}
-        className={cn("sl-btn-gold disabled:cursor-not-allowed", className)}
+        aria-busy={isLoading}
+        className={cn(
+          "sl-btn-gold disabled:cursor-wait",
+          isLoading && "cursor-wait",
+          className,
+        )}
       >
-        {showIcons ? (
+        {isLoading ? (
+          <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+        ) : showIcons ? (
           <BookOpen className="h-4 w-4" aria-hidden="true" />
         ) : null}
         {isLoading ? "Starting…" : label}
-        {showIcons ? (
+        {!isLoading && showIcons ? (
           <ArrowRight className="h-4 w-4" aria-hidden="true" />
         ) : null}
       </button>

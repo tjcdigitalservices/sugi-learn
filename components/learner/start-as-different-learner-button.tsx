@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
 import { startFreshGuestSession } from "@/lib/auth/guest-session";
 
@@ -18,13 +19,14 @@ export function StartAsDifferentLearnerButton() {
       const result = await startFreshGuestSession();
       if (result.error) {
         setError(result.error);
+        setIsLoading(false);
         return;
       }
       router.push("/learn/onboarding");
       router.refresh();
+      // Keep loading until navigation unmounts this button.
     } catch {
       setError("Unable to start a new session. Please try again.");
-    } finally {
       setIsLoading(false);
     }
   }
@@ -35,8 +37,12 @@ export function StartAsDifferentLearnerButton() {
         type="button"
         onClick={handleClick}
         disabled={isLoading}
-        className="text-sm font-medium text-sl-ink-muted underline-offset-4 transition hover:text-sl-navy hover:underline disabled:opacity-60"
+        aria-busy={isLoading}
+        className="inline-flex items-center gap-1.5 text-sm font-medium text-sl-ink-muted underline-offset-4 transition hover:text-sl-navy hover:underline disabled:cursor-wait disabled:opacity-60"
       >
+        {isLoading ? (
+          <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
+        ) : null}
         {isLoading ? "Starting new session…" : "Start as a different learner"}
       </button>
       {error ? (

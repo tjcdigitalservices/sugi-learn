@@ -314,18 +314,56 @@ export class SupabaseMediaRepository implements MediaRepository {
       throw mediaError("Media asset not found.");
     }
 
-    if (existing.isReferenced) {
+    // Detach all references so admins can always delete uploads.
+    if (existing.sectionId) {
+      await supabase
+        .from("chapter_sections")
+        .update({ media_asset_id: null })
+        .eq("id", existing.sectionId);
+    }
+
+    await supabase
+      .from("chapter_sections")
+      .update({ media_asset_id: null })
+      .eq("media_asset_id", mediaId);
+
+    await supabase
+      .from("characters")
+      .update({ media_asset_id: null })
+      .eq("media_asset_id", mediaId);
+
+    await supabase
+      .from("chapters")
+      .update({ cover_media_asset_id: null })
+      .eq("cover_media_asset_id", mediaId);
+
+    const { error: clearSectionError } = await supabase
+      .from("media_assets")
+      .update({ section_id: null })
+      .eq("id", mediaId);
+
+    if (clearSectionError) {
       throw mediaError(
-        "This asset is linked to chapter content. Unlink it before deleting.",
+        `Unable to unlink media before delete: ${clearSectionError.message}`,
       );
     }
 
     await deleteMediaFile(existing.storagePath);
 
-    const { error } = await supabase.from("media_assets").delete().eq("id", mediaId);
+    const { data: deletedRows, error } = await supabase
+      .from("media_assets")
+      .delete()
+      .eq("id", mediaId)
+      .select("id");
 
     if (error) {
-      throw mediaError("Unable to delete media asset.");
+      throw mediaError(`Unable to delete media asset: ${error.message}`);
+    }
+
+    if (!deletedRows?.length) {
+      throw mediaError(
+        "Unable to delete media asset. Check that you are signed in as an admin.",
+      );
     }
   }
 

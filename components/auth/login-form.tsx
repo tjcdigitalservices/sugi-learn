@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { ArrowRight, Eye, EyeOff, Lock, User } from "lucide-react";
+import { ArrowRight, Eye, EyeOff, Loader2, Lock, User } from "lucide-react";
 
 import { HeritageAuthCard } from "@/components/auth/heritage-auth-shell";
 import {
@@ -56,6 +56,7 @@ export function LoginForm({
 
       if (signInError || !data.user) {
         setError("Invalid email or password. Please try again.");
+        setIsLoading(false);
         return;
       }
 
@@ -72,6 +73,7 @@ export function LoginForm({
         setError(
           "This form is for administrators only. Learners can start from the home page without an account.",
         );
+        setIsLoading(false);
         return;
       }
 
@@ -82,9 +84,9 @@ export function LoginForm({
 
       router.push(destination);
       router.refresh();
+      // Keep loading until navigation unmounts this form.
     } catch {
       setError("Unable to sign in right now. Please try again.");
-    } finally {
       setIsLoading(false);
     }
   }
@@ -170,10 +172,16 @@ export function LoginForm({
         <button
           type="submit"
           disabled={isLoading}
-          className="sl-btn-gold w-full rounded-xl py-3.5 text-sm font-semibold shadow-md"
+          aria-busy={isLoading}
+          className="sl-btn-gold w-full rounded-xl py-3.5 text-sm font-semibold shadow-md disabled:cursor-wait"
         >
+          {isLoading ? (
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+          ) : null}
           {isLoading ? "Signing in…" : "Sign In"}
-          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          {!isLoading ? (
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          ) : null}
         </button>
       </form>
 

@@ -9,7 +9,7 @@ import {
   type RefObject,
   type TransitionEvent,
 } from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
 
 import type {
   AnimationSection,
@@ -421,6 +421,9 @@ export function StorybookSpread({
     onPostTest?.();
   }
 
+  const navBusy = turning || Boolean(leafTurn);
+  const busyClass = navBusy ? " is-busy" : "";
+
   const textPage = (
     <div className={`${paged ? pageChromePaged : pageChrome} gap-2`}>
       <div className="flex min-h-0 flex-1 flex-col justify-center gap-3 overflow-y-auto overscroll-contain sm:gap-4">
@@ -456,12 +459,22 @@ export function StorybookSpread({
         <div className="sb-page-nav sb-page-nav--paged sb-page-nav--paged-end shrink-0 pt-2">
           <button
             type="button"
-            disabled={turning || Boolean(leafTurn)}
+            disabled={navBusy}
+            aria-busy={navBusy}
             onClick={() => goToLeaf("video", "forward")}
-            className="sb-nav-btn sb-nav-btn--next"
+            className={`sb-nav-btn sb-nav-btn--next${busyClass}`}
           >
-            Next Page
-            <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+            {navBusy ? (
+              <>
+                <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
+                Turning…
+              </>
+            ) : (
+              <>
+                Next Page
+                <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+              </>
+            )}
           </button>
         </div>
       ) : (
@@ -470,11 +483,16 @@ export function StorybookSpread({
             <button
               type="button"
               disabled={turning}
+              aria-busy={turning}
               onClick={onPrevious}
-              className="sb-nav-btn sb-nav-btn--prev"
+              className={`sb-nav-btn sb-nav-btn--prev${turning ? " is-busy" : ""}`}
             >
-              <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
-              Previous Chapter
+              {turning ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
+              ) : (
+                <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+              )}
+              {turning ? "Opening…" : "Previous Chapter"}
             </button>
           ) : null}
         </div>
@@ -492,21 +510,36 @@ export function StorybookSpread({
         <div className="sb-page-nav sb-page-nav--paged sb-page-nav--paged-split shrink-0 pt-2">
           <button
             type="button"
-            disabled={turning || Boolean(leafTurn)}
+            disabled={navBusy}
+            aria-busy={navBusy}
             onClick={() => goToLeaf("text", "back")}
-            className="sb-nav-btn sb-nav-btn--prev"
+            className={`sb-nav-btn sb-nav-btn--prev${busyClass}`}
           >
-            <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
-            Previous Page
+            {navBusy ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
+            ) : (
+              <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+            )}
+            {navBusy ? "Turning…" : "Previous Page"}
           </button>
           <button
             type="button"
-            disabled={!chapterCompleted || turning || Boolean(leafTurn)}
+            disabled={!chapterCompleted || navBusy}
+            aria-busy={navBusy}
             onClick={handleContinue}
-            className={`sb-nav-btn sb-nav-btn--next${chapterCompleted ? " is-ready" : ""}`}
+            className={`sb-nav-btn sb-nav-btn--next${chapterCompleted ? " is-ready" : ""}${busyClass}`}
           >
-            {continueLabel}
-            <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+            {navBusy ? (
+              <>
+                <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
+                Opening…
+              </>
+            ) : (
+              <>
+                {continueLabel}
+                <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+              </>
+            )}
           </button>
         </div>
       ) : (
@@ -514,11 +547,21 @@ export function StorybookSpread({
           <button
             type="button"
             disabled={!chapterCompleted || turning}
+            aria-busy={turning}
             onClick={handleContinue}
-            className={`sb-nav-btn sb-nav-btn--next${chapterCompleted ? " is-ready" : ""}`}
+            className={`sb-nav-btn sb-nav-btn--next${chapterCompleted ? " is-ready" : ""}${turning ? " is-busy" : ""}`}
           >
-            {continueLabel}
-            <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+            {turning ? (
+              <>
+                <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
+                Opening…
+              </>
+            ) : (
+              <>
+                {continueLabel}
+                <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+              </>
+            )}
           </button>
         </div>
       )}
@@ -526,8 +569,8 @@ export function StorybookSpread({
   );
 
   const frameClass = paged
-    ? "sb-spread-shell sb-spread-shell--primary sb-frame sb-frame--paged"
-    : "sb-spread-shell sb-spread-shell--primary sb-frame";
+    ? `sb-spread-shell sb-spread-shell--primary sb-frame sb-frame--paged${navBusy ? " is-busy" : ""}`
+    : `sb-spread-shell sb-spread-shell--primary sb-frame${navBusy ? " is-busy" : ""}`;
 
   const spreadClass = paged
     ? "sb-spread sb-spread--fixed sb-spread--paged"

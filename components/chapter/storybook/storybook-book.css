@@ -249,7 +249,7 @@
 
 .sb-cover-book:disabled,
 .sb-cover-book.is-opening {
-  cursor: default;
+  cursor: wait;
 }
 
 .sb-cover-panel {
@@ -1008,6 +1008,15 @@
   opacity: 0.42;
 }
 
+.sb-nav-btn.is-busy:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.sb-spread-shell.is-busy {
+  cursor: wait;
+}
+
 .sb-nav-btn--prev {
   background: transparent;
   border-color: rgba(44, 36, 22, 0.1);
@@ -1038,8 +1047,8 @@
 }
 
 .sb-media-slot {
-  /* ~10% larger than the previous 94% inset */
-  width: min(100%, calc(94% * 1.1));
+  /* Slightly inset so media doesn’t crowd the spine */
+  width: 95%;
   max-width: 100%;
   max-height: 100%;
   aspect-ratio: 16 / 9;
@@ -1053,15 +1062,25 @@
   box-shadow: none;
 }
 
-/* Reclaim page padding so the larger media can use the full leaf */
-.sb-spread-shell--primary .sb-page--fixed:has(.sb-media-host),
-.sb-spread-shell--primary .sb-page--fixed:has(.sb-media-slot) {
-  padding-left: 0.35rem;
-  padding-right: 0.35rem;
+/* Extra left inset on the media leaf — breathing room from the gutter */
+.sb-spread-shell--primary
+  .sb-spread--fixed:not(.sb-spread--paged)
+  .sb-page--fixed:has(.sb-media-host),
+.sb-spread-shell--primary
+  .sb-spread--fixed:not(.sb-spread--paged)
+  .sb-page--fixed:has(.sb-media-slot) {
+  padding-left: 1rem;
+  padding-right: 0.55rem;
+}
+
+.sb-spread-shell--primary .sb-spread--paged .sb-page--fixed:has(.sb-media-host),
+.sb-spread-shell--primary .sb-spread--paged .sb-page--fixed:has(.sb-media-slot) {
+  padding-left: 0.55rem;
+  padding-right: 0.55rem;
 }
 
 .sb-spread--paged .sb-media-slot {
-  width: 100%;
+  width: 95%;
 }
 
 .sb-media-slot-fill {

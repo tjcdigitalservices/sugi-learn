@@ -93,6 +93,7 @@ export function LearnerChapterLayout({
   const router = useRouter();
   const { beginHold, releaseHold, isHolding } = useStorybookTransition();
   const [turnError, setTurnError] = useState<string | null>(null);
+  const [navBusy, setNavBusy] = useState(false);
   const [chapterDone, setChapterDone] = useState(
     progressStatus === "completed",
   );
@@ -108,7 +109,8 @@ export function LearnerChapterLayout({
       ? `Continue to ${nextTitle}`
       : "Continue to next chapter"
     : "Continue to Post-Test";
-  const turning = isHolding;
+  // Busy while prefetching / completing before the hold layer takes over.
+  const turning = isHolding || navBusy;
 
   const chapterHref = useCallback(
     (slug: string) =>
@@ -123,6 +125,7 @@ export function LearnerChapterLayout({
     setChapterDone(done);
     completionPromise.current = done ? Promise.resolve() : null;
     setTurnError(null);
+    setNavBusy(false);
     setPreviewPostTest(false);
   }, [chapter.id, progressStatus]);
 
@@ -169,10 +172,11 @@ export function LearnerChapterLayout({
 
   const beginChapterTurn = useCallback(
     async (direction: StorybookTurnDirection, targetSlug: string) => {
-      if (!targetSlug || turnLock.current || isHolding) {
+      if (!targetSlug || turnLock.current || isHolding || navBusy) {
         return;
       }
       turnLock.current = true;
+      setNavBusy(true);
       setTurnError(null);
 
       if (direction === "forward") {
@@ -196,6 +200,7 @@ export function LearnerChapterLayout({
 
       if (!toChapter) {
         rollbackTurn();
+        setNavBusy(false);
         setTurnError(
           "Unable to open the next chapter right now. Please try again.",
         );
@@ -239,6 +244,8 @@ export function LearnerChapterLayout({
       markStorybookPageTurnNav();
       markStorybookArriveOpen();
       router.push(href);
+      // Hold layer owns the busy state from here; drop local flag.
+      setNavBusy(false);
     },
     [
       beginHold,
@@ -247,6 +254,7 @@ export function LearnerChapterLayout({
       continueLabel,
       ensureChapterCompleted,
       isHolding,
+      navBusy,
       navigation.position,
       navigation.total,
       nextChapterId,
@@ -272,19 +280,36 @@ export function LearnerChapterLayout({
   }, [beginChapterTurn, chapterDone, nextChapterId]);
 
   const handlePostTest = useCallback(() => {
-    if (!chapterDone) {
+    if (!chapterDone || navBusy || isHolding) {
       return;
     }
     void (async () => {
       setTurnError(null);
-      await ensureChapterCompleted();
-      if (previewMode) {
-        setPreviewPostTest(true);
-        return;
+      setNavBusy(true);
+      try {
+        await ensureChapterCompleted();
+        if (previewMode) {
+          setPreviewPostTest(true);
+          setNavBusy(false);
+          return;
+        }
+        router.push("/learn/assessment/post");
+        // Keep busy until route unmounts this layout.
+      } catch {
+        setNavBusy(false);
+        setTurnError(
+          "Unable to open the Post-Test right now. Please try again.",
+        );
       }
-      router.push("/learn/assessment/post");
     })();
-  }, [chapterDone, ensureChapterCompleted, previewMode, router]);
+  }, [
+    chapterDone,
+    ensureChapterCompleted,
+    isHolding,
+    navBusy,
+    previewMode,
+    router,
+  ]);
 
   if (previewMode && previewPostTest) {
     return (

@@ -129,18 +129,15 @@ export function MediaDetailEditor({
   }
 
   function handleDelete() {
+    const linkedNote = asset.isReferenced
+      ? `\n\nThis asset is linked (${asset.referenceSummary ?? "in use"}). Deleting will unlink it first.`
+      : "";
+
     if (
       !window.confirm(
-        asset.isReferenced
-          ? "This asset is linked to content and cannot be deleted until unlinked."
-          : "Delete this media asset permanently?",
+        `Delete this media asset permanently?${linkedNote}\n\nThis cannot be undone. The uploaded file will be removed from storage.`,
       )
     ) {
-      return;
-    }
-
-    if (asset.isReferenced) {
-      setError("Unlink this asset from its section before deleting.");
       return;
     }
 

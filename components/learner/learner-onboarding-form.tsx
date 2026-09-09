@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { ArrowRight, Lock, User } from "lucide-react";
+import { ArrowRight, Loader2, Lock, User } from "lucide-react";
 
 import { HeritageAuthCard } from "@/components/auth/heritage-auth-shell";
 import { saveLearnerNameAction } from "@/lib/learner/onboarding-actions";
@@ -97,11 +97,17 @@ export function LearnerOnboardingForm() {
 
         <button
           type="submit"
-          className="sl-btn-gold w-full py-3.5 text-sm font-semibold shadow-md"
+          className="sl-btn-gold w-full py-3.5 text-sm font-semibold shadow-md disabled:cursor-wait"
           disabled={isPending}
+          aria-busy={isPending}
         >
+          {isPending ? (
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+          ) : null}
           {isPending ? "Saving…" : "Continue to Pre-Test"}
-          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          {!isPending ? (
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          ) : null}
         </button>
       </form>
 
