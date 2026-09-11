@@ -1,0 +1,56 @@
+/* Shared staggered entrance for heritage auth screens (login + onboarding). */
+
+.auth-entrance__brand,
+.auth-entrance-item {
+  opacity: 0;
+  transform: translateY(14px);
+  animation: auth-entrance-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1)
+    var(--auth-delay, 0.2s) forwards;
+}
+
+.auth-entrance__brand {
+  --auth-delay: 0.12s;
+  animation-duration: 0.75s;
+}
+
+.auth-d1 {
+  --auth-delay: 0.35s;
+}
+.auth-d2 {
+  --auth-delay: 0.5s;
+}
+.auth-d3 {
+  --auth-delay: 0.65s;
+}
+.auth-d4 {
+  --auth-delay: 0.8s;
+}
+.auth-d5 {
+  --auth-delay: 0.95s;
+}
+.auth-d6 {
+  --auth-delay: 1.1s;
+}
+.auth-d7 {
+  --auth-delay: 1.25s;
+}
+
+@keyframes auth-entrance-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-entrance__brand,
+  .auth-entrance-item {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}

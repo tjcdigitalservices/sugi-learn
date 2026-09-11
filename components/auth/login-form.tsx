@@ -94,20 +94,23 @@ export function LoginForm({
 
   return (
     <HeritageAuthCard>
-      <div className="space-y-2 text-center">
+      <div className="auth-entrance-item auth-d1 space-y-2 text-center">
         <h1 className="font-display text-2xl font-semibold tracking-tight text-white drop-shadow-sm sm:text-3xl">
           {title}
         </h1>
         <p className="text-sm leading-relaxed text-white/85">{description}</p>
       </div>
 
-      <div className="flex items-center gap-3" aria-hidden="true">
+      <div
+        className="auth-entrance-item auth-d2 flex items-center gap-3"
+        aria-hidden="true"
+      >
         <div className="h-px flex-1 bg-white/30" />
         <div className="h-2 w-2 rotate-45 bg-sl-gold" />
         <div className="h-px flex-1 bg-white/30" />
       </div>
 
-      <form className="space-y-4" onSubmit={handleSubmit}>
+      <form className="auth-entrance-item auth-d3 space-y-4" onSubmit={handleSubmit}>
         <label className="block space-y-1.5 text-sm" htmlFor="email">
           <span className="font-medium text-white">Email</span>
           <span className="flex items-center gap-3 rounded-xl border border-white/40 bg-white/95 px-4 py-3 shadow-sm transition focus-within:border-sl-gold focus-within:shadow-[0_0_0_3px_rgba(209,165,58,0.25)]">
@@ -181,12 +184,12 @@ export function LoginForm({
         </BusyButton>
       </form>
 
-      <p className="text-center text-xs text-white/75">
+      <p className="auth-entrance-item auth-d4 text-center text-xs text-white/75">
         <span className="opacity-80">Forgot password?</span>{" "}
         <span className="font-medium opacity-70">Coming soon</span>
       </p>
 
-      <p className="flex items-start justify-center gap-2 text-center text-xs text-white/80">
+      <p className="auth-entrance-item auth-d5 flex items-start justify-center gap-2 text-center text-xs text-white/80">
         <Lock className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
         <span>
           Administrator accounts are provisioned by the project owner. Learners

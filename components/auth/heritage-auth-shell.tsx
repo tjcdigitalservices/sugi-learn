@@ -5,6 +5,8 @@ import { BookOpen } from "lucide-react";
 import { HeritageWave, SuguidanonMark } from "@/components/brand/heritage-wave";
 import { cn } from "@/lib/utils";
 
+import "./heritage-auth-entrance.css";
+
 interface HeritageAuthShellProps {
   children: React.ReactNode;
   className?: string;
@@ -41,7 +43,7 @@ export function HeritageAuthShell({
 
       <div className="relative z-10 flex min-h-dvh flex-1 flex-col px-5 pb-[max(2.5rem,env(safe-area-inset-bottom))] pt-[max(2.5rem,env(safe-area-inset-top))] sm:px-8 lg:pb-20">
         <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center gap-6 sm:gap-8">
-          <div className="flex justify-center">
+          <div className="auth-entrance__brand flex justify-center">
             <SuguidanonMark
               light
               stacked

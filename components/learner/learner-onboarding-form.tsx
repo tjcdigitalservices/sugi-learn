@@ -27,7 +27,7 @@ export function LearnerOnboardingForm() {
 
   return (
     <HeritageAuthCard>
-      <div className="space-y-2">
+      <div className="auth-entrance-item auth-d1 space-y-2">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sl-gold-soft">
           Step 1 of 2
         </p>
@@ -36,7 +36,7 @@ export function LearnerOnboardingForm() {
         </div>
       </div>
 
-      <div className="space-y-2 text-center">
+      <div className="auth-entrance-item auth-d2 space-y-2 text-center">
         <h1 className="font-display text-3xl font-semibold tracking-tight text-white drop-shadow-sm">
           Let&apos;s get to know you
         </h1>
@@ -46,7 +46,7 @@ export function LearnerOnboardingForm() {
         </p>
       </div>
 
-      <form className="space-y-4" onSubmit={handleSubmit}>
+      <form className="auth-entrance-item auth-d3 space-y-4" onSubmit={handleSubmit}>
         <label className="block space-y-1.5 text-sm" htmlFor="firstName">
           <span className="font-medium text-white">First Name *</span>
           <span className="flex items-center gap-3 rounded-xl border border-white/40 bg-white/95 px-4 py-3 shadow-sm transition focus-within:border-sl-gold focus-within:shadow-[0_0_0_3px_rgba(209,165,58,0.25)]">
@@ -107,7 +107,7 @@ export function LearnerOnboardingForm() {
         </BusyButton>
       </form>
 
-      <p className="flex items-center justify-center gap-2 text-center text-xs text-white/80">
+      <p className="auth-entrance-item auth-d4 flex items-center justify-center gap-2 text-center text-xs text-white/80">
         <Lock className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
         Your information is kept private and secure.
       </p>

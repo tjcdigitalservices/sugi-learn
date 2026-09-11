@@ -1,0 +1,1108 @@
+/*
+ * Scoped cinematic hero — CSS transform/opacity only.
+ * Ambient motion (Ken Burns, twinkle, fireflies, glows, entrance, parallax)
+ * lives here and must stay when `landing-hero.png` is replaced.
+ */
+
+.landing-hero {
+  --lh-navy: #0b1d3a;
+  --lh-px: 0;
+  --lh-py: 0;
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  min-height: 100svh;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: var(--lh-navy);
+}
+
+/* Transparent cinematic nav — fade + soft settle */
+.landing-nav {
+  background: transparent;
+  opacity: 0;
+  transform: translateY(-6px);
+  animation: landing-nav-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards;
+}
+
+.landing-nav a[href="#about"] {
+  color: rgba(232, 228, 220, 0.78);
+}
+
+.landing-nav a[href="#about"]:hover {
+  color: #e8e4dc;
+}
+
+/* World appears */
+.landing-hero__stage {
+  position: absolute;
+  inset: -2%;
+  overflow: hidden;
+  opacity: 0;
+  animation: landing-hero-world-in 1.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.landing-hero__plate {
+  position: absolute;
+  inset: 0;
+  transform: scale(1.012);
+  transform-origin: 58% 42%;
+  will-change: transform;
+  animation:
+    landing-hero-settle 1.8s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    landing-hero-kenburns 18s ease-in-out 1.9s infinite alternate;
+}
+
+.landing-hero__layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Parallax depths — desktop only (vars stay 0 elsewhere) */
+.landing-hero__layer--bg {
+  transform: translate3d(
+    calc(var(--lh-px) * 2px),
+    calc(var(--lh-py) * 2px),
+    0
+  );
+}
+
+.landing-hero__layer--mid {
+  transform: translate3d(
+    calc(var(--lh-px) * 4px),
+    calc(var(--lh-py) * 4px),
+    0
+  );
+}
+
+.landing-hero__layer--book {
+  transform: translate3d(
+    calc(var(--lh-px) * 6px),
+    calc(var(--lh-py) * 6px),
+    0
+  );
+}
+
+.landing-hero__layer--fg {
+  transform: translate3d(
+    calc(var(--lh-px) * 10px),
+    calc(var(--lh-py) * 10px),
+    0
+  );
+}
+
+.landing-hero__image {
+  object-fit: cover;
+  object-position: center 45%;
+}
+
+/* Soft moonlight — does not darken the village/moon */
+.landing-hero__veil-far {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 42% 38% at 72% 18%,
+      rgba(242, 230, 190, 0.2) 0%,
+      rgba(242, 230, 190, 0.06) 45%,
+      transparent 72%
+    ),
+    radial-gradient(
+      ellipse 50% 36% at 70% 12%,
+      rgba(120, 160, 210, 0.08) 0%,
+      transparent 70%
+    );
+  mix-blend-mode: soft-light;
+  opacity: 0.85;
+  animation: landing-hero-moon-breathe 10s ease-in-out 0.5s infinite alternate;
+}
+
+.landing-hero__veil-near {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 48% 36% at 14% 84%,
+    rgba(7, 18, 36, 0.08) 0%,
+    transparent 68%
+  );
+  opacity: 1;
+}
+
+/* Slow nebula / cloud drift across upper sky */
+.landing-hero__clouds {
+  position: absolute;
+  inset: -8% -12% auto;
+  height: 55%;
+  pointer-events: none;
+  opacity: 0.55;
+  background:
+    radial-gradient(
+      ellipse 42% 55% at 28% 40%,
+      rgba(180, 170, 210, 0.14) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 36% 48% at 62% 30%,
+      rgba(200, 190, 230, 0.1) 0%,
+      transparent 72%
+    );
+  mix-blend-mode: soft-light;
+  animation: landing-hero-cloud-drift 28s ease-in-out 0.5s infinite alternate;
+}
+
+/* Village warm-light shimmer */
+.landing-hero__village {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  background-image:
+    radial-gradient(2px 2px at 34% 61%, rgba(255, 210, 120, 0.75) 50%, transparent 100%),
+    radial-gradient(1.6px 1.6px at 37% 63%, rgba(255, 190, 90, 0.55) 50%, transparent 100%),
+    radial-gradient(1.8px 1.8px at 40% 60%, rgba(255, 220, 140, 0.65) 50%, transparent 100%),
+    radial-gradient(1.4px 1.4px at 42% 64%, rgba(255, 200, 100, 0.5) 50%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 36% 59%, rgba(255, 230, 150, 0.45) 50%, transparent 100%);
+  animation: landing-hero-village 3.8s ease-in-out 0.8s infinite alternate;
+}
+
+/* Soft water shimmer band */
+.landing-hero__water {
+  position: absolute;
+  left: 18%;
+  right: 28%;
+  top: 58%;
+  height: 14%;
+  pointer-events: none;
+  opacity: 0.4;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(180, 210, 230, 0.1) 30%,
+    rgba(200, 220, 240, 0.16) 50%,
+    rgba(180, 210, 230, 0.08) 70%,
+    transparent 100%
+  );
+  mix-blend-mode: soft-light;
+  animation: landing-hero-water 6s ease-in-out 1s infinite alternate;
+}
+
+/* Book glow pulse — lower-right */
+.landing-hero__book-glow {
+  position: absolute;
+  left: 58%;
+  top: 58%;
+  width: 42%;
+  height: 42%;
+  pointer-events: none;
+  opacity: 0.85;
+  background: radial-gradient(
+    ellipse 55% 50% at 55% 60%,
+    rgba(255, 220, 140, 0.48) 0%,
+    rgba(232, 184, 63, 0.22) 35%,
+    transparent 70%
+  );
+  mix-blend-mode: screen;
+  animation: landing-hero-book-pulse 4s ease-in-out 0.8s infinite alternate;
+}
+
+.landing-hero__magic {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.landing-hero__mote {
+  position: absolute;
+  left: var(--mx);
+  top: var(--my);
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(255, 236, 180, 1);
+  box-shadow:
+    0 0 6px 2px rgba(255, 220, 140, 0.95),
+    0 0 16px 5px rgba(232, 184, 63, 0.55);
+  opacity: 0;
+  animation: landing-hero-mote var(--mdur) ease-in-out var(--mdelay) infinite;
+}
+
+/* Soft foliage sway suggestion — left frame */
+.landing-hero__vines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.85;
+  background:
+    radial-gradient(
+      ellipse 28% 42% at 6% 55%,
+      rgba(20, 40, 28, 0.16) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 22% 30% at 8% 22%,
+      rgba(18, 36, 24, 0.14) 0%,
+      transparent 72%
+    );
+  transform-origin: left center;
+  animation: landing-hero-vines 9s ease-in-out 0.8s infinite alternate;
+}
+
+/* Localized left readability — right stays luminous */
+.landing-hero__readability {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  animation: landing-hero-fade-in 1.2s ease-out 0.12s forwards;
+  background:
+    linear-gradient(
+      92deg,
+      rgba(6, 16, 28, 0.7) 0%,
+      rgba(6, 16, 28, 0.46) 26%,
+      rgba(6, 16, 28, 0.16) 46%,
+      rgba(6, 16, 28, 0.04) 60%,
+      transparent 76%
+    ),
+    linear-gradient(to top, rgba(6, 16, 28, 0.22) 0%, transparent 24%),
+    linear-gradient(to bottom, rgba(6, 16, 28, 0.12) 0%, transparent 18%);
+}
+
+.landing-hero__stars {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.landing-hero__stars-layer {
+  position: absolute;
+  inset: 0;
+  will-change: opacity;
+}
+
+/* Three staggered fields so stars blink out of phase (real twinkle) */
+.landing-hero__stars-layer--a {
+  opacity: 0.85;
+  background-image:
+    radial-gradient(2.5px 2.5px at 14% 8%, #fff 40%, transparent 100%),
+    radial-gradient(6px 6px at 14% 8%, rgba(255, 252, 240, 0.45) 0%, transparent 70%),
+    radial-gradient(3px 3px at 28% 12%, #fff 40%, transparent 100%),
+    radial-gradient(7px 7px at 28% 12%, rgba(255, 255, 255, 0.35) 0%, transparent 70%),
+    radial-gradient(2.4px 2.4px at 52% 6%, #fffef5 40%, transparent 100%),
+    radial-gradient(3.2px 3.2px at 71% 11%, #fff 40%, transparent 100%),
+    radial-gradient(8px 8px at 71% 11%, rgba(255, 248, 230, 0.4) 0%, transparent 70%),
+    radial-gradient(2.2px 2.2px at 86% 7%, #fff 40%, transparent 100%),
+    radial-gradient(3.6px 3.6px at 41% 4%, #fff 35%, transparent 100%),
+    radial-gradient(10px 10px at 41% 4%, rgba(255, 255, 255, 0.4) 0%, transparent 65%);
+  animation: landing-hero-twinkle-a 28s ease-in-out 2s infinite;
+}
+
+.landing-hero__stars-layer--b {
+  opacity: 0.75;
+  background-image:
+    radial-gradient(2.4px 2.4px at 22% 16%, #fff 40%, transparent 100%),
+    radial-gradient(3px 3px at 38% 9%, #fffef5 40%, transparent 100%),
+    radial-gradient(7px 7px at 38% 9%, rgba(255, 248, 230, 0.4) 0%, transparent 70%),
+    radial-gradient(2.2px 2.2px at 58% 15%, #fff 40%, transparent 100%),
+    radial-gradient(3.4px 3.4px at 76% 5%, #fff 35%, transparent 100%),
+    radial-gradient(9px 9px at 76% 5%, rgba(255, 252, 240, 0.42) 0%, transparent 65%),
+    radial-gradient(2.5px 2.5px at 91% 13%, #fff 40%, transparent 100%),
+    radial-gradient(2.6px 2.6px at 8% 14%, #fffef5 40%, transparent 100%);
+  animation: landing-hero-twinkle-b 34s ease-in-out 10s infinite;
+}
+
+.landing-hero__stars-layer--c {
+  opacity: 0.7;
+  background-image:
+    radial-gradient(2.2px 2.2px at 18% 5%, #fff 40%, transparent 100%),
+    radial-gradient(2.8px 2.8px at 33% 18%, #fffef5 40%, transparent 100%),
+    radial-gradient(6px 6px at 33% 18%, rgba(255, 252, 240, 0.35) 0%, transparent 70%),
+    radial-gradient(2.4px 2.4px at 47% 11%, #fff 40%, transparent 100%),
+    radial-gradient(3.2px 3.2px at 64% 3%, #fff 35%, transparent 100%),
+    radial-gradient(8px 8px at 64% 3%, rgba(255, 248, 230, 0.4) 0%, transparent 65%),
+    radial-gradient(2.2px 2.2px at 82% 17%, #fff 40%, transparent 100%),
+    radial-gradient(2.6px 2.6px at 95% 9%, #fffef5 40%, transparent 100%);
+  animation: landing-hero-twinkle-c 40s ease-in-out 18s infinite;
+}
+
+.landing-hero__fireflies {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.landing-hero__firefly {
+  position: absolute;
+  left: var(--fx);
+  top: var(--fy);
+  width: var(--fsize);
+  height: var(--fsize);
+  border-radius: 9999px;
+  background: rgba(255, 220, 120, 1);
+  box-shadow:
+    0 0 6px 2px rgba(255, 210, 100, 0.95),
+    0 0 14px 5px rgba(232, 184, 63, 0.55);
+  opacity: 0;
+  animation: landing-hero-firefly var(--fdur) ease-in-out var(--fdelay) infinite;
+}
+
+.landing-hero__content {
+  position: relative;
+  z-index: 2;
+  margin-inline: auto;
+  display: flex;
+  min-height: 100vh;
+  min-height: 100svh;
+  min-height: 100dvh;
+  max-width: 72rem;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3.5rem 1rem 4.5rem;
+}
+
+@media (min-width: 640px) {
+  .landing-hero__content {
+    padding-inline: 1.5rem;
+  }
+}
+
+.landing-hero__copy {
+  max-width: 34rem;
+}
+
+.landing-hero__title,
+.landing-hero__lede,
+.landing-hero__journey-label,
+.landing-hero__cta,
+.landing-hero__helper {
+  opacity: 0;
+}
+
+/* Strongest typographic signal — restrained antique metallic gold */
+.landing-hero__title {
+  transform: translateY(16px);
+  background-image: linear-gradient(
+    165deg,
+    #a8782f 0%,
+    #d4a94f 28%,
+    #f1d27a 46%,
+    #d4a94f 62%,
+    #f1d27a 78%,
+    #a8782f 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 1px 10px rgba(168, 120, 47, 0.22));
+  animation: landing-hero-rise 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.55s
+    forwards;
+}
+
+.landing-hero__lede {
+  transform: translateY(12px);
+  color: rgba(232, 228, 220, 0.82);
+  animation: landing-hero-rise 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.95s
+    forwards;
+}
+
+.landing-hero__journey-label {
+  transform: translateY(8px);
+  color: #d6c39a;
+  animation: landing-hero-rise 0.65s cubic-bezier(0.22, 1, 0.36, 1) 1.35s
+    forwards;
+}
+
+.landing-hero__cta {
+  transform: translateY(8px);
+  animation: landing-hero-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) 1.7s forwards;
+}
+
+.landing-hero__helper {
+  transform: translateY(6px);
+  color: rgba(232, 228, 220, 0.72);
+  animation: landing-hero-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) 2.05s
+    forwards;
+}
+
+.landing-hero__cta .sl-btn-gold {
+  background: #e9b83f;
+  color: #102a43;
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 600;
+  transition:
+    transform 220ms ease,
+    filter 220ms ease,
+    box-shadow 220ms ease;
+  box-shadow:
+    0 2px 10px rgba(11, 29, 58, 0.22),
+    0 0 0 1px rgba(233, 184, 63, 0.12);
+}
+
+.landing-hero__cta .sl-btn-gold:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+  box-shadow:
+    0 8px 20px rgba(11, 29, 58, 0.28),
+    0 0 18px rgba(233, 184, 63, 0.22),
+    0 0 0 1px rgba(233, 184, 63, 0.2);
+}
+
+.landing-hero__cta .sl-btn-gold:focus-visible {
+  outline: 2px solid rgba(246, 216, 120, 0.75);
+  outline-offset: 3px;
+}
+
+.landing-hero__cta .sl-btn-gold:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+@keyframes landing-nav-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes landing-hero-world-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes landing-hero-settle {
+  from {
+    transform: scale(1.012) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+}
+
+/* Almost imperceptible Ken Burns */
+@keyframes landing-hero-kenburns {
+  from {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.028) translate3d(-0.6%, -0.35%, 0);
+  }
+}
+
+@keyframes landing-hero-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes landing-hero-moon-breathe {
+  from {
+    opacity: 0.7;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Sparse twinkle — long quiet hold, brief flash near end of cycle */
+@keyframes landing-hero-twinkle-a {
+  0%,
+  88%,
+  100% {
+    opacity: 0.55;
+  }
+  92% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 0.35;
+  }
+  97% {
+    opacity: 0.9;
+  }
+}
+
+@keyframes landing-hero-twinkle-b {
+  0%,
+  90%,
+  100% {
+    opacity: 0.5;
+  }
+  93% {
+    opacity: 1;
+  }
+  96% {
+    opacity: 0.3;
+  }
+  98% {
+    opacity: 0.85;
+  }
+}
+
+@keyframes landing-hero-twinkle-c {
+  0%,
+  91%,
+  100% {
+    opacity: 0.48;
+  }
+  94% {
+    opacity: 0.95;
+  }
+  96.5% {
+    opacity: 0.28;
+  }
+  98.5% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes landing-hero-cloud-drift {
+  from {
+    transform: translate3d(-2%, 0.6%, 0);
+  }
+  to {
+    transform: translate3d(2.2%, -0.8%, 0);
+  }
+}
+
+@keyframes landing-hero-village {
+  from {
+    opacity: 0.35;
+  }
+  to {
+    opacity: 0.95;
+  }
+}
+
+@keyframes landing-hero-water {
+  from {
+    opacity: 0.25;
+    transform: translate3d(-1.2%, 0, 0);
+  }
+  to {
+    opacity: 0.65;
+    transform: translate3d(1.4%, 0, 0);
+  }
+}
+
+@keyframes landing-hero-book-pulse {
+  from {
+    opacity: 0.55;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes landing-hero-mote {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.6);
+  }
+  12% {
+    opacity: 1;
+  }
+  35% {
+    opacity: 0.55;
+    transform: translate3d(calc(var(--mdrift) * 0.4), -18px, 0) scale(1.35);
+  }
+  55% {
+    opacity: 1;
+    transform: translate3d(var(--mdrift), -40px, 0) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(calc(var(--mdrift) * -0.4), -72px, 0) scale(0.5);
+  }
+}
+
+@keyframes landing-hero-vines {
+  from {
+    transform: translate3d(0, 0, 0) rotate(-0.4deg);
+  }
+  to {
+    transform: translate3d(0.4%, 0.3%, 0) rotate(0.5deg);
+  }
+}
+
+@keyframes landing-hero-firefly {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.7);
+  }
+  12% {
+    opacity: 1;
+    transform: translate3d(calc(var(--fdrift) * 0.2), -3px, 0) scale(1.15);
+  }
+  28% {
+    opacity: 0.25;
+  }
+  45% {
+    opacity: 1;
+    transform: translate3d(var(--fdrift), -10px, 0) scale(1.25);
+  }
+  62% {
+    opacity: 0.35;
+  }
+  78% {
+    opacity: 0.95;
+    transform: translate3d(calc(var(--fdrift) * 0.5), -14px, 0) scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(calc(var(--fdrift) * -0.35), -20px, 0) scale(0.6);
+  }
+}
+
+@keyframes landing-hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Phone + iPad: art-directed cinematic composition (desktop ≥1024px unchanged) */
+@media (max-width: 1023px) {
+  /* Prefer darker left-sky / bay; push book glow + gold figures off-center */
+  .landing-hero__image {
+    object-position: 38% 28%;
+  }
+
+  .landing-hero__plate {
+    transform-origin: 40% 30%;
+    animation:
+      landing-hero-settle 1.8s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+      landing-hero-kenburns 40s ease-in-out 1.9s infinite alternate;
+  }
+
+  .landing-hero__stage {
+    inset: -1% -3% -2%;
+  }
+
+  .landing-hero__readability {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(6, 16, 28, 0.26) 0%,
+        rgba(6, 16, 28, 0.16) 26%,
+        rgba(6, 16, 28, 0.32) 50%,
+        rgba(6, 16, 28, 0.2) 72%,
+        rgba(6, 16, 28, 0.38) 100%
+      );
+  }
+
+  .landing-nav__inner {
+    max-width: none;
+    width: 100%;
+    padding: 1.5rem 1.75rem 0.5rem;
+    gap: 0.75rem;
+  }
+
+  .landing-nav__brand {
+    margin-left: 0;
+  }
+
+  .landing-nav__brand img {
+    width: 64px !important;
+    height: 64px !important;
+  }
+
+  .landing-brand-wordmark {
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: #c6a15b;
+    text-transform: uppercase;
+  }
+
+  .landing-hero__content {
+    align-items: center;
+    justify-content: flex-start;
+    max-width: none;
+    padding:
+      clamp(8rem, 16vh, 11rem)
+      1.5rem
+      clamp(5.5rem, 12vh, 8rem);
+  }
+
+  .landing-hero__copy {
+    display: flex;
+    width: 100%;
+    max-width: 36rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .landing-hero__copy > * + * {
+    margin-top: 0 !important;
+  }
+
+  .landing-hero__lead {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .landing-hero__lead > * + * {
+    margin-top: 0 !important;
+  }
+
+  .landing-hero__title {
+    width: min(88vw, 28rem);
+    font-size: clamp(3.75rem, 9.5vw, 5rem);
+    line-height: 0.98;
+    letter-spacing: -0.01em;
+    text-align: center;
+  }
+
+  .landing-hero__lede {
+    width: 84%;
+    max-width: 34rem;
+    margin-inline: auto;
+    text-align: center !important;
+    font-size: 1.0625rem;
+    line-height: 1.58;
+    color: rgba(232, 228, 220, 0.86);
+  }
+
+  .landing-hero__actions {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.95rem;
+    padding-top: 0.25rem;
+  }
+
+  .landing-hero__actions > * + * {
+    margin-top: 0 !important;
+  }
+
+  .landing-hero__journey-label {
+    font-size: 1rem;
+    letter-spacing: 0.12em;
+  }
+
+  .landing-hero__cta {
+    width: 100%;
+    max-width: 22.5rem;
+  }
+
+  .landing-hero__cta .sl-btn-gold {
+    width: min(70vw, 22.5rem);
+    min-width: min(320px, 70vw);
+    max-width: 360px;
+    padding-block: 0.9rem;
+  }
+
+  .landing-hero__helper {
+    margin-top: 0.1rem;
+    max-width: 20rem;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.4;
+  }
+}
+
+/* Phone refinements — art-directed portrait composition */
+@media (max-width: 639px) {
+  /* Crop: quieter night sky behind type; book/glow lower-right */
+  .landing-hero__image {
+    object-fit: cover;
+    object-position: 34% 24%;
+  }
+
+  .landing-hero__plate {
+    transform-origin: 36% 26%;
+  }
+
+  .landing-hero__stage {
+    inset: 0 -2% -1% -4%;
+  }
+
+  .landing-hero__readability {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(6, 16, 28, 0.18) 0%,
+        rgba(6, 16, 28, 0.1) 22%,
+        rgba(6, 16, 28, 0.28) 48%,
+        rgba(6, 16, 28, 0.16) 70%,
+        rgba(6, 16, 28, 0.42) 100%
+      );
+  }
+
+  /* Header: ~24–32px left, ~20–28px top, 58–68px icon */
+  .landing-nav__inner {
+    padding: 1.35rem 1.5rem 0.25rem;
+  }
+
+  .landing-nav__brand {
+    margin-left: 0;
+  }
+
+  .landing-nav__brand img {
+    width: 60px !important;
+    height: 60px !important;
+  }
+
+  .landing-brand-wordmark {
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: #c6a15b;
+    text-transform: uppercase;
+  }
+
+  /*
+   * Vertical rhythm:
+   * logo → open starry sky → headline → body → eyebrow → CTA → landscape
+   */
+  .landing-hero__content {
+    align-items: center;
+    justify-content: flex-start;
+    padding:
+      clamp(8.25rem, 21vh, 11rem)
+      1.1rem
+      clamp(5.75rem, 15vh, 8rem);
+  }
+
+  .landing-hero__copy {
+    max-width: none;
+    width: 100%;
+    gap: 1.2rem;
+    align-items: center;
+    text-align: center;
+  }
+
+  .landing-hero__lead {
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .landing-hero__title {
+    width: min(90vw, 21.5rem);
+    font-size: clamp(3.5rem, 14.5vw, 4.25rem); /* ~56–68px */
+    line-height: 0.98;
+    letter-spacing: -0.012em;
+    text-align: center;
+  }
+
+  .landing-hero__lede {
+    width: 84%;
+    max-width: 620px;
+    margin-inline: auto;
+    text-align: center !important;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: rgba(232, 228, 220, 0.84);
+  }
+
+  .landing-hero__actions {
+    gap: 0.8rem;
+    padding-top: 0.2rem;
+    align-items: center;
+  }
+
+  .landing-hero__journey-label {
+    font-size: 0.875rem;
+    letter-spacing: 0.12em;
+  }
+
+  .landing-hero__cta {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .landing-hero__cta .sl-btn-gold {
+    width: min(86vw, 22.5rem);
+    min-width: min(300px, 86vw);
+    max-width: 360px;
+    padding-block: 0.85rem;
+  }
+
+  .landing-hero__helper {
+    margin-top: 0.1rem;
+    max-width: 17.5rem;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.4;
+    color: rgba(232, 228, 220, 0.72);
+  }
+
+  /* Phone: keep entrance; trim continuous ambient for performance */
+  .landing-hero__clouds,
+  .landing-hero__village,
+  .landing-hero__water,
+  .landing-hero__vines,
+  .landing-hero__fireflies {
+    display: none;
+  }
+
+  .landing-hero__layer--bg,
+  .landing-hero__layer--mid,
+  .landing-hero__layer--book,
+  .landing-hero__layer--fg {
+    transform: none;
+  }
+}
+
+/* iPad portrait / tablet — roomier sky + slightly larger lockup */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .landing-hero__image {
+    object-position: 40% 30%;
+  }
+
+  .landing-hero__plate {
+    transform-origin: 42% 32%;
+  }
+
+  .landing-nav__inner {
+    padding: 1.75rem 2rem 0.65rem;
+  }
+
+  .landing-nav__brand img {
+    width: 66px !important;
+    height: 66px !important;
+  }
+
+  .landing-brand-wordmark {
+    font-size: 1.1875rem;
+  }
+
+  .landing-hero__content {
+    padding:
+      clamp(9rem, 18vh, 12.5rem)
+      2rem
+      clamp(6rem, 12vh, 9rem);
+  }
+
+  .landing-hero__copy {
+    max-width: 40rem;
+    gap: 1.65rem;
+  }
+
+  .landing-hero__lead {
+    gap: 1.15rem;
+  }
+
+  .landing-hero__title {
+    width: min(78vw, 32rem);
+    font-size: clamp(4.25rem, 8.2vw, 5.25rem);
+  }
+
+  .landing-hero__lede {
+    width: 78%;
+    max-width: 36rem;
+    font-size: 1.125rem;
+    line-height: 1.6;
+  }
+
+  .landing-hero__journey-label {
+    font-size: 1.05rem;
+  }
+
+  .landing-hero__cta .sl-btn-gold {
+    width: min(52vw, 22.5rem);
+    min-width: 340px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-nav,
+  .landing-hero__stage,
+  .landing-hero__plate,
+  .landing-hero__veil-far,
+  .landing-hero__veil-near,
+  .landing-hero__readability,
+  .landing-hero__stars-layer,
+  .landing-hero__clouds,
+  .landing-hero__village,
+  .landing-hero__water,
+  .landing-hero__book-glow,
+  .landing-hero__mote,
+  .landing-hero__vines,
+  .landing-hero__firefly,
+  .landing-hero__title,
+  .landing-hero__lede,
+  .landing-hero__journey-label,
+  .landing-hero__cta,
+  .landing-hero__helper {
+    animation: none !important;
+  }
+
+  .landing-nav,
+  .landing-hero__stage,
+  .landing-hero__veil-far,
+  .landing-hero__veil-near,
+  .landing-hero__readability,
+  .landing-hero__title,
+  .landing-hero__lede,
+  .landing-hero__journey-label,
+  .landing-hero__cta,
+  .landing-hero__helper {
+    opacity: 1;
+    transform: none;
+  }
+
+  .landing-hero__title {
+    filter: drop-shadow(0 1px 10px rgba(168, 120, 47, 0.22));
+  }
+
+  .landing-hero__plate {
+    transform: none;
+  }
+
+  .landing-hero__layer--bg,
+  .landing-hero__layer--mid,
+  .landing-hero__layer--book,
+  .landing-hero__layer--fg {
+    transform: none !important;
+  }
+
+  .landing-hero__stars-layer {
+    opacity: 0.35;
+  }
+
+  .landing-hero__fireflies,
+  .landing-hero__clouds,
+  .landing-hero__village,
+  .landing-hero__water,
+  .landing-hero__book-glow,
+  .landing-hero__magic,
+  .landing-hero__vines {
+    display: none;
+  }
+
+  .landing-hero__cta .sl-btn-gold:hover:not(:disabled),
+  .landing-hero__cta .sl-btn-gold:active:not(:disabled) {
+    transform: none;
+  }
+}

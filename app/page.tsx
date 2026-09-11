@@ -1,19 +1,25 @@
-import Image from "next/image";
 import { ArrowRight, BookOpen, Lock, Users } from "lucide-react";
 
 import { HeritageWave, SuguidanonMark } from "@/components/brand/heritage-wave";
-import { StartPreTestButton } from "@/components/learner/start-pre-test-button";
+import { LandingHero } from "@/components/landing/landing-hero";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-sl-cream font-body text-sl-ink">
-      <header className="relative z-20 bg-sl-navy">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2.5 sm:gap-4 sm:px-6">
-          <SuguidanonMark light showTagline={false} />
+    <div className="min-h-screen bg-[#0b1d3a] font-body text-sl-ink">
+      <header className="landing-nav absolute inset-x-0 top-0 z-20">
+        <div className="landing-nav__inner mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2 sm:gap-4 sm:px-6">
+          <div className="landing-nav__brand -ml-[5%]">
+            <SuguidanonMark
+              light
+              showTagline={false}
+              size="sm"
+              wordmarkTone="antique"
+            />
+          </div>
           <div className="flex shrink-0 items-center gap-3 sm:gap-6">
             <a
               href="#about"
-              className="hidden text-sm text-white/85 transition hover:text-white sm:inline"
+              className="hidden text-sm transition sm:inline"
             >
               About
             </a>
@@ -21,61 +27,7 @@ export default function HomePage() {
         </div>
       </header>
 
-      <section className="relative isolate min-h-[min(92vh,880px)] overflow-hidden">
-        <Image
-          src="/images/landing-hero.png"
-          alt="A person in traditional dress overlooking a coastal village, sailboats, and mountains at sunset"
-          fill
-          priority
-          className="object-cover object-[center_45%]"
-          sizes="100vw"
-        />
-        <div
-          className="absolute inset-0 bg-gradient-to-r from-[rgba(6,16,28,0.62)] via-[rgba(6,16,28,0.32)] to-[rgba(6,16,28,0.06)]"
-          aria-hidden="true"
-        />
-        <div
-          className="absolute inset-0 bg-gradient-to-t from-[rgba(6,16,28,0.35)] via-transparent to-[rgba(6,16,28,0.12)]"
-          aria-hidden="true"
-        />
-
-        <div className="relative mx-auto flex min-h-[min(92vh,880px)] max-w-6xl flex-col justify-center px-4 py-16 sm:px-6">
-          <div className="max-w-xl space-y-6 text-white">
-            <h1 className="font-display text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl md:text-6xl">
-              Discover the Stories of Panay
-            </h1>
-            <p className="max-w-md text-base leading-relaxed text-white/85 sm:text-lg">
-              An interactive learning experience that brings the Suguidanon to
-              life — helping learners discover, understand, and carry forward
-              the stories of Panay.
-            </p>
-            <div className="space-y-3 pt-1">
-              <h2 className="font-display text-[0.75rem] font-normal tracking-[0.12em] sm:text-[0.9rem]">
-                Begin your learning journey
-              </h2>
-              <StartPreTestButton />
-              <p className="flex items-center gap-2 text-sm text-white/70">
-                <Lock className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                Enter your name to begin — no account required.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="pointer-events-none absolute inset-x-0 bottom-0">
-          <svg
-            viewBox="0 0 1440 96"
-            className="h-16 w-full text-sl-cream sm:h-20"
-            preserveAspectRatio="none"
-            aria-hidden="true"
-          >
-            <path
-              fill="currentColor"
-              d="M0 64c120-40 240-40 360 0s240 40 360 0 240-40 360 0 240 40 360 0v32H0V64Z"
-            />
-          </svg>
-        </div>
-      </section>
+      <LandingHero />
 
       <section
         id="about"

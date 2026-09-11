@@ -53,6 +53,8 @@ export function SuguidanonMark({
   showTagline = true,
   size = "md",
   stacked = false,
+  /** Landing: muted antique-gold wordmark (keeps current monogram asset). */
+  wordmarkTone = "default",
 }: {
   className?: string;
   light?: boolean;
@@ -60,6 +62,7 @@ export function SuguidanonMark({
   size?: "sm" | "md" | "lg" | "xl";
   /** Icon above wordmark (auth hero). */
   stacked?: boolean;
+  wordmarkTone?: "default" | "antique";
 }) {
   const iconSize =
     size === "xl" ? 128 : size === "lg" ? 72 : size === "sm" ? 50 : 66;
@@ -90,15 +93,20 @@ export function SuguidanonMark({
       >
         <span
           className={cn(
-            "font-display font-semibold tracking-tight",
-            size === "xl"
-              ? "text-4xl sm:text-5xl"
-              : size === "lg"
-                ? "text-2xl"
-                : size === "sm"
-                  ? "text-lg"
-                  : "text-xl",
-            light ? "text-white" : "text-sl-navy",
+            "tracking-tight",
+            wordmarkTone === "antique"
+              ? "landing-brand-wordmark"
+              : cn(
+                  "font-display font-semibold",
+                  size === "xl"
+                    ? "text-4xl sm:text-5xl"
+                    : size === "lg"
+                      ? "text-2xl"
+                      : size === "sm"
+                        ? "text-lg"
+                        : "text-xl",
+                  light ? "text-white" : "text-sl-navy",
+                ),
           )}
         >
           Suguidanon

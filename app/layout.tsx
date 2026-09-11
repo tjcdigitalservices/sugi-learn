@@ -1,10 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Cormorant_Garamond, Inter, Playfair_Display } from "next/font/google";
 
 import "./globals.css";
 
 const display = Playfair_Display({
   variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+});
+
+/** Landing editorial headline, eyebrow, and understated brand wordmark */
+const editorial = Cormorant_Garamond({
+  variable: "--font-editorial",
   subsets: ["latin"],
   weight: ["500", "600", "700"],
 });
@@ -45,7 +52,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${display.variable} ${body.variable} min-h-screen font-body antialiased`}
+        className={`${display.variable} ${editorial.variable} ${body.variable} min-h-screen font-body antialiased`}
       >
         {children}
       </body>

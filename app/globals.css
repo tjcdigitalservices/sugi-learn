@@ -55,6 +55,30 @@
     font-family: var(--font-display), ui-serif, Georgia, "Times New Roman", serif;
   }
 
+  .font-editorial {
+    font-family:
+      var(--font-editorial), var(--font-display), ui-serif, Georgia,
+      "Times New Roman", serif;
+  }
+
+  /* Landing header wordmark — understated brand signature */
+  .landing-brand-wordmark {
+    font-family:
+      var(--font-editorial), var(--font-display), ui-serif, Georgia,
+      "Times New Roman", serif;
+    font-size: 1.125rem; /* 18px — quieter than headline */
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: #c6a15b;
+    text-transform: uppercase;
+  }
+
+  @media (min-width: 640px) {
+    .landing-brand-wordmark {
+      font-size: 1.1875rem; /* 19px */
+    }
+  }
+
   .font-body {
     font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
   }
