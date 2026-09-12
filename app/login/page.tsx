@@ -5,7 +5,7 @@ import { LoginForm } from "@/components/auth/login-form";
 
 export default function LoginPage() {
   return (
-    <HeritageAuthShell>
+    <HeritageAuthShell layout="interactionLeft">
       <Suspense
         fallback={
           <p className="text-center text-sm text-white/80 lg:text-sl-ink-muted">

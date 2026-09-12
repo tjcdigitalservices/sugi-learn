@@ -17,7 +17,7 @@ export default async function LearnerOnboardingPage() {
   }
 
   return (
-    <HeritageAuthShell>
+    <HeritageAuthShell layout="interactionLeft">
       <LearnerOnboardingForm />
     </HeritageAuthShell>
   );
