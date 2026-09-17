@@ -111,6 +111,7 @@ export async function saveFedericoCaballeroAboutAction(
 
     revalidatePath("/admin/settings");
     revalidatePath("/");
+    revalidatePath("/author");
     revalidatePath("/about");
 
     return { ok: true, notice };

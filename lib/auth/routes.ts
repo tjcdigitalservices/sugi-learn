@@ -2,6 +2,7 @@
 export const PUBLIC_ROUTES = [
   "/",
   "/about",
+  "/author",
   "/researchers",
   "/login",
   "/unauthorized",
