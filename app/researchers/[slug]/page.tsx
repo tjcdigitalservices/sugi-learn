@@ -97,31 +97,17 @@ export default async function ResearcherProfilePage({
               priority
             />
           </div>
+          <p className="mt-4 text-xs font-semibold uppercase tracking-[0.16em] text-sl-ink-muted">
+            Researcher
+          </p>
           <p className="mt-8">
             <Link
               href="/researchers"
-              className="researchers-closing__author"
+              className="researchers-closing__cta-btn"
             >
               ← Back to Researchers
             </Link>
           </p>
-        </div>
-      </section>
-
-      <section className="researchers-closing">
-        <div className="researchers-closing__inner">
-          <div className="researchers-closing__rule" aria-hidden="true" />
-          <Link href="/about" className="researchers-closing__author">
-            Meet the Author
-            <span className="researchers-closing__author-arrow" aria-hidden="true">
-              →
-            </span>
-          </Link>
-          <div className="researchers-closing__cta">
-            <Link href="/" className="researchers-closing__cta-btn">
-              Explore the Stories
-            </Link>
-          </div>
         </div>
       </section>
 

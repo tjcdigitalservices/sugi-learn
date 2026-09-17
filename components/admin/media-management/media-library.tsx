@@ -24,6 +24,7 @@ interface MediaLibraryProps {
 export function MediaLibrary({ chapters }: MediaLibraryProps) {
   const [assets, setAssets] = useState<AdminMediaAssetListItem[]>([]);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [hasLoaded, setHasLoaded] = useState(false);
   const [isLoading, startLoadTransition] = useTransition();
   const [showUpload, setShowUpload] = useState(false);
   const [query, setQuery] = useState("");
@@ -36,11 +37,15 @@ export function MediaLibrary({ chapters }: MediaLibraryProps) {
       const result = await listMediaAssetsAction();
       if (!result.success) {
         setLoadError(result.error);
+        setHasLoaded(true);
         return;
       }
       setAssets(result.data);
+      setHasLoaded(true);
     });
   }, []);
+
+  const showLoading = !hasLoaded || isLoading;
 
   const filteredAssets = useMemo(() => {
     return assets.filter((asset) => {
@@ -89,7 +94,7 @@ export function MediaLibrary({ chapters }: MediaLibraryProps) {
 
       <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
         <p className="text-sm text-muted-foreground">
-          {isLoading
+          {showLoading
             ? "Loading media library…"
             : `${filteredAssets.length} asset${filteredAssets.length === 1 ? "" : "s"}`}
         </p>
@@ -188,7 +193,11 @@ export function MediaLibrary({ chapters }: MediaLibraryProps) {
           </label>
         </div>
 
-        <MediaListTable assets={filteredAssets} onDeleted={handleDeleted} />
+        <MediaListTable
+          assets={filteredAssets}
+          onDeleted={handleDeleted}
+          isLoading={showLoading}
+        />
       </div>
     </div>
   );

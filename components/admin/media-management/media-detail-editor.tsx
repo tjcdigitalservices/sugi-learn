@@ -51,6 +51,9 @@ export function MediaDetailEditor({
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [pendingAction, setPendingAction] = useState<
+    "save" | "assign" | "unlink" | "delete" | null
+  >(null);
 
   const compatibleSections = chapterSections.filter((section) => {
     if (asset.kind === "illustration") {
@@ -65,6 +68,7 @@ export function MediaDetailEditor({
   function handleSaveMetadata() {
     setError(null);
     setSuccess(null);
+    setPendingAction("save");
 
     startTransition(async () => {
       const result = await saveMediaAssetAction(asset.id, {
@@ -74,6 +78,8 @@ export function MediaDetailEditor({
         sourceReference,
         reviewStatus,
       });
+
+      setPendingAction(null);
 
       if (!result.success) {
         setError(result.error);
@@ -93,6 +99,7 @@ export function MediaDetailEditor({
 
     setError(null);
     setSuccess(null);
+    setPendingAction("assign");
 
     startTransition(async () => {
       const result = await assignMediaToSectionAction(
@@ -100,6 +107,8 @@ export function MediaDetailEditor({
         asset.chapterSlug!,
         sectionId,
       );
+
+      setPendingAction(null);
 
       if (!result.success) {
         setError(result.error);
@@ -114,9 +123,12 @@ export function MediaDetailEditor({
   function handleUnlink() {
     setError(null);
     setSuccess(null);
+    setPendingAction("unlink");
 
     startTransition(async () => {
       const result = await unlinkMediaFromSectionAction(asset.id);
+      setPendingAction(null);
+
       if (!result.success) {
         setError(result.error);
         return;
@@ -141,9 +153,12 @@ export function MediaDetailEditor({
       return;
     }
 
+    setPendingAction("delete");
+
     startTransition(async () => {
       const result = await deleteMediaAssetAction(asset.id);
       if (!result.success) {
+        setPendingAction(null);
         setError(result.error);
         return;
       }
@@ -313,7 +328,9 @@ export function MediaDetailEditor({
                     onClick={handleAssignSection}
                     disabled={isPending || !sectionId}
                   >
-                    Assign to section
+                    {pendingAction === "assign"
+                      ? "Assigning…"
+                      : "Assign to section"}
                   </button>
                   {asset.sectionId ? (
                     <button
@@ -322,7 +339,9 @@ export function MediaDetailEditor({
                       onClick={handleUnlink}
                       disabled={isPending}
                     >
-                      Unlink from section
+                      {pendingAction === "unlink"
+                        ? "Unlinking…"
+                        : "Unlink from section"}
                     </button>
                   ) : null}
                 </div>
@@ -344,7 +363,7 @@ export function MediaDetailEditor({
             onClick={handleSaveMetadata}
             disabled={isPending}
           >
-            Save changes
+            {pendingAction === "save" ? "Saving…" : "Save changes"}
           </button>
           <button
             type="button"
@@ -352,7 +371,7 @@ export function MediaDetailEditor({
             onClick={handleDelete}
             disabled={isPending}
           >
-            Delete asset
+            {pendingAction === "delete" ? "Deleting…" : "Delete asset"}
           </button>
         </div>
       </div>

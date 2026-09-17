@@ -84,13 +84,6 @@ export function ResearchersPageView() {
 
       <section className="researchers-closing">
         <div className="researchers-closing__inner">
-          <div className="researchers-closing__rule" aria-hidden="true" />
-          <Link href="/about" className="researchers-closing__author">
-            Meet the Author
-            <span className="researchers-closing__author-arrow" aria-hidden="true">
-              →
-            </span>
-          </Link>
           <div className="researchers-closing__cta">
             <Link href="/" className="researchers-closing__cta-btn">
               Explore the Stories

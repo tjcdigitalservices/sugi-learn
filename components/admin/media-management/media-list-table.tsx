@@ -13,12 +13,47 @@ import type { AdminMediaAssetListItem } from "@/types/media-management";
 interface MediaListTableProps {
   assets: AdminMediaAssetListItem[];
   onDeleted?: (mediaId: string) => void;
+  isLoading?: boolean;
 }
 
-export function MediaListTable({ assets, onDeleted }: MediaListTableProps) {
+export function MediaListTable({
+  assets,
+  onDeleted,
+  isLoading = false,
+}: MediaListTableProps) {
   const [error, setError] = useState<string | null>(null);
   const [pendingId, setPendingId] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+
+  if (isLoading) {
+    return (
+      <div
+        className="space-y-3"
+        aria-busy="true"
+        aria-live="polite"
+        aria-label="Loading media assets"
+      >
+        <div className="overflow-hidden rounded-lg border">
+          <div className="border-b bg-muted/40 px-4 py-3">
+            <div className="h-4 w-32 animate-pulse rounded bg-muted" />
+          </div>
+          <div className="divide-y">
+            {Array.from({ length: 5 }).map((_, index) => (
+              <div
+                key={index}
+                className="flex items-center gap-4 px-4 py-3.5"
+              >
+                <div className="h-4 flex-1 animate-pulse rounded bg-muted" />
+                <div className="h-4 w-16 animate-pulse rounded bg-muted" />
+                <div className="hidden h-4 w-24 animate-pulse rounded bg-muted sm:block" />
+                <div className="h-4 w-14 animate-pulse rounded bg-muted" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (assets.length === 0) {
     return (
