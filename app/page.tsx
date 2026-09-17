@@ -1,7 +1,35 @@
-import { ArrowRight, BookOpen, Lock, Users } from "lucide-react";
+import Link from "next/link";
 
 import { HeritageWave, SuguidanonMark } from "@/components/brand/heritage-wave";
 import { LandingHero } from "@/components/landing/landing-hero";
+
+const PEOPLE_LINKS = [
+  {
+    href: "/about",
+    title: "Meet the Author",
+    description: "Meet the voice behind the stories.",
+  },
+  {
+    href: "/researchers",
+    title: "Meet the Researchers",
+    description: "Meet the people behind the research.",
+  },
+] as const;
+
+const EXPLORE_ITEMS = [
+  {
+    title: "The Stories",
+    description: "Explore the narratives of the Suguidanon.",
+  },
+  {
+    title: "The Characters",
+    description: "Meet the figures who live on through the stories.",
+  },
+  {
+    title: "The Learning Experience",
+    description: "Discover how stories become guided learning experiences.",
+  },
+] as const;
 
 export default function HomePage() {
   return (
@@ -17,12 +45,12 @@ export default function HomePage() {
             />
           </div>
           <div className="flex shrink-0 items-center gap-3 sm:gap-6">
-            <a
-              href="#about"
+            <Link
+              href="/about"
               className="hidden text-sm transition sm:inline"
             >
               About
-            </a>
+            </Link>
           </div>
         </div>
       </header>
@@ -33,6 +61,7 @@ export default function HomePage() {
         id="about"
         className="relative overflow-hidden bg-sl-cream px-4 py-16 sm:px-6 sm:py-20"
       >
+        {/* Introduction */}
         <div className="mx-auto max-w-4xl space-y-4 text-center">
           <div
             className="mx-auto h-2 w-2 rotate-45 bg-sl-gold"
@@ -47,33 +76,67 @@ export default function HomePage() {
           </p>
         </div>
 
-        <div className="mx-auto mt-12 grid max-w-5xl gap-8 border-t border-[color:rgba(44,36,22,0.1)] pt-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-0 lg:divide-x lg:divide-[color:rgba(44,36,22,0.1)]">
-          {[
-            { icon: BookOpen, label: "Stories that inspire" },
-            { icon: Users, label: "Characters that live on" },
-            { icon: ArrowRight, label: "Learning for today" },
-            { icon: Lock, label: "A brighter future together" },
-          ].map((item) => (
-            <div
-              key={item.label}
-              className="flex flex-col items-center gap-3 px-4 text-center text-sl-ink"
-            >
-              <item.icon
-                className="h-7 w-7 text-sl-navy"
-                strokeWidth={1.5}
-                aria-hidden="true"
-              />
-              <p className="text-sm font-medium">{item.label}</p>
-            </div>
-          ))}
+        {/* People Behind SugiLearn — clickable */}
+        <div className="mx-auto mt-12 max-w-3xl border-t border-[color:rgba(44,36,22,0.1)] pt-10">
+          <h3 className="text-center font-display text-[0.75rem] font-semibold uppercase tracking-[0.18em] text-sl-navy/70">
+            People Behind Suguidanon
+          </h3>
+          <ul className="mt-8 grid list-none gap-8 sm:grid-cols-2 sm:gap-0 sm:divide-x sm:divide-[color:rgba(44,36,22,0.1)]">
+            {PEOPLE_LINKS.map((item) => (
+              <li key={item.href} className="px-4 text-center sm:px-8">
+                <Link
+                  href={item.href}
+                  className="group inline-flex flex-col items-center gap-2 rounded-sm outline-none transition focus-visible:ring-2 focus-visible:ring-[color:var(--sl-gold)] focus-visible:ring-offset-4 focus-visible:ring-offset-[color:var(--sl-cream)]"
+                >
+                  <span className="font-display text-[0.8125rem] font-semibold uppercase tracking-[0.14em] text-sl-navy transition group-hover:text-[color:var(--sl-forest)] group-hover:underline group-hover:underline-offset-4">
+                    {item.title}
+                    <span
+                      className="ml-1.5 inline-block font-body text-[0.7rem] font-normal tracking-normal text-[color:var(--sl-gold)] transition group-hover:translate-x-0.5"
+                      aria-hidden="true"
+                    >
+                      →
+                    </span>
+                  </span>
+                  <span className="max-w-[14rem] text-sm leading-relaxed text-sl-ink-muted transition group-hover:text-sl-ink">
+                    {item.description}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Explore Suguidanon — informational only */}
+        <div className="mx-auto mt-14 max-w-5xl border-t border-[color:rgba(44,36,22,0.1)] pt-10">
+          <h3 className="text-center font-display text-[0.75rem] font-semibold uppercase tracking-[0.18em] text-sl-navy/70">
+            Explore Suguidanon
+          </h3>
+          <ul className="mt-8 grid list-none gap-8 sm:grid-cols-3 sm:gap-0 sm:divide-x sm:divide-[color:rgba(44,36,22,0.1)]">
+            {EXPLORE_ITEMS.map((item) => (
+              <li
+                key={item.title}
+                className="flex flex-col items-center gap-2.5 px-5 text-center sm:px-6"
+              >
+                <p className="font-display text-[0.8125rem] font-semibold uppercase tracking-[0.14em] text-sl-navy">
+                  {item.title}
+                </p>
+                <p className="max-w-[16rem] text-sm leading-relaxed text-sl-ink-muted">
+                  {item.description}
+                </p>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
       <footer className="relative border-t border-[color:rgba(44,36,22,0.08)] bg-sl-cream-deep px-4 py-10 text-center">
         <HeritageWave className="absolute inset-x-0 bottom-0 h-12 opacity-30" />
         <p className="relative text-sm text-sl-ink-muted">
-          Need help? Start from the home page, or contact your program
-          administrator.
+          Looking for your way forward? Return{" "}
+          <Link href="/" className="text-sl-navy underline-offset-2 hover:underline">
+            home
+          </Link>{" "}
+          or continue exploring the world of Suguidanon.
         </p>
       </footer>
     </div>

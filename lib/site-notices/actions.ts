@@ -3,7 +3,10 @@
 import { revalidatePath } from "next/cache";
 
 import { requireAdmin } from "@/lib/auth/session";
-import { updateCharacterRepresentationNotice } from "@/lib/domain/site-notices";
+import {
+  updateCharacterRepresentationNotice,
+  updateFedericoCaballeroAbout,
+} from "@/lib/domain/site-notices";
 import { hasSupabaseConfig } from "@/lib/supabase/service";
 import type {
   SiteNoticeActionResult,
@@ -12,10 +15,12 @@ import type {
 
 function validateNoticeInput(
   input: UpdateCharacterRepresentationNoticeInput,
+  options?: { maxBodyLength?: number },
 ): string | null {
   const title = input.title.trim();
   const body = input.body.trim();
   const shortText = input.shortText.trim();
+  const maxBodyLength = options?.maxBodyLength ?? 2000;
 
   if (!title) {
     return "Title is required.";
@@ -26,8 +31,8 @@ function validateNoticeInput(
   if (!body) {
     return "Notice body is required.";
   }
-  if (body.length > 2000) {
-    return "Notice body must be 2000 characters or fewer.";
+  if (body.length > maxBodyLength) {
+    return `Notice body must be ${maxBodyLength} characters or fewer.`;
   }
   if (!shortText) {
     return "Short text is required.";
@@ -79,6 +84,38 @@ export async function saveCharacterRepresentationNoticeAction(
     return { ok: true, notice };
   } catch (error) {
     console.error("Save character representation notice failed:", error);
+    return { ok: false, error: safeError(error) };
+  }
+}
+
+export async function saveFedericoCaballeroAboutAction(
+  input: UpdateCharacterRepresentationNoticeInput,
+): Promise<SiteNoticeActionResult> {
+  try {
+    if (hasSupabaseConfig()) {
+      await requireAdmin();
+    }
+
+    const validationError = validateNoticeInput(input, {
+      maxBodyLength: 10000,
+    });
+    if (validationError) {
+      return { ok: false, error: validationError };
+    }
+
+    const notice = await updateFedericoCaballeroAbout({
+      title: input.title.trim(),
+      body: input.body.trim(),
+      shortText: input.shortText.trim(),
+    });
+
+    revalidatePath("/admin/settings");
+    revalidatePath("/");
+    revalidatePath("/about");
+
+    return { ok: true, notice };
+  } catch (error) {
+    console.error("Save Federico Caballero about failed:", error);
     return { ok: false, error: safeError(error) };
   }
 }

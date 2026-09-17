@@ -1,6 +1,8 @@
 /** Public routes that do not require authentication. */
 export const PUBLIC_ROUTES = [
   "/",
+  "/about",
+  "/researchers",
   "/login",
   "/unauthorized",
 ] as const;

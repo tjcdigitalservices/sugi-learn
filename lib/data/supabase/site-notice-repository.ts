@@ -4,6 +4,10 @@ import {
   CHARACTER_REPRESENTATION_NOTICE_KEY,
   DEFAULT_CHARACTER_REPRESENTATION_NOTICE,
 } from "@/lib/content/character-representation";
+import {
+  DEFAULT_FEDERICO_CABALLERO_ABOUT,
+  FEDERICO_CABALLERO_ABOUT_KEY,
+} from "@/lib/content/federico-caballero";
 import type { SiteNoticeRepository } from "@/lib/data/types";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import type { TypedSupabaseClient } from "@/lib/supabase/service";
@@ -44,33 +48,34 @@ export class SupabaseSiteNoticeRepository implements SiteNoticeRepository {
     private readonly clientFactory: ClientFactory = getSupabaseServerClient,
   ) {}
 
-  async getCharacterRepresentationNotice(): Promise<CharacterRepresentationNoticeCopy> {
+  private async getNotice(
+    key: string,
+    fallback: CharacterRepresentationNoticeCopy,
+  ): Promise<CharacterRepresentationNoticeCopy> {
     const supabase = (await this.clientFactory()) as TypedSupabaseClient;
 
     const { data, error } = await supabase
       .from("site_notices")
       .select("title, body, short_text")
-      .eq("key", CHARACTER_REPRESENTATION_NOTICE_KEY)
+      .eq("key", key)
       .maybeSingle();
 
     if (error) {
-      // Migration not applied yet — keep learner UI working with approved defaults.
       if (isMissingSiteNoticesTable(error)) {
-        return { ...DEFAULT_CHARACTER_REPRESENTATION_NOTICE };
+        return { ...fallback };
       }
-      throw new Error(
-        `Failed to load character representation notice: ${error.message}`,
-      );
+      throw new Error(`Failed to load site notice (${key}): ${error.message}`);
     }
 
     if (!data) {
-      return { ...DEFAULT_CHARACTER_REPRESENTATION_NOTICE };
+      return { ...fallback };
     }
 
     return mapRow(data);
   }
 
-  async updateCharacterRepresentationNotice(
+  private async upsertNotice(
+    key: string,
     input: UpdateCharacterRepresentationNoticeInput,
   ): Promise<CharacterRepresentationNoticeCopy> {
     const supabase = (await this.clientFactory()) as TypedSupabaseClient;
@@ -83,7 +88,7 @@ export class SupabaseSiteNoticeRepository implements SiteNoticeRepository {
       .from("site_notices")
       .upsert(
         {
-          key: CHARACTER_REPRESENTATION_NOTICE_KEY,
+          key,
           title,
           body,
           short_text: shortText,
@@ -100,10 +105,36 @@ export class SupabaseSiteNoticeRepository implements SiteNoticeRepository {
         );
       }
       throw new Error(
-        `Unable to save character representation notice: ${error?.message ?? "unknown error"}`,
+        `Unable to save site notice (${key}): ${error?.message ?? "unknown error"}`,
       );
     }
 
     return mapRow(data);
+  }
+
+  async getCharacterRepresentationNotice(): Promise<CharacterRepresentationNoticeCopy> {
+    return this.getNotice(
+      CHARACTER_REPRESENTATION_NOTICE_KEY,
+      DEFAULT_CHARACTER_REPRESENTATION_NOTICE,
+    );
+  }
+
+  async updateCharacterRepresentationNotice(
+    input: UpdateCharacterRepresentationNoticeInput,
+  ): Promise<CharacterRepresentationNoticeCopy> {
+    return this.upsertNotice(CHARACTER_REPRESENTATION_NOTICE_KEY, input);
+  }
+
+  async getFedericoCaballeroAbout(): Promise<CharacterRepresentationNoticeCopy> {
+    return this.getNotice(
+      FEDERICO_CABALLERO_ABOUT_KEY,
+      DEFAULT_FEDERICO_CABALLERO_ABOUT,
+    );
+  }
+
+  async updateFedericoCaballeroAbout(
+    input: UpdateCharacterRepresentationNoticeInput,
+  ): Promise<CharacterRepresentationNoticeCopy> {
+    return this.upsertNotice(FEDERICO_CABALLERO_ABOUT_KEY, input);
   }
 }

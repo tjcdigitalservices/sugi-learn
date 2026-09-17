@@ -210,6 +210,10 @@ export interface SiteNoticeRepository {
   updateCharacterRepresentationNotice(
     input: UpdateCharacterRepresentationNoticeInput,
   ): Promise<CharacterRepresentationNoticeCopy>;
+  getFedericoCaballeroAbout(): Promise<CharacterRepresentationNoticeCopy>;
+  updateFedericoCaballeroAbout(
+    input: UpdateCharacterRepresentationNoticeInput,
+  ): Promise<CharacterRepresentationNoticeCopy>;
 }
 
 export interface DataRepositories {

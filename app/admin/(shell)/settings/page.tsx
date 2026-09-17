@@ -1,13 +1,21 @@
 import { CharacterRepresentationNoticeForm } from "@/components/admin/character-representation-notice-form";
+import { FedericoCaballeroAboutForm } from "@/components/admin/federico-caballero-about-form";
 import { PageHeader } from "@/components/shared/page-header";
-import { getCharacterRepresentationNotice } from "@/lib/domain/site-notices";
+import {
+  getCharacterRepresentationNotice,
+  getFedericoCaballeroAbout,
+} from "@/lib/domain/site-notices";
 
 export default async function AdminSettingsPage() {
-  let notice = null;
+  let characterNotice = null;
+  let federicoAbout = null;
   let errorMessage: string | null = null;
 
   try {
-    notice = await getCharacterRepresentationNotice();
+    [characterNotice, federicoAbout] = await Promise.all([
+      getCharacterRepresentationNotice(),
+      getFedericoCaballeroAbout(),
+    ]);
   } catch (error) {
     console.error("Settings load failed:", error);
     errorMessage =
@@ -27,7 +35,7 @@ export default async function AdminSettingsPage() {
         </div>
       ) : null}
 
-      {notice ? (
+      {characterNotice ? (
         <section className="max-w-2xl space-y-4">
           <div>
             <h2 className="text-base font-semibold text-foreground">
@@ -38,7 +46,22 @@ export default async function AdminSettingsPage() {
               or historical claims — keep wording aligned with approved guidance.
             </p>
           </div>
-          <CharacterRepresentationNoticeForm initialNotice={notice} />
+          <CharacterRepresentationNoticeForm initialNotice={characterNotice} />
+        </section>
+      ) : null}
+
+      {federicoAbout ? (
+        <section className="max-w-2xl space-y-4 border-t border-border pt-8">
+          <div>
+            <h2 className="text-base font-semibold text-foreground">
+              Federico Caballero Biography
+            </h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Shown on the About page. Preserve approved names, dates, and cultural
+              terms. Do not invent or romanticize additional details.
+            </p>
+          </div>
+          <FedericoCaballeroAboutForm initialNotice={federicoAbout} />
         </section>
       ) : null}
     </div>

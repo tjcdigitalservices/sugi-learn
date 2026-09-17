@@ -15,3 +15,13 @@ export async function updateCharacterRepresentationNotice(
     input,
   );
 }
+
+export async function getFedericoCaballeroAbout(): Promise<CharacterRepresentationNoticeCopy> {
+  return getRepositories().siteNotices.getFedericoCaballeroAbout();
+}
+
+export async function updateFedericoCaballeroAbout(
+  input: UpdateCharacterRepresentationNoticeInput,
+): Promise<CharacterRepresentationNoticeCopy> {
+  return getRepositories().siteNotices.updateFedericoCaballeroAbout(input);
+}
