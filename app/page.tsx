@@ -16,21 +16,6 @@ const PEOPLE_LINKS = [
   },
 ] as const;
 
-const EXPLORE_ITEMS = [
-  {
-    title: "The Stories",
-    description: "Explore the narratives of the Suguidanon.",
-  },
-  {
-    title: "The Characters",
-    description: "Meet the figures who live on through the stories.",
-  },
-  {
-    title: "The Learning Experience",
-    description: "Discover how stories become guided learning experiences.",
-  },
-] as const;
-
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#0b1d3a] font-body text-sl-ink">
@@ -93,28 +78,6 @@ export default function HomePage() {
                     {item.description}
                   </span>
                 </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Explore Suguidanon — informational only */}
-        <div className="mx-auto mt-14 max-w-5xl border-t border-[color:rgba(44,36,22,0.1)] pt-10">
-          <h3 className="text-center font-display text-[0.75rem] font-semibold uppercase tracking-[0.18em] text-sl-navy/70">
-            Explore Suguidanon
-          </h3>
-          <ul className="mt-8 grid list-none gap-8 sm:grid-cols-3 sm:gap-0 sm:divide-x sm:divide-[color:rgba(44,36,22,0.1)]">
-            {EXPLORE_ITEMS.map((item) => (
-              <li
-                key={item.title}
-                className="flex flex-col items-center gap-2.5 px-5 text-center sm:px-6"
-              >
-                <p className="font-display text-[0.8125rem] font-semibold uppercase tracking-[0.14em] text-sl-navy">
-                  {item.title}
-                </p>
-                <p className="max-w-[16rem] text-sm leading-relaxed text-sl-ink-muted">
-                  {item.description}
-                </p>
               </li>
             ))}
           </ul>

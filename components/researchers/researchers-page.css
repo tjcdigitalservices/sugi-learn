@@ -46,13 +46,16 @@
   color: #f0d48a;
 }
 
-/* Quiet cinematic intro — lighter than the author hero */
+/* Hero sized to the artwork’s native proportions (1659×948) so the full scene reads */
 .researchers-hero {
   position: relative;
   isolation: isolate;
   display: flex;
-  min-height: min(48vh, 28rem);
+  width: 100%;
+  aspect-ratio: 1659 / 948;
+  max-height: min(90svh, 56rem);
   align-items: flex-end;
+  justify-content: center;
   overflow: hidden;
   background: var(--rp-navy);
   color: #f7efe4;
@@ -66,35 +69,64 @@
 
 .researchers-hero__image {
   object-fit: cover;
-  object-position: center 40%;
+  object-position: center center;
 }
 
 .researchers-hero__veil {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(
-    180deg,
-    rgba(7, 20, 40, 0.5) 0%,
-    rgba(7, 20, 40, 0.45) 45%,
-    rgba(11, 29, 58, 0.92) 100%
-  );
+  background:
+    linear-gradient(
+      180deg,
+      rgba(7, 20, 40, 0.38) 0%,
+      rgba(7, 20, 40, 0.22) 42%,
+      rgba(11, 29, 58, 0.45) 72%,
+      rgba(11, 29, 58, 0.82) 88%,
+      rgba(243, 234, 220, 0.97) 100%
+    );
 }
 
 .researchers-hero__content {
   position: relative;
   z-index: 2;
   margin-inline: auto;
+  margin-bottom: 5%;
   width: 100%;
   max-width: 40rem;
-  padding: 6.5rem 1.25rem 3rem;
+  padding: 2.5rem 1.25rem 3.25rem;
   text-align: center;
+}
+
+.researchers-hero__content::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -1.5rem -8% -1rem;
+  background: radial-gradient(
+    ellipse 70% 75% at 50% 55%,
+    rgba(7, 20, 40, 0.78) 0%,
+    rgba(7, 20, 40, 0.45) 48%,
+    rgba(7, 20, 40, 0) 76%
+  );
+  pointer-events: none;
 }
 
 @media (min-width: 640px) {
   .researchers-hero__content {
     padding-inline: 1.5rem;
-    padding-bottom: 3.5rem;
+    padding-bottom: 3.75rem;
+  }
+}
+
+@media (max-width: 639px) {
+  .researchers-hero {
+    aspect-ratio: auto;
+    min-height: min(52svh, 22rem);
+  }
+
+  .researchers-hero__image {
+    object-position: center 40%;
   }
 }
 
@@ -126,12 +158,12 @@
 }
 
 .researchers-roster {
-  padding: 3.5rem 1.25rem 1.25rem;
+  padding: 2.5rem 1.25rem 1.25rem;
 }
 
 @media (min-width: 640px) {
   .researchers-roster {
-    padding: 4.5rem 1.5rem 1.5rem;
+    padding: 3rem 1.5rem 1.5rem;
   }
 }
 
