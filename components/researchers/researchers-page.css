@@ -164,35 +164,123 @@
   text-align: center;
 }
 
+.researchers-roster__card {
+  display: flex;
+  width: 100%;
+  max-width: 14rem;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  outline: none;
+  transition: transform 0.25s ease;
+}
+
+@media (min-width: 1024px) {
+  .researchers-roster__card {
+    max-width: none;
+  }
+}
+
 .researchers-roster__frame {
   position: relative;
   width: 100%;
-  max-width: 14rem;
   aspect-ratio: 4 / 5;
   overflow: hidden;
   border: 1px solid rgba(44, 36, 22, 0.12);
   background: #fff;
   box-shadow: 0 16px 40px rgba(20, 14, 8, 0.08);
-}
-
-@media (min-width: 1024px) {
-  .researchers-roster__frame {
-    max-width: none;
-  }
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
 }
 
 .researchers-roster__photo {
   object-fit: cover;
   object-position: top center;
+  transition: transform 0.25s ease;
+}
+
+.researchers-roster__meta {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
 }
 
 .researchers-roster__name {
-  margin-top: 1rem;
   font-family: var(--font-display), ui-serif, Georgia, serif;
   font-size: 1.05rem;
   font-weight: 600;
   letter-spacing: 0.01em;
   color: var(--rp-navy);
+}
+
+.researchers-roster__action {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rp-gold);
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+  pointer-events: none;
+}
+
+/* Desktop hover / keyboard focus — subtle editorial lift */
+@media (hover: hover) and (pointer: fine) {
+  .researchers-roster__card:hover,
+  .researchers-roster__card:focus-visible {
+    transform: scale(1.02);
+  }
+
+  .researchers-roster__card:hover .researchers-roster__frame,
+  .researchers-roster__card:focus-visible .researchers-roster__frame {
+    border-color: rgba(198, 161, 91, 0.55);
+    box-shadow:
+      0 18px 44px rgba(20, 14, 8, 0.1),
+      0 0 0 1px rgba(198, 161, 91, 0.28);
+  }
+
+  .researchers-roster__card:hover .researchers-roster__action,
+  .researchers-roster__card:focus-visible .researchers-roster__action {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.researchers-roster__card:focus-visible .researchers-roster__frame {
+  border-color: rgba(198, 161, 91, 0.65);
+  box-shadow:
+    0 18px 44px rgba(20, 14, 8, 0.1),
+    0 0 0 2px rgba(231, 178, 74, 0.45);
+}
+
+/* Touch: keep cards tappable without hover-only UI */
+@media (hover: none) {
+  .researchers-roster__action {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .researchers-roster__card,
+  .researchers-roster__frame,
+  .researchers-roster__photo,
+  .researchers-roster__action {
+    transition: none;
+  }
+
+  .researchers-roster__card:hover,
+  .researchers-roster__card:focus-visible {
+    transform: none;
+  }
 }
 
 .researchers-closing {

@@ -1,19 +1,52 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 import { HeritageWave, SuguidanonMark } from "@/components/brand/heritage-wave";
 import {
+  getResearcherBySlug,
   RESEARCHERS,
   RESEARCHERS_AFFILIATION,
 } from "@/lib/content/researchers";
 
-import "./researchers-page.css";
+import "@/components/researchers/researchers-page.css";
+
+interface ResearcherProfilePageProps {
+  params: Promise<{ slug: string }>;
+}
+
+export function generateStaticParams() {
+  return RESEARCHERS.map((researcher) => ({ slug: researcher.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: ResearcherProfilePageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const researcher = getResearcherBySlug(slug);
+  if (!researcher) {
+    return { title: "Researcher | Suguidanon" };
+  }
+  return {
+    title: `${researcher.name} | Suguidanon`,
+    description: `${researcher.name} — ${RESEARCHERS_AFFILIATION}.`,
+  };
+}
 
 /**
- * Researchers roster — same chrome/interaction as About (nav, closing CTAs, footer),
- * different content layout (portrait grid, not a single biography arc).
+ * Individual researcher profile shell.
+ * Shows only approved name, portrait, and affiliation — no invented biography.
  */
-export function ResearchersPageView() {
+export default async function ResearcherProfilePage({
+  params,
+}: ResearcherProfilePageProps) {
+  const { slug } = await params;
+  const researcher = getResearcherBySlug(slug);
+  if (!researcher) {
+    notFound();
+  }
+
   return (
     <div className="researchers-page font-body">
       <header className="researchers-page__nav">
@@ -29,7 +62,7 @@ export function ResearchersPageView() {
         </div>
       </header>
 
-      <section className="researchers-hero" aria-labelledby="researchers-hero-heading">
+      <section className="researchers-hero" aria-labelledby="researcher-profile-heading">
         <div className="researchers-hero__media" aria-hidden="true">
           <Image
             src="/images/landing-hero.png"
@@ -43,8 +76,8 @@ export function ResearchersPageView() {
         </div>
         <div className="researchers-hero__content">
           <div className="researchers-hero__mark" aria-hidden="true" />
-          <h1 id="researchers-hero-heading" className="researchers-hero__heading">
-            THE RESEARCHERS
+          <h1 id="researcher-profile-heading" className="researchers-hero__heading">
+            {researcher.name}
           </h1>
           <p className="researchers-hero__affiliation">
             {RESEARCHERS_AFFILIATION}
@@ -52,34 +85,27 @@ export function ResearchersPageView() {
         </div>
       </section>
 
-      <section className="researchers-roster" aria-label="Researcher portraits">
-        <ul className="researchers-roster__list">
-          {RESEARCHERS.map((researcher) => (
-            <li key={researcher.slug} className="researchers-roster__item">
-              <Link
-                href={`/researchers/${researcher.slug}`}
-                className="researchers-roster__card"
-                aria-label={`View profile for ${researcher.name}`}
-              >
-                <div className="researchers-roster__frame">
-                  <Image
-                    src={researcher.imageSrc}
-                    alt={researcher.imageAlt}
-                    fill
-                    sizes="(max-width: 639px) 14rem, (max-width: 1023px) 40vw, 20vw"
-                    className="researchers-roster__photo"
-                  />
-                </div>
-                <div className="researchers-roster__meta">
-                  <h2 className="researchers-roster__name">{researcher.name}</h2>
-                  <span className="researchers-roster__action" aria-hidden="true">
-                    View Profile →
-                  </span>
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
+      <section className="researchers-roster" aria-label="Researcher portrait">
+        <div className="mx-auto flex max-w-sm flex-col items-center px-4 text-center sm:px-0">
+          <div className="researchers-roster__frame w-full max-w-[18rem]">
+            <Image
+              src={researcher.imageSrc}
+              alt={researcher.imageAlt}
+              fill
+              sizes="18rem"
+              className="researchers-roster__photo"
+              priority
+            />
+          </div>
+          <p className="mt-8">
+            <Link
+              href="/researchers"
+              className="researchers-closing__author"
+            >
+              ← Back to Researchers
+            </Link>
+          </p>
+        </div>
       </section>
 
       <section className="researchers-closing">

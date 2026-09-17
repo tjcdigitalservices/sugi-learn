@@ -36,17 +36,6 @@ export function AboutPageView({ biography }: AboutPageProps) {
               wordmarkTone="antique"
             />
           </Link>
-          <nav className="flex items-center gap-4 sm:gap-6" aria-label="About">
-            <Link href="/" className="about-page__nav-link">
-              Home
-            </Link>
-            <Link href="/about" className="about-page__nav-link" aria-current="page">
-              About
-            </Link>
-            <Link href="/researchers" className="about-page__nav-link">
-              Researchers
-            </Link>
-          </nav>
         </div>
       </header>
 

@@ -44,14 +44,6 @@ export default function HomePage() {
               wordmarkTone="antique"
             />
           </div>
-          <div className="flex shrink-0 items-center gap-3 sm:gap-6">
-            <Link
-              href="/about"
-              className="hidden text-sm transition sm:inline"
-            >
-              About
-            </Link>
-          </div>
         </div>
       </header>
 
