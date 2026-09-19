@@ -5,9 +5,9 @@ import { DEFAULT_FEDERICO_CABALLERO_ABOUT } from "@/lib/content/federico-caballe
 import { getFedericoCaballeroAbout } from "@/lib/domain/site-notices";
 
 export const metadata: Metadata = {
-  title: "Author | Suguidanon",
+  title: "Authors | Suguidanon",
   description:
-    "Meet Federico 'Nong Pedring' Caballero and the living oral tradition of the Suguidanon of Central Panay.",
+    "Meet Panay-Bukidnon cultural bearers Federico 'Nong Pedring' Caballero, Rodolfo “Sandigan” Caballero, and Rita “Intaru” Caballero.",
 };
 
 export default async function AuthorPage() {

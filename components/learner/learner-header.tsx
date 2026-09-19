@@ -13,11 +13,16 @@ const LEARNER_NAV: {
   href: string;
   label: string;
   exact?: boolean;
+  requiresPostUnlock?: boolean;
 }[] = [
   { href: "/learn", label: "Home", exact: true },
   { href: "/learn/assessment/pre", label: "Pre-Test" },
   { href: "/learn/chapters", label: "Chapters" },
-  { href: "/learn/assessment/post", label: "Post-Test" },
+  {
+    href: "/learn/assessment/post",
+    label: "Post-Test",
+    requiresPostUnlock: true,
+  },
   { href: "/learn/results", label: "Results" },
 ];
 
@@ -32,9 +37,16 @@ function isNavItemActive(pathname: string, href: string, exact?: boolean): boole
 interface LearnerHeaderProps {
   userLabel?: string | null;
   focused?: boolean;
+  isGuest?: boolean;
+  postTestUnlocked?: boolean;
 }
 
-export function LearnerHeader({ userLabel, focused = false }: LearnerHeaderProps) {
+export function LearnerHeader({
+  userLabel,
+  focused = false,
+  isGuest = false,
+  postTestUnlocked = false,
+}: LearnerHeaderProps) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -91,6 +103,22 @@ export function LearnerHeader({ userLabel, focused = false }: LearnerHeaderProps
           >
             {LEARNER_NAV.map((item) => {
               const active = isNavItemActive(pathname, item.href, item.exact);
+              const locked =
+                Boolean(item.requiresPostUnlock) && !postTestUnlocked;
+
+              if (locked) {
+                return (
+                  <span
+                    key={item.href}
+                    title="Complete all chapters to unlock the Post-Test"
+                    aria-disabled="true"
+                    className="cursor-not-allowed whitespace-nowrap text-white/35"
+                  >
+                    {item.label}
+                  </span>
+                );
+              }
+
               return (
                 <Link
                   key={item.href}
@@ -119,6 +147,14 @@ export function LearnerHeader({ userLabel, focused = false }: LearnerHeaderProps
                   {userLabel}
                 </span>
               ) : null}
+              {isGuest ? (
+                <Link
+                  href="/register"
+                  className="whitespace-nowrap rounded-md px-2 py-1 text-xs font-medium text-sl-gold transition hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sl-gold"
+                >
+                  Save progress
+                </Link>
+              ) : null}
               {userLabel ? (
                 <SignOutButton className="border-white/20 bg-transparent text-white hover:bg-white/10" />
               ) : null}
@@ -146,6 +182,14 @@ export function LearnerHeader({ userLabel, focused = false }: LearnerHeaderProps
               >
                 {userLabel}
               </span>
+            ) : null}
+            {isGuest ? (
+              <Link
+                href="/register"
+                className="whitespace-nowrap text-xs font-medium text-sl-gold transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sl-gold"
+              >
+                Save progress
+              </Link>
             ) : null}
             {userLabel ? (
               <SignOutButton className="border-white/20 bg-transparent text-white hover:bg-white/10" />
@@ -191,25 +235,52 @@ export function LearnerHeader({ userLabel, focused = false }: LearnerHeaderProps
             </div>
 
             <nav className="flex flex-1 flex-col gap-1 overflow-y-auto px-3 py-4">
-              {LEARNER_NAV.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  aria-current={
-                    isNavItemActive(pathname, item.href, item.exact)
-                      ? "page"
-                      : undefined
-                  }
-                  className="rounded-md px-3 py-3 text-sm text-white/85 transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sl-gold"
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {LEARNER_NAV.map((item) => {
+                const locked =
+                  Boolean(item.requiresPostUnlock) && !postTestUnlocked;
+
+                if (locked) {
+                  return (
+                    <span
+                      key={item.href}
+                      title="Complete all chapters to unlock the Post-Test"
+                      aria-disabled="true"
+                      className="cursor-not-allowed rounded-md px-3 py-3 text-sm text-white/35"
+                    >
+                      {item.label}
+                    </span>
+                  );
+                }
+
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    aria-current={
+                      isNavItemActive(pathname, item.href, item.exact)
+                        ? "page"
+                        : undefined
+                    }
+                    className="rounded-md px-3 py-3 text-sm text-white/85 transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sl-gold"
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
               {userLabel ? (
                 <p className="mt-4 truncate px-3 text-xs text-white/60">
                   {userLabel}
                 </p>
+              ) : null}
+              {isGuest ? (
+                <Link
+                  href="/register"
+                  onClick={() => setOpen(false)}
+                  className="mt-2 rounded-md px-3 py-3 text-sm font-medium text-sl-gold transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sl-gold"
+                >
+                  Save progress
+                </Link>
               ) : null}
               {userLabel ? (
                 <div className="mt-2 px-3">

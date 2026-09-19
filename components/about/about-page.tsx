@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { HeritageWave, SuguidanonMark } from "@/components/brand/heritage-wave";
+import { ADDITIONAL_CULTURAL_BEARERS } from "@/lib/content/cultural-bearers";
 import {
   ABOUT_PAGE_COPY,
   FEDERICO_CABALLERO_PHOTO_CREDIT,
@@ -16,9 +17,9 @@ interface AboutPageProps {
 }
 
 /**
- * Immersive cultural About experience.
- * Biography body is admin-editable; section chrome copy uses approved defaults.
- * Do not invent biographical facts or present Caballero as sole author of the tradition.
+ * Immersive cultural Authors experience.
+ * Federico biography body is admin-editable; additional bearers use client-supplied defaults.
+ * Do not invent biographical facts.
  */
 export function AboutPageView({ biography }: AboutPageProps) {
   const paragraphs = paragraphsFromNoticeBody(biography.body);
@@ -39,7 +40,6 @@ export function AboutPageView({ biography }: AboutPageProps) {
         </div>
       </header>
 
-      {/* Section 1 — Hero */}
       <section className="about-hero" aria-labelledby="about-hero-heading">
         <div className="about-hero__media" aria-hidden="true">
           <Image
@@ -67,7 +67,6 @@ export function AboutPageView({ biography }: AboutPageProps) {
         </div>
       </section>
 
-      {/* Section 2 — Federico Caballero */}
       <section
         className="about-bio"
         aria-labelledby="about-bio-heading"
@@ -91,6 +90,7 @@ export function AboutPageView({ biography }: AboutPageProps) {
           </figure>
 
           <div className="about-bio__copy">
+            <p className="about-bio__role">Cultural Master</p>
             <h2 id="about-bio-heading" className="about-bio__heading">
               {biography.title}
             </h2>
@@ -104,7 +104,68 @@ export function AboutPageView({ biography }: AboutPageProps) {
         </div>
       </section>
 
-      {/* Section 3 — More than an author */}
+      {ADDITIONAL_CULTURAL_BEARERS.map((bearer, index) => {
+        const headingId = `about-bio-${bearer.id}`;
+        const reversed = index % 2 === 0;
+
+        return (
+          <section
+            key={bearer.id}
+            className={
+              reversed ? "about-bio about-bio--alt" : "about-bio"
+            }
+            aria-labelledby={headingId}
+            id={bearer.id}
+          >
+            <div
+              className={
+                reversed
+                  ? "about-bio__grid about-bio__grid--reverse"
+                  : "about-bio__grid"
+              }
+            >
+              <figure className="about-bio__figure">
+                <div
+                  className={
+                    bearer.frameTone === "light"
+                      ? "about-bio__frame about-bio__frame--light"
+                      : "about-bio__frame"
+                  }
+                >
+                  <Image
+                    src={bearer.imageSrc}
+                    alt={bearer.imageAlt}
+                    fill
+                    sizes="(max-width: 959px) 100vw, 42vw"
+                    className={
+                      bearer.photoPosition === "center top"
+                        ? "about-bio__photo about-bio__photo--top"
+                        : "about-bio__photo"
+                    }
+                  />
+                </div>
+                <figcaption className="about-bio__credit">
+                  {bearer.photoCredit}
+                </figcaption>
+              </figure>
+
+              <div className="about-bio__copy">
+                <p className="about-bio__role">Cultural Bearer</p>
+                <h2 id={headingId} className="about-bio__heading">
+                  {bearer.name}
+                </h2>
+                <div className="about-bio__rule" aria-hidden="true" />
+                <div className="about-bio__prose">
+                  {bearer.paragraphs.map((paragraph, paragraphIndex) => (
+                    <p key={paragraphIndex}>{paragraph}</p>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      })}
+
       <section
         className="about-more"
         aria-labelledby="about-more-heading"
@@ -120,7 +181,6 @@ export function AboutPageView({ biography }: AboutPageProps) {
         </div>
       </section>
 
-      {/* Section 4 — Legacy */}
       <section
         className="about-legacy"
         aria-labelledby="about-legacy-heading"
@@ -150,7 +210,6 @@ export function AboutPageView({ biography }: AboutPageProps) {
         </div>
       </section>
 
-      {/* Section 5 — Closing */}
       <section
         className="about-closing"
         aria-labelledby="about-closing-heading"

@@ -2,6 +2,7 @@
 
 import type { CSSProperties } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { Lock } from "lucide-react";
 
@@ -18,7 +19,7 @@ import "./landing-hero.css";
  * overlays, not part of the image. Do not remove them when changing artwork.
  * Crop (`object-position`) may need a retune for a new composition.
  *
- * CTA auth/navigation unchanged.
+ * CTA auth/navigation: guest start + optional register / sign-in.
  */
 
 const FIREFLIES = [
@@ -250,12 +251,28 @@ export function LandingHero() {
             <h2 className="landing-hero__journey-label font-editorial text-[0.95rem] font-medium tracking-[0.14em] lg:text-[1.05rem]">
               Begin your learning journey
             </h2>
-            <div className="landing-hero__cta flex flex-col items-center">
+            <div className="landing-hero__cta flex flex-col items-center gap-3">
               <StartPreTestButton />
+              <p className="font-body text-sm text-white/85">
+                Already learning?{" "}
+                <Link
+                  href="/login"
+                  className="font-medium text-sl-gold-soft underline underline-offset-4 transition hover:text-white"
+                >
+                  Sign in
+                </Link>
+                {" · "}
+                <Link
+                  href="/register"
+                  className="font-medium text-sl-gold-soft underline underline-offset-4 transition hover:text-white"
+                >
+                  Create account
+                </Link>
+              </p>
             </div>
             <p className="landing-hero__helper mt-3 flex items-center justify-center gap-2 font-body text-sm">
               <Lock className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-              Enter your name to begin — no account required.
+              Start as guest — save an account later to keep your progress.
             </p>
           </div>
         </div>

@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { ArrowRight, Eye, EyeOff, Lock, User } from "lucide-react";
+import { ArrowRight, Eye, EyeOff, User } from "lucide-react";
 
 import { HeritageAuthCard } from "@/components/auth/heritage-auth-shell";
 import { BusyButton } from "@/components/shared/busy-button";
@@ -27,11 +27,17 @@ function safeNextPath(value: string | null): string | null {
   return value;
 }
 
+function errorMessage(error: unknown): string {
+  if (error instanceof Error && error.message.trim()) {
+    return error.message;
+  }
+  return "Unable to sign in right now. Please try again.";
+}
+
 export function LoginForm({
-  title = "Welcome to Suguidanon",
-  description = "Continue your learning journey through the Suguidanon Epic Story. Administrator sign-in.",
+  title = "Welcome back",
+  description = "Sign in to continue your Suguidanon journey. Administrators can also sign in here.",
 }: LoginFormProps) {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const requestedNext = safeNextPath(searchParams.get("next"));
 
@@ -48,46 +54,55 @@ export function LoginForm({
 
     try {
       const supabase = createSupabaseBrowserClient();
+      const normalizedEmail = email.trim().toLowerCase();
+
+      // Clear guest session before signing into a permanent account.
+      // Ignore sign-out failures — they must not block a valid password login.
+      try {
+        await supabase.auth.signOut({ scope: "local" });
+      } catch {
+        // continue
+      }
+
       const { data, error: signInError } = await supabase.auth.signInWithPassword(
         {
-          email: email.trim(),
+          email: normalizedEmail,
           password,
         },
       );
 
       if (signInError || !data.user) {
-        setError("Invalid email or password. Please try again.");
-        setIsLoading(false);
-        return;
-      }
-
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("role, display_name")
-        .eq("id", data.user.id)
-        .maybeSingle();
-
-      const role = (profile?.role ?? "learner") as UserRole;
-
-      if (role !== "admin") {
-        await supabase.auth.signOut({ scope: "local" });
         setError(
-          "This form is for administrators only. Learners can start from the home page without an account.",
+          "Invalid email or password. If you registered as a guest, use Create account again, or continue as a guest and save your progress.",
         );
         setIsLoading(false);
         return;
       }
 
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("role, display_name")
+        .eq("id", data.user.id)
+        .maybeSingle();
+
+      if (profileError) {
+        // Session is valid — still enter the app; profile can be healed later.
+        console.warn("Login profile lookup failed:", profileError.message);
+      }
+
+      const role = (profile?.role ?? "learner") as UserRole;
       const displayName = profile?.display_name ?? null;
+
       const destination = requestedNext
         ? resolvePostLoginPath(role, requestedNext, displayName)
         : defaultPostLoginPath(role, displayName);
 
-      router.push(destination);
-      router.refresh();
-      // Keep loading until navigation unmounts this form.
-    } catch {
-      setError("Unable to sign in right now. Please try again.");
+      // Full navigation so session cookies are applied before /learn renders.
+      // Soft client navigations after auth were rejecting and showing this error.
+      window.location.assign(destination);
+    } catch (err) {
+      console.error("Login failed:", err);
+      setError(errorMessage(err));
       setIsLoading(false);
     }
   }
@@ -189,18 +204,21 @@ export function LoginForm({
         <span className="font-medium opacity-70">Coming soon</span>
       </p>
 
-      <p className="auth-entrance-item auth-d5 flex items-start justify-center gap-2 text-center text-xs text-white/80">
-        <Lock className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-        <span>
-          Administrator accounts are provisioned by the project owner. Learners
-          start from the home page.{" "}
-          <Link
-            href="/"
-            className="font-medium text-sl-gold-soft underline underline-offset-4"
-          >
-            Back to home
-          </Link>
-        </span>
+      <p className="auth-entrance-item auth-d5 text-center text-xs text-white/80">
+        New learner?{" "}
+        <Link
+          href="/"
+          className="font-medium text-sl-gold-soft underline underline-offset-4"
+        >
+          Start as guest
+        </Link>
+        {" · "}
+        <Link
+          href="/register"
+          className="font-medium text-sl-gold-soft underline underline-offset-4"
+        >
+          Create account
+        </Link>
       </p>
     </HeritageAuthCard>
   );

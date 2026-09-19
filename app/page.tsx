@@ -6,8 +6,8 @@ import { LandingHero } from "@/components/landing/landing-hero";
 const PEOPLE_LINKS = [
   {
     href: "/author",
-    title: "Meet the Author",
-    description: "Meet the voice behind the stories.",
+    title: "Meet the Authors",
+    description: "Meet the voices behind the stories.",
   },
   {
     href: "/researchers",

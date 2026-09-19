@@ -1,7 +1,7 @@
 # Suguidanon — Authentication
 
-**Version:** M3  
-**Last updated:** 2026-08-15
+**Version:** M3+ (learner accounts)  
+**Last updated:** 2026-09-18
 
 ---
 
@@ -23,13 +23,25 @@ Application authorization does **not** replace RLS. Both layers are enforced.
 
 ---
 
-## Supabase Auth Configuration
+## Learner access model (guest first)
 
-- **Learners:** Anonymous sign-in from the landing CTA (`signInAnonymously`), then First/Last name saved to `profiles.display_name`. No email/password for the main learner path. Requires **Anonymous Sign-Ins** enabled in Supabase Auth providers.
-- **Administrators:** Email + password via `/login` only (`signInWithPassword`). Non-admin password accounts are rejected by the login form.
-- **Registration:** Not implemented for public users — admin accounts are provisioned via Supabase Dashboard
-- **Social login:** Not implemented
-- **Password reset:** Not implemented (Pending Client Confirmation)
+1. **Guest start** — Landing CTA uses anonymous sign-in (`signInAnonymously`), then First/Last name on `/learn/onboarding`.
+2. **Pre-assessment once** — Chapters stay locked until pre-assessment is completed for that learner id.
+3. **Optional register** — `/register` upgrades a guest via service-role `auth.admin.updateUserById` (same auth user id → progress preserved, email confirmed immediately). New visitors without a guest session use `signUp`.
+4. **Sign in** — `/login` accepts learners and admins. Learners resume via smart routing (skip pre-assessment if already completed).
+5. **Save progress CTA** — Shown on learner home / header while the session is still anonymous.
+
+Requires **Anonymous Sign-Ins**, **Email** provider, and **`SUPABASE_SERVICE_ROLE_KEY`** (server only) for guest → account upgrade.
+
+### Administrators
+
+- Email + password via `/login`
+- Admin accounts are provisioned via Supabase Dashboard (never public registration)
+- After sign-in, admins go to `/admin`
+
+### Password reset
+
+Not implemented (Pending Client Confirmation). Browsers may still offer to save passwords via standard autofill attributes.
 
 ### Required environment variables
 
@@ -52,11 +64,13 @@ SUPABASE_SERVICE_ROLE_KEY=   # server/scripts only — never expose to browser
 
 ### Session lifecycle
 
-1. **Learner:** Landing “Start Your Pre-Test” → `signOut` + `signInAnonymously` → `/learn/onboarding` (name) → journey
-2. **Admin:** `/login` form → `signInWithPassword` → `/admin`
-3. Supabase sets auth cookies; middleware refreshes session on subsequent requests
-4. Server components read user via `getSupabaseServerClient().auth.getUser()`
-5. A new landing CTA (or “Start as a different learner”) clears the session and creates a new anonymous user
+1. **Learner (guest):** Landing CTA → `signOut` + `signInAnonymously` → `/learn/onboarding` → continue path (pre-assessment or `/learn`)
+2. **Learner (register):** Guest `updateUser` or `signUp` → same continue path
+3. **Learner (returning):** `/login` → `signInWithPassword` → continue path (chapters if pre done)
+4. **Admin:** `/login` → `signInWithPassword` → `/admin`
+5. “Start as a different learner” clears the session and creates a new anonymous user
+
+Continue path: `lib/learner/continue-path.ts` → onboarding → pre-assessment (if needed) → `/learn`.
 
 ---
 
@@ -64,12 +78,10 @@ SUPABASE_SERVICE_ROLE_KEY=   # server/scripts only — never expose to browser
 
 | Store | Contents |
 |-------|----------|
-| `auth.users` | Email, password hash (Supabase-managed) |
+| `auth.users` | Email, password hash (Supabase-managed); anonymous until upgraded |
 | `public.profiles` | `role`, `display_name`, timestamps |
 
 New auth users receive a profile via `handle_new_user()` trigger with **`role = learner`**.
-
-If a profile is missing (edge case), `getCurrentProfile()` creates a learner profile on first server access (subject to RLS).
 
 ---
 
@@ -80,35 +92,22 @@ If a profile is missing (edge case), `getCurrentProfile()` creates a learner pro
 | **Learner** | `learner` | `/learn/*` |
 | **Admin** | `admin` | `/admin/*` (shell routes) |
 
-Additional roles can be added to the `user_role` enum in a future migration if required.
-
 ---
 
 ## Route Protection
 
 ### Public routes (no session required)
 
-- `/`
-- `/login`
-- `/admin/login`
-- `/unauthorized`
+- `/`, `/author`, `/researchers`, `/login`, `/register`, `/unauthorized`
+- `/about` redirects to `/author`
 
-### Protected learner routes (authenticated)
+### Protected learner routes
 
-- `/learn/*` → redirects to `/login?next=...` when unauthenticated
+- `/learn/*` → home when unauthenticated
 
-### Protected admin routes (authenticated + admin role)
+### Protected admin routes
 
-- `/admin`, `/admin/chapters`, `/admin/content`, `/admin/media`, `/admin/assessments`, `/admin/review`, `/admin/analytics`
-- Unauthenticated → `/admin/login?next=...`
-- Authenticated learner → `/unauthorized`
-
-### Implementation layers
-
-1. **Middleware** (`lib/supabase/middleware.ts`) — primary gate; session refresh + redirects
-2. **Server layouts** — `app/learn/layout.tsx` calls `requireUser()`; `app/admin/(shell)/layout.tsx` calls `requireAdmin()`
-
-When Supabase env vars are unset, middleware and layouts skip auth (mock/dev fallback).
+- `/admin/*` → `/login` or `/unauthorized` as appropriate
 
 ---
 
@@ -116,34 +115,18 @@ When Supabase env vars are unset, middleware and layouts skip auth (mock/dev fal
 
 | Function | Location | Purpose |
 |----------|----------|---------|
-| `getCurrentUser()` | `lib/auth/session.ts` | Auth user from session |
+| `getCurrentUser()` | `lib/auth/session.ts` | Auth user (`isAnonymous` included) |
 | `getCurrentProfile()` | `lib/auth/session.ts` | Application profile |
-| `getCurrentAuth()` | `lib/auth/session.ts` | User + profile |
-| `requireUser()` | `lib/auth/session.ts` | Redirect if unauthenticated |
-| `requireAdmin()` | `lib/auth/session.ts` | Redirect if not admin |
+| `requireUser()` / `requireAdmin()` | `lib/auth/session.ts` | Route guards |
+| `resolveLearnerContinuePath()` | `lib/learner/continue-path.ts` | Post-auth learner destination |
+| `getPostAuthRedirectPath()` | `lib/auth/post-auth-path.ts` | Server action for client forms |
 | `signOutAction()` | `lib/auth/actions.ts` | Server action sign out |
-
----
-
-## RLS Interaction
-
-M2 RLS policies remain unchanged in M3. Authenticated users can now exercise them:
-
-| Role | RLS behavior |
-|------|--------------|
-| **Anonymous** | Chapter catalog metadata only |
-| **Learner** | Own profile/progress/attempts; approved content when published |
-| **Admin** | Full content management via `is_admin()` |
 
 ---
 
 ## Admin Provisioning
 
-**Never** assign admin via public UI or registration.
-
-### Promote a user to admin (development)
-
-Using Supabase SQL Editor or service role:
+**Never** assign admin via public registration.
 
 ```sql
 UPDATE public.profiles
@@ -151,33 +134,14 @@ SET role = 'admin'
 WHERE id = '<auth-user-uuid>';
 ```
 
-Or create users in Supabase Dashboard → Authentication, then promote.
-
-### Create test users (local)
-
-1. Supabase Dashboard → Authentication → Add user (email/password)
-2. Run promotion SQL above for admin test accounts
-3. Do **not** commit passwords or credentials
-
----
-
-## Security Considerations
-
-- Service-role client (`lib/supabase/service.ts`) imports `server-only` — must not be bundled client-side
-- Login errors are generic ("Invalid email or password") — no credential enumeration
-- No `ADMIN_PASSWORD` or alternative auth mechanisms
-- Default new accounts: **learner**
-- Admin login at `/admin/login` — learners are redirected to `/learn` or `/unauthorized`, not granted admin access
-
 ---
 
 ## Known Limitations
 
 1. No password reset flow
-2. No public self-registration
-3. No social/OAuth providers
-4. Role changes require service-role SQL or admin tooling (M4+)
-5. Full RLS integration testing requires live Supabase + provisioned users
+2. Email confirmation behavior depends on Supabase project settings
+3. Guest progress is lost if cookies are cleared before account upgrade
+4. Role changes require service-role SQL or admin tooling
 
 ---
 

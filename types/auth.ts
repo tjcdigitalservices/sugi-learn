@@ -13,6 +13,8 @@ export interface AppProfile {
 export interface AuthSessionUser {
   id: string;
   email: string | null;
+  /** True when the session is an anonymous/guest Auth user. */
+  isAnonymous: boolean;
 }
 
 export interface CurrentAuth {

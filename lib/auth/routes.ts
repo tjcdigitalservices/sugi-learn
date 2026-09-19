@@ -5,10 +5,12 @@ export const PUBLIC_ROUTES = [
   "/author",
   "/researchers",
   "/login",
+  "/register",
   "/unauthorized",
 ] as const;
 
 export const AUTH_LOGIN_ROUTE = "/login";
+export const AUTH_REGISTER_ROUTE = "/register";
 export const ADMIN_HOME_ROUTE = "/admin";
 export const LEARNER_HOME_ROUTE = "/learn";
 export const UNAUTHORIZED_ROUTE = "/unauthorized";
@@ -33,5 +35,5 @@ export function isLearnerRoute(pathname: string): boolean {
 }
 
 export function isAuthLoginRoute(pathname: string): boolean {
-  return pathname === AUTH_LOGIN_ROUTE;
+  return pathname === AUTH_LOGIN_ROUTE || pathname === AUTH_REGISTER_ROUTE;
 }

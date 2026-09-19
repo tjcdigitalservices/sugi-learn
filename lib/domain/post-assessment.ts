@@ -1,5 +1,6 @@
 import "server-only";
 
+import { assertPostAssessmentAccess } from "@/lib/assessment/post-access";
 import { getRepositories } from "@/lib/data";
 import { isAssessmentLearnerReady } from "@/lib/domain/assessment-availability";
 import type {
@@ -38,6 +39,8 @@ export async function submitPostAssessment(
   learnerId: string,
   answers: Record<string, string>,
 ): Promise<AssessmentSubmissionResult> {
+  await assertPostAssessmentAccess(learnerId);
+
   const assessment = await getRepositories().assessments.getAssessmentByType(
     "post",
   );
@@ -46,9 +49,10 @@ export async function submitPostAssessment(
     throw new Error("Post-assessment is not available.");
   }
 
-  const questions = await getRepositories().assessments.getLearnerAssessmentQuestions(
-    assessment.id,
-  );
+  const questions =
+    await getRepositories().assessments.getLearnerAssessmentQuestions(
+      assessment.id,
+    );
 
   if (!isAssessmentLearnerReady(assessment, questions)) {
     throw new Error("Post-assessment is not available.");
@@ -72,7 +76,9 @@ export async function submitPostAssessment(
 
   for (const question of questions) {
     const selectedId = answers[question.id];
-    const validOption = question.options.some((option) => option.id === selectedId);
+    const validOption = question.options.some(
+      (option) => option.id === selectedId,
+    );
     if (!validOption) {
       throw new Error("One or more selected answers are invalid.");
     }

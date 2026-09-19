@@ -46,6 +46,7 @@ export async function getCurrentUser(): Promise<AuthSessionUser | null> {
   return {
     id: user.id,
     email: user.email ?? null,
+    isAnonymous: Boolean(user.is_anonymous),
   };
 }
 
@@ -120,7 +121,11 @@ export async function requireUser(nextPath = "/"): Promise<CurrentAuth> {
     }
 
     return {
-      user: { id: "local-dev-learner", email: "learner@local" },
+      user: {
+        id: "local-dev-learner",
+        email: "learner@local",
+        isAnonymous: false,
+      },
       profile: {
         id: "local-dev-learner",
         role: "learner",
@@ -147,7 +152,11 @@ export async function requireAdmin(): Promise<CurrentAuth> {
     }
 
     return {
-      user: { id: "local-dev-admin", email: "admin@local" },
+      user: {
+        id: "local-dev-admin",
+        email: "admin@local",
+        isAnonymous: false,
+      },
       profile: {
         id: "local-dev-admin",
         role: "admin",

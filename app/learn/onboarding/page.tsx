@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { HeritageAuthShell } from "@/components/auth/heritage-auth-shell";
 import { LearnerOnboardingForm } from "@/components/learner/learner-onboarding-form";
 import { requireUser } from "@/lib/auth/session";
+import { resolveLearnerContinuePath } from "@/lib/learner/continue-path";
 import { learnerNeedsOnboarding } from "@/lib/learner/onboarding";
 
 export default async function LearnerOnboardingPage() {
@@ -13,7 +14,12 @@ export default async function LearnerOnboardingPage() {
   }
 
   if (!learnerNeedsOnboarding(auth.profile.displayName)) {
-    redirect("/learn/assessment/pre");
+    redirect(
+      await resolveLearnerContinuePath(
+        auth.profile.id,
+        auth.profile.displayName,
+      ),
+    );
   }
 
   return (

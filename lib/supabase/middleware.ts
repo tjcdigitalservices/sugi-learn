@@ -69,9 +69,10 @@ export async function updateSession(request: NextRequest) {
   if (isAuthLoginRoute(pathname)) {
     if (user) {
       const profile = await fetchUserProfile(supabase, user.id);
-      // Only skip the login form when already signed in as admin.
-      // Guest/learner sessions must still reach /login to switch to admin.
-      if (profile?.role === "admin") {
+      const isAnonymous = Boolean(user.is_anonymous);
+
+      // Permanent admins skip login/register.
+      if (profile?.role === "admin" && !isAnonymous) {
         const nextParam = request.nextUrl.searchParams.get("next");
         const destination = resolvePostLoginPath(
           "admin",
@@ -81,6 +82,18 @@ export async function updateSession(request: NextRequest) {
         return redirectWithCookies(
           supabaseResponse,
           new URL(destination, request.url),
+        );
+      }
+
+      // Permanent learners skip register (already have an account).
+      if (
+        pathname === "/register" &&
+        profile?.role === "learner" &&
+        !isAnonymous
+      ) {
+        return redirectWithCookies(
+          supabaseResponse,
+          new URL("/learn", request.url),
         );
       }
     }

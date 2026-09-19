@@ -27,8 +27,9 @@ export const metadata: Metadata = {
   description:
     "Stories Today, Heritage Always. An interactive learning journey through the Suguidanon of Panay.",
   icons: {
+    // Prefer explicit PNG icons. `app/favicon.ico` is also auto-discovered;
+    // do not also point metadata at /favicon.ico (avoids public/app conflicts).
     icon: [
-      { url: "/favicon.ico", sizes: "32x32" },
       { url: "/favicon-16.png", type: "image/png", sizes: "16x16" },
       { url: "/favicon-32.png", type: "image/png", sizes: "32x32" },
       { url: "/icon.png", type: "image/png", sizes: "512x512" },

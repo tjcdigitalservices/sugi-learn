@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { requireUser } from "@/lib/auth/session";
+import { resolveLearnerContinuePath } from "@/lib/learner/continue-path";
 import { hasSupabaseConfig } from "@/lib/supabase/service";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 
@@ -49,5 +50,10 @@ export async function saveLearnerNameAction(input: {
 
   revalidatePath("/learn");
   revalidatePath("/learn/onboarding");
-  redirect("/learn/assessment/pre");
+
+  const destination = await resolveLearnerContinuePath(
+    auth.profile.id,
+    displayName,
+  );
+  redirect(destination);
 }

@@ -3,7 +3,9 @@ import Link from "next/link";
 import { ChapterCoverGrid } from "@/components/learner/chapter-cover-grid";
 import { ContinueLearningButton } from "@/components/learner/continue-learning-button";
 import { OverallProgress } from "@/components/learner/overall-progress";
+import { SaveProgressPrompt } from "@/components/learner/save-progress-prompt";
 import { StartAsDifferentLearnerButton } from "@/components/learner/start-as-different-learner-button";
+import { getCurrentAuth } from "@/lib/auth/session";
 import { isAssessmentLearnerReady } from "@/lib/domain/assessment-availability";
 import {
   getCurrentLearnerDisplayName,
@@ -12,15 +14,18 @@ import {
 } from "@/lib/domain/learner-progress";
 import { getPostAssessmentSession } from "@/lib/domain/post-assessment";
 import { getPreAssessmentSession } from "@/lib/domain/pre-assessment";
+import { hasSupabaseConfig } from "@/lib/supabase/service";
 
 export default async function LearnHomePage() {
   const learnerId = await getCurrentLearnerId();
-  const [journey, displayName, preSession, postSession] = await Promise.all([
-    getLearnerJourneySummary(learnerId),
-    getCurrentLearnerDisplayName(),
-    getPreAssessmentSession(learnerId),
-    getPostAssessmentSession(learnerId),
-  ]);
+  const [journey, displayName, preSession, postSession, auth] =
+    await Promise.all([
+      getLearnerJourneySummary(learnerId),
+      getCurrentLearnerDisplayName(),
+      getPreAssessmentSession(learnerId),
+      getPostAssessmentSession(learnerId),
+      hasSupabaseConfig() ? getCurrentAuth() : Promise.resolve(null),
+    ]);
 
   const preAvailable = isAssessmentLearnerReady(
     preSession.assessment,
@@ -31,7 +36,16 @@ export default async function LearnHomePage() {
     postSession.questions,
   );
 
-  const greeting = displayName ? `Welcome back, ${displayName}` : "Welcome to Suguidanon";
+  const greeting = displayName
+    ? `Welcome back, ${displayName}`
+    : "Welcome to Suguidanon";
+  const isGuest = Boolean(auth?.user.isAnonymous);
+
+  const introMessage = journey.allChaptersCompleted
+    ? "You have finished every chapter. Revisit any animation freely, or take the Post-Test when you are ready."
+    : journey.preAssessmentCompleted
+      ? "Continue the Suguidanon journey — finish each animation to unlock the next chapter."
+      : "Complete the Pre-Test, then watch the Suguidanon chapter animations in order. Finishing a video unlocks the next chapter.";
 
   return (
     <div className="mx-auto max-w-4xl space-y-10">
@@ -43,12 +57,12 @@ export default async function LearnHomePage() {
           {greeting}
         </h1>
         <p className="max-w-2xl text-sm text-sl-ink-muted sm:text-base">
-          Complete the Pre-Test, then watch the Suguidanon chapter animations in
-          order. Finishing a video unlocks the next chapter. When all chapters
-          are done, you can revisit any animation freely.
+          {introMessage}
         </p>
         <StartAsDifferentLearnerButton />
       </header>
+
+      <SaveProgressPrompt visible={isGuest} />
 
       <section className="sl-card p-6 sm:p-8">
         <OverallProgress
@@ -119,7 +133,8 @@ export default async function LearnHomePage() {
                   <Link href="/learn/assessment/post" className="underline">
                     post-assessment
                   </Link>{" "}
-                  to see your score comparison, or revisit any chapter at any time.
+                  to see your score comparison, or revisit any chapter at any
+                  time.
                 </>
               )
             ) : (

@@ -1,10 +1,9 @@
 /**
- * Assessment access policy — configurable gates for learner routes.
- * Defaults are permissive until the client confirms requirements.
+ * Assessment access policy — gates for learner assessment routes.
  */
 export const ASSESSMENT_ACCESS_POLICY = {
-  /** PENDING CLIENT CONFIRMATION — when true, post-assessment requires all chapters completed. */
-  postAssessmentRequiresAllChaptersCompleted: false,
-  /** PENDING CLIENT CONFIRMATION — when true, post-assessment requires a completed pre-assessment. */
-  postAssessmentRequiresPreAssessmentCompleted: false,
+  /** Post-assessment requires all published chapters completed. */
+  postAssessmentRequiresAllChaptersCompleted: true,
+  /** Post-assessment requires a completed pre-assessment. */
+  postAssessmentRequiresPreAssessmentCompleted: true,
 } as const;

@@ -29,15 +29,15 @@ export const FEDERICO_CABALLERO_PHOTO_CREDIT =
 
 export const ABOUT_PAGE_COPY = {
   hero: {
-    heading: "THE VOICE BEHIND THE STORIES",
-    subheading: "Federico 'Nong Pedring' Caballero",
-    supporting: "Panay-Bukidnon Epic Chanter • Gawad sa Manlilikha ng Bayan",
+    heading: "THE VOICES BEHIND THE STORIES",
+    subheading: "Panay-Bukidnon Cultural Bearers",
+    supporting: "Epic Chant · Cultural Knowledge · Living Tradition",
     intro:
-      "The Sugidanon lives through generations of storytellers, chanters, families, and communities. Among its most important cultural bearers was Federico 'Nong Pedring' Caballero.",
+      "The Sugidanon lives through generations of storytellers, chanters, families, and communities. Among its important cultural bearers are Federico 'Nong Pedring' Caballero, Rodolfo “Sandigan” Caballero, and Rita “Intaru” Caballero.",
   },
   moreThanAuthor: {
-    heading: "MORE THAN AN AUTHOR",
-    body: "The Sugidanon is an oral tradition passed down through generations. Federico Caballero was not simply an 'author' of these stories. He was an epic chanter, cultural bearer, and keeper of a living tradition whose knowledge and performances helped preserve these stories for future generations.",
+    heading: "MORE THAN AUTHORS",
+    body: "The Sugidanon is an oral tradition passed down through generations. The cultural bearers featured here were not simply 'authors' of these stories. They are epic chanters, elders, and keepers of a living tradition whose knowledge and teaching help preserve these stories for future generations.",
   },
   legacy: {
     heading: "A LEGACY CARRIED FORWARD",
