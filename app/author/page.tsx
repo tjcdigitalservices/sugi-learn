@@ -4,6 +4,8 @@ import { AboutPageView } from "@/components/about/about-page";
 import { DEFAULT_FEDERICO_CABALLERO_ABOUT } from "@/lib/content/federico-caballero";
 import { getFedericoCaballeroAbout } from "@/lib/domain/site-notices";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Authors | Suguidanon",
   description:

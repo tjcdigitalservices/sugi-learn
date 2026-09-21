@@ -93,12 +93,19 @@ export function LoginForm({
       const role = (profile?.role ?? "learner") as UserRole;
       const displayName = profile?.display_name ?? null;
 
-      const destination = requestedNext
-        ? resolvePostLoginPath(role, requestedNext, displayName)
-        : defaultPostLoginPath(role, displayName);
+      let destination: string;
+      if (role === "admin") {
+        destination = requestedNext
+          ? resolvePostLoginPath(role, requestedNext, displayName)
+          : defaultPostLoginPath(role, displayName);
+      } else if (requestedNext?.startsWith("/learn")) {
+        destination = resolvePostLoginPath(role, requestedNext, displayName);
+      } else {
+        // Resume onboarding / pre-test / home from saved progress.
+        destination = "/learn/continue";
+      }
 
       // Full navigation so session cookies are applied before /learn renders.
-      // Soft client navigations after auth were rejecting and showing this error.
       window.location.assign(destination);
     } catch (err) {
       console.error("Login failed:", err);

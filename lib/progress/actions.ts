@@ -14,7 +14,7 @@ export type ProgressActionResult<T = void> =
   | { success: true; data: T }
   | { success: false; error: string };
 
-function revalidateLearnerProgress(_chapterSlug: string) {
+function revalidateLearnerProgress() {
   // Only refresh the progress index. Revalidating chapter routes mid-turn
   // remounted the open book and cleared local busy UI too early.
   revalidatePath("/learn/progress");
@@ -30,7 +30,7 @@ export async function completeChapterAction(
   try {
     const learnerId = await getCurrentLearnerId();
     const record = await completeChapterProgress(learnerId, chapterSlug);
-    revalidateLearnerProgress(chapterSlug);
+    revalidateLearnerProgress();
     return { success: true, data: record };
   } catch (error) {
     const message =

@@ -28,6 +28,15 @@ export default async function ProgressPage() {
     postSession.assessment,
     postSession.questions,
   );
+  const postUnlocked =
+    postAvailable &&
+    journey.preAssessmentCompleted &&
+    journey.allChaptersCompleted;
+
+  const unlockedChapterId =
+    journey.continueChapterId ??
+    journey.chapters.find((chapter) => chapter.isUnlocked)?.id ??
+    null;
 
   return (
     <div className="mx-auto max-w-4xl space-y-8">
@@ -67,11 +76,16 @@ export default async function ProgressPage() {
                 Review chapters
               </Link>
             )
+          ) : !journey.preAssessmentCompleted && preAvailable ? (
+            <Link
+              href="/learn/assessment/pre"
+              className="inline-flex items-center justify-center rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              Take Pre-Assessment
+            </Link>
           ) : (
             <ContinueLearningButton
-              chapterId={
-                journey.continueChapterId ?? journey.chapters[0]?.id ?? null
-              }
+              chapterId={unlockedChapterId}
               label={
                 journey.continueChapterId ? "Continue Learning" : "Start Learning"
               }
@@ -84,7 +98,9 @@ export default async function ProgressPage() {
         <div className="rounded-lg border border-dashed px-6 py-8 text-center">
           <p className="text-sm font-medium">No chapters started yet</p>
           <p className="mt-1 text-sm text-muted-foreground">
-            Begin with the first chapter to start tracking your progress.
+            {journey.preAssessmentCompleted
+              ? "Begin with the first unlocked chapter to start tracking your progress."
+              : "Complete the Pre-Test to unlock Chapter 1 and begin tracking progress."}
           </p>
         </div>
       ) : null}
@@ -119,9 +135,11 @@ export default async function ProgressPage() {
             <dd className="mt-2 text-sm font-medium">
               {journey.postAssessmentCompleted
                 ? "Completed"
-                : postAvailable
+                : postUnlocked
                   ? "Available"
-                  : "Not configured"}
+                  : postAvailable
+                    ? "Locked — finish all chapters first"
+                    : "Not configured"}
             </dd>
             {journey.postAssessmentCompleted ? (
               <Link
@@ -130,7 +148,7 @@ export default async function ProgressPage() {
               >
                 View results
               </Link>
-            ) : postAvailable ? (
+            ) : postUnlocked ? (
               <Link
                 href="/learn/assessment/post"
                 className="mt-3 inline-flex text-sm font-medium underline underline-offset-4"

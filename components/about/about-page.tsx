@@ -74,13 +74,13 @@ export function AboutPageView({ biography }: AboutPageProps) {
       >
         <div className="about-bio__grid">
           <figure className="about-bio__figure">
-            <div className="about-bio__frame">
+            <div className="about-bio__frame about-bio__frame--light">
               <Image
                 src="/images/federico-caballero.png"
                 alt="Federico 'Nong Pedring' Caballero"
                 fill
                 sizes="(max-width: 959px) 100vw, 42vw"
-                className="about-bio__photo"
+                className="about-bio__photo about-bio__photo--top"
                 priority
               />
             </div>

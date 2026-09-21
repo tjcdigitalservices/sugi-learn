@@ -1,12 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowRight, Eye, EyeOff, Lock, User } from "lucide-react";
 
 import { HeritageAuthCard } from "@/components/auth/heritage-auth-shell";
 import { BusyButton } from "@/components/shared/busy-button";
-import { defaultPostLoginPath } from "@/lib/auth/post-login";
 import {
   createLearnerAccountAction,
   upgradeGuestAccountAction,
@@ -31,41 +30,90 @@ function mapClientAuthError(message: string): string {
   return message || "Unable to create your account. Please try again.";
 }
 
+function splitDisplayName(displayName: string | null | undefined): {
+  firstName: string;
+  lastName: string;
+} {
+  const trimmed = displayName?.trim() ?? "";
+  if (!trimmed) {
+    return { firstName: "", lastName: "" };
+  }
+
+  const parts = trimmed.split(/\s+/);
+  if (parts.length === 1) {
+    return { firstName: parts[0], lastName: "" };
+  }
+
+  return {
+    firstName: parts[0],
+    lastName: parts.slice(1).join(" "),
+  };
+}
+
 export function RegisterForm() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [info, setInfo] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  async function finishSignedIn() {
-    const supabase = createSupabaseBrowserClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+  useEffect(() => {
+    let cancelled = false;
 
-    let displayName: string | null = null;
-    if (user) {
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("display_name")
-        .eq("id", user.id)
-        .maybeSingle();
-      displayName = profile?.display_name ?? null;
+    async function prefillGuestName() {
+      try {
+        const supabase = createSupabaseBrowserClient();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (!user || cancelled) {
+          return;
+        }
+
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("display_name")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        if (cancelled || !profile?.display_name) {
+          return;
+        }
+
+        const split = splitDisplayName(profile.display_name);
+        setFirstName((current) => current || split.firstName);
+        setLastName((current) => current || split.lastName);
+      } catch {
+        // Prefill is optional.
+      }
     }
 
-    // Full navigation — avoids stale Server Action IDs after HMR.
-    window.location.assign(defaultPostLoginPath("learner", displayName));
+    void prefillGuestName();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  function goToLearning() {
+    window.location.assign("/learn/continue");
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
-    setInfo(null);
 
+    const trimmedFirst = firstName.trim();
+    const trimmedLast = lastName.trim();
     const trimmedEmail = email.trim().toLowerCase();
+
+    if (!trimmedFirst || !trimmedLast) {
+      setError("First name and last name are required.");
+      return;
+    }
     if (password.length < MIN_PASSWORD_LENGTH) {
       setError(`Password must be at least ${MIN_PASSWORD_LENGTH} characters.`);
       return;
@@ -77,6 +125,14 @@ export function RegisterForm() {
 
     setIsLoading(true);
 
+    const namePayload = {
+      firstName: trimmedFirst,
+      lastName: trimmedLast,
+      email: trimmedEmail,
+      password,
+    };
+    const displayName = `${trimmedFirst} ${trimmedLast}`.replace(/\s+/g, " ").trim();
+
     try {
       const supabase = createSupabaseBrowserClient();
       const {
@@ -84,10 +140,7 @@ export function RegisterForm() {
       } = await supabase.auth.getUser();
 
       if (user?.is_anonymous) {
-        const upgrade = await upgradeGuestAccountAction({
-          email: trimmedEmail,
-          password,
-        });
+        const upgrade = await upgradeGuestAccountAction(namePayload);
 
         if (!upgrade.success) {
           setError(upgrade.error);
@@ -95,7 +148,6 @@ export function RegisterForm() {
           return;
         }
 
-        // Refresh into the permanent session for the same user id.
         await supabase.auth.signOut({ scope: "local" });
         const { error: signInError } = await supabase.auth.signInWithPassword({
           email: trimmedEmail,
@@ -110,21 +162,27 @@ export function RegisterForm() {
           return;
         }
 
-        await finishSignedIn();
+        goToLearning();
         return;
       }
 
       if (user && !user.is_anonymous) {
-        await finishSignedIn();
+        const { error: nameError } = await supabase
+          .from("profiles")
+          .update({ display_name: displayName })
+          .eq("id", user.id);
+
+        if (nameError) {
+          setError("Unable to save your name. Please try again.");
+          setIsLoading(false);
+          return;
+        }
+
+        goToLearning();
         return;
       }
 
-      // No session — create a confirmed learner account via service role,
-      // then sign in immediately (avoids email-confirmation login failures).
-      const created = await createLearnerAccountAction({
-        email: trimmedEmail,
-        password,
-      });
+      const created = await createLearnerAccountAction(namePayload);
 
       if (!created.success) {
         setError(created.error);
@@ -147,7 +205,7 @@ export function RegisterForm() {
         return;
       }
 
-      await finishSignedIn();
+      goToLearning();
     } catch {
       setError("Unable to create your account right now. Please try again.");
       setIsLoading(false);
@@ -161,8 +219,8 @@ export function RegisterForm() {
           Save your progress
         </h1>
         <p className="text-sm leading-relaxed text-white/85">
-          Create an account so you can return later and continue chapters without
-          retaking the Pre-Test.
+          Create an account with your name so you can return later and continue
+          chapters without retaking the Pre-Test.
         </p>
       </div>
 
@@ -176,6 +234,54 @@ export function RegisterForm() {
       </div>
 
       <form className="auth-entrance-item auth-d3 space-y-4" onSubmit={handleSubmit}>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <label className="block space-y-1.5 text-sm" htmlFor="register-first-name">
+            <span className="font-medium text-white">First name</span>
+            <span className="flex items-center gap-3 rounded-xl border border-white/40 bg-white/95 px-4 py-3 shadow-sm transition focus-within:border-sl-gold focus-within:shadow-[0_0_0_3px_rgba(209,165,58,0.25)]">
+              <input
+                id="register-first-name"
+                name="firstName"
+                type="text"
+                autoComplete="given-name"
+                required
+                maxLength={80}
+                value={firstName}
+                onChange={(event) => setFirstName(event.target.value)}
+                className="min-w-0 flex-1 border-0 bg-transparent p-0 text-sm text-sl-ink outline-none placeholder:text-sl-ink-muted/70"
+                placeholder="Maria"
+                disabled={isLoading}
+              />
+              <User
+                className="h-4 w-4 shrink-0 text-sl-ink-muted"
+                aria-hidden="true"
+              />
+            </span>
+          </label>
+
+          <label className="block space-y-1.5 text-sm" htmlFor="register-last-name">
+            <span className="font-medium text-white">Last name</span>
+            <span className="flex items-center gap-3 rounded-xl border border-white/40 bg-white/95 px-4 py-3 shadow-sm transition focus-within:border-sl-gold focus-within:shadow-[0_0_0_3px_rgba(209,165,58,0.25)]">
+              <input
+                id="register-last-name"
+                name="lastName"
+                type="text"
+                autoComplete="family-name"
+                required
+                maxLength={80}
+                value={lastName}
+                onChange={(event) => setLastName(event.target.value)}
+                className="min-w-0 flex-1 border-0 bg-transparent p-0 text-sm text-sl-ink outline-none placeholder:text-sl-ink-muted/70"
+                placeholder="Santos"
+                disabled={isLoading}
+              />
+              <User
+                className="h-4 w-4 shrink-0 text-sl-ink-muted"
+                aria-hidden="true"
+              />
+            </span>
+          </label>
+        </div>
+
         <label className="block space-y-1.5 text-sm" htmlFor="register-email">
           <span className="font-medium text-white">Email</span>
           <span className="flex items-center gap-3 rounded-xl border border-white/40 bg-white/95 px-4 py-3 shadow-sm transition focus-within:border-sl-gold focus-within:shadow-[0_0_0_3px_rgba(209,165,58,0.25)]">
@@ -262,21 +368,6 @@ export function RegisterForm() {
             role="alert"
           >
             {error}
-          </p>
-        ) : null}
-
-        {info ? (
-          <p
-            className="rounded-xl border border-white/30 bg-white/10 px-4 py-3 text-sm text-white"
-            role="status"
-          >
-            {info}{" "}
-            <Link
-              href="/login"
-              className="font-medium text-sl-gold-soft underline underline-offset-4"
-            >
-              Sign in
-            </Link>
           </p>
         ) : null}
 

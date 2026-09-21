@@ -7,7 +7,7 @@ import {
 } from "@/lib/supabase/service";
 
 export type RegisterActionResult =
-  | { success: true }
+  | { success: true; displayName: string }
   | { success: false; error: string };
 
 function mapAuthAdminError(message: string): string {
@@ -26,15 +26,46 @@ function mapAuthAdminError(message: string): string {
   return message || "Unable to create your account. Please try again.";
 }
 
-async function ensureLearnerProfile(userId: string): Promise<void> {
+function buildDisplayName(firstName: string, lastName: string): string | null {
+  const first = firstName.trim();
+  const last = lastName.trim();
+  if (!first || !last) {
+    return null;
+  }
+  if (first.length > 80 || last.length > 80) {
+    return null;
+  }
+  return `${first} ${last}`.replace(/\s+/g, " ").trim();
+}
+
+async function ensureLearnerProfile(
+  userId: string,
+  displayName?: string | null,
+): Promise<void> {
   const admin = createSupabaseServiceClient();
-  await admin.from("profiles").upsert(
+  const { error: upsertError } = await admin.from("profiles").upsert(
     {
       id: userId,
       role: "learner",
+      ...(displayName ? { display_name: displayName } : {}),
     },
     { onConflict: "id" },
   );
+
+  if (upsertError) {
+    throw new Error("Unable to save your learner profile. Please try again.");
+  }
+
+  if (displayName) {
+    const { error: updateError } = await admin
+      .from("profiles")
+      .update({ display_name: displayName })
+      .eq("id", userId);
+
+    if (updateError) {
+      throw new Error("Unable to save your name. Please try again.");
+    }
+  }
 }
 
 async function assertPermanentEmailUser(userId: string, email: string) {
@@ -63,6 +94,34 @@ async function assertPermanentEmailUser(userId: string, email: string) {
   }
 }
 
+function validateRegisterInput(input: {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+}): { email: string; password: string; displayName: string } | { error: string } {
+  const email = input.email.trim().toLowerCase();
+  const password = input.password;
+  const displayName = buildDisplayName(input.firstName, input.lastName);
+
+  if (!email || !password) {
+    return { error: "Email and password are required." };
+  }
+
+  if (password.length < 6) {
+    return { error: "Password must be at least 6 characters." };
+  }
+
+  if (!displayName) {
+    if (!input.firstName.trim() || !input.lastName.trim()) {
+      return { error: "First name and last name are required." };
+    }
+    return { error: "Each name must be 80 characters or fewer." };
+  }
+
+  return { email, password, displayName };
+}
+
 /**
  * Convert the current anonymous guest into a permanent email/password account
  * on the same auth user id (progress preserved). Uses the service role so we
@@ -72,21 +131,15 @@ async function assertPermanentEmailUser(userId: string, email: string) {
 export async function upgradeGuestAccountAction(input: {
   email: string;
   password: string;
+  firstName: string;
+  lastName: string;
 }): Promise<RegisterActionResult> {
-  const email = input.email.trim().toLowerCase();
-  const password = input.password;
-
-  if (!email || !password) {
-    return { success: false, error: "Email and password are required." };
+  const validated = validateRegisterInput(input);
+  if ("error" in validated) {
+    return { success: false, error: validated.error };
   }
 
-  if (password.length < 6) {
-    return {
-      success: false,
-      error: "Password must be at least 6 characters.",
-    };
-  }
-
+  const { email, password, displayName } = validated;
   const auth = await getCurrentAuth();
 
   if (!auth) {
@@ -124,7 +177,7 @@ export async function upgradeGuestAccountAction(input: {
 
   try {
     await assertPermanentEmailUser(auth.user.id, email);
-    await ensureLearnerProfile(auth.user.id);
+    await ensureLearnerProfile(auth.user.id, displayName);
   } catch (verifyError) {
     return {
       success: false,
@@ -135,7 +188,7 @@ export async function upgradeGuestAccountAction(input: {
     };
   }
 
-  return { success: true };
+  return { success: true, displayName };
 }
 
 /**
@@ -145,20 +198,15 @@ export async function upgradeGuestAccountAction(input: {
 export async function createLearnerAccountAction(input: {
   email: string;
   password: string;
+  firstName: string;
+  lastName: string;
 }): Promise<RegisterActionResult> {
-  const email = input.email.trim().toLowerCase();
-  const password = input.password;
-
-  if (!email || !password) {
-    return { success: false, error: "Email and password are required." };
+  const validated = validateRegisterInput(input);
+  if ("error" in validated) {
+    return { success: false, error: validated.error };
   }
 
-  if (password.length < 6) {
-    return {
-      success: false,
-      error: "Password must be at least 6 characters.",
-    };
-  }
+  const { email, password, displayName } = validated;
 
   if (!hasSupabaseServiceConfig()) {
     return {
@@ -184,7 +232,7 @@ export async function createLearnerAccountAction(input: {
 
   try {
     await assertPermanentEmailUser(data.user.id, email);
-    await ensureLearnerProfile(data.user.id);
+    await ensureLearnerProfile(data.user.id, displayName);
   } catch (verifyError) {
     return {
       success: false,
@@ -195,52 +243,5 @@ export async function createLearnerAccountAction(input: {
     };
   }
 
-  return { success: true };
-}
-
-/** Used by login to distinguish missing accounts from wrong passwords. */
-export async function emailHasPermanentAccountAction(
-  email: string,
-): Promise<boolean> {
-  const normalized = email.trim().toLowerCase();
-  if (!normalized || !hasSupabaseServiceConfig()) {
-    return false;
-  }
-
-  try {
-    const admin = createSupabaseServiceClient();
-    let page = 1;
-
-    while (page <= 10) {
-      const { data, error } = await admin.auth.admin.listUsers({
-        page,
-        perPage: 200,
-      });
-
-      if (error) {
-        return false;
-      }
-
-      const users = data.users ?? [];
-      const match = users.find(
-        (user) =>
-          (user.email ?? "").toLowerCase() === normalized &&
-          !user.is_anonymous,
-      );
-
-      if (match) {
-        return true;
-      }
-
-      if (users.length < 200) {
-        break;
-      }
-
-      page += 1;
-    }
-
-    return false;
-  } catch {
-    return false;
-  }
+  return { success: true, displayName };
 }

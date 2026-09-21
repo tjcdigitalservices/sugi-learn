@@ -4,7 +4,6 @@ import { ChapterCoverGrid } from "@/components/learner/chapter-cover-grid";
 import { ContinueLearningButton } from "@/components/learner/continue-learning-button";
 import { OverallProgress } from "@/components/learner/overall-progress";
 import { SaveProgressPrompt } from "@/components/learner/save-progress-prompt";
-import { StartAsDifferentLearnerButton } from "@/components/learner/start-as-different-learner-button";
 import { getCurrentAuth } from "@/lib/auth/session";
 import { isAssessmentLearnerReady } from "@/lib/domain/assessment-availability";
 import {
@@ -59,7 +58,6 @@ export default async function LearnHomePage() {
         <p className="max-w-2xl text-sm text-sl-ink-muted sm:text-base">
           {introMessage}
         </p>
-        <StartAsDifferentLearnerButton />
       </header>
 
       <SaveProgressPrompt visible={isGuest} />
