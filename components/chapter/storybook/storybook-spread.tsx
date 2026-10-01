@@ -427,12 +427,16 @@ export function StorybookSpread({
 
   const textPage = (
     <div className={`${paged ? pageChromePaged : pageChrome} gap-2`}>
-      <div className="flex min-h-0 flex-1 flex-col justify-center gap-3 overflow-y-auto overscroll-contain sm:gap-4">
-        <div className="shrink-0 space-y-1.5 sm:space-y-2">
+      {/*
+        Top-align (no justify-center): centered + overflow-y clips the title on short
+        laptop viewports. Only the summary scrolls so the title stays fully visible.
+      */}
+      <div className="flex min-h-0 flex-1 flex-col gap-3 sm:gap-4">
+        <div className="shrink-0 space-y-1.5 pt-0.5 sm:space-y-2">
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sl-navy">
             {eyebrow}
           </p>
-          <h1 className="font-display text-xl font-semibold tracking-tight text-sl-navy sm:text-2xl lg:text-3xl">
+          <h1 className="font-display text-xl font-semibold leading-[1.15] tracking-tight text-sl-navy sm:text-2xl lg:text-3xl">
             {chapter.title}
           </h1>
           {chapter.subtitle ? (
@@ -443,11 +447,11 @@ export function StorybookSpread({
         </div>
 
         {chapter.summary ? (
-          <div className="flex flex-col gap-2 border-t border-[color:rgba(44,36,22,0.1)] pt-3 sm:pt-4">
+          <div className="flex min-h-0 flex-1 flex-col gap-2 border-t border-[color:rgba(44,36,22,0.1)] pt-3 sm:pt-4">
             <p className="shrink-0 text-xs font-semibold uppercase tracking-wide text-sl-navy">
               About this chapter
             </p>
-            <ChapterSummaryExpandable summary={chapter.summary} />
+            <ChapterSummaryExpandable summary={chapter.summary} fixedPage />
           </div>
         ) : null}
 
