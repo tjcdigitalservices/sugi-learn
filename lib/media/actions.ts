@@ -369,7 +369,9 @@ export async function saveMediaAssetAction(
     revalidateMediaPaths(mediaId);
     if (updated.chapterSlug) {
       revalidatePath(`/admin/chapters/${updated.chapterSlug}`);
+      revalidatePath(`/admin/chapters/${updated.chapterSlug}/preview`);
       revalidatePath(`/learn/chapters/${updated.chapterSlug}`);
+      revalidatePath("/learn/chapters");
     }
     return { success: true, data: updated };
   } catch (error) {
@@ -450,9 +452,134 @@ export async function deleteMediaAssetAction(
     revalidateMediaPaths(mediaId);
     if (existing?.chapterSlug) {
       revalidatePath(`/admin/chapters/${existing.chapterSlug}`);
+      revalidatePath(`/admin/chapters/${existing.chapterSlug}/preview`);
+      revalidatePath(`/learn/chapters/${existing.chapterSlug}`);
     }
+    revalidatePath("/learn/chapters");
     return { success: true, data: undefined };
   } catch (error) {
     return { success: false, error: safeError(error) };
   }
+}
+
+export async function bulkApproveMediaAssetsAction(
+  mediaIds: string[],
+): Promise<
+  MediaManagementActionResult<{
+    approvedIds: string[];
+    failed: { id: string; error: string }[];
+  }>
+> {
+  await requireAdmin();
+
+  const uniqueIds = [...new Set(mediaIds.map((id) => id.trim()).filter(Boolean))];
+  if (uniqueIds.length === 0) {
+    return { success: false, error: "Select at least one media asset." };
+  }
+
+  const approvedIds: string[] = [];
+  const failed: { id: string; error: string }[] = [];
+  const chapterSlugs = new Set<string>();
+
+  for (const mediaId of uniqueIds) {
+    try {
+      const existing = await getMediaAssetForAdmin(mediaId);
+      if (!existing) {
+        failed.push({ id: mediaId, error: "Media asset not found." });
+        continue;
+      }
+
+      if (!existing.storagePath?.trim()) {
+        failed.push({
+          id: mediaId,
+          error: "Cannot approve without an uploaded file.",
+        });
+        continue;
+      }
+
+      const updated = await updateMediaAssetRecord(mediaId, {
+        reviewStatus: "approved",
+      });
+      approvedIds.push(updated.id);
+      if (updated.chapterSlug) {
+        chapterSlugs.add(updated.chapterSlug);
+      }
+    } catch (error) {
+      failed.push({ id: mediaId, error: safeError(error) });
+    }
+  }
+
+  revalidateMediaPaths();
+  revalidatePath("/learn/chapters");
+  for (const slug of chapterSlugs) {
+    revalidatePath(`/admin/chapters/${slug}`);
+    revalidatePath(`/admin/chapters/${slug}/preview`);
+    revalidatePath(`/learn/chapters/${slug}`);
+  }
+
+  if (approvedIds.length === 0) {
+    return {
+      success: false,
+      error:
+        failed[0]?.error ??
+        "Unable to approve the selected media assets.",
+    };
+  }
+
+  return { success: true, data: { approvedIds, failed } };
+}
+
+export async function bulkDeleteMediaAssetsAction(
+  mediaIds: string[],
+): Promise<
+  MediaManagementActionResult<{
+    deletedIds: string[];
+    failed: { id: string; error: string }[];
+  }>
+> {
+  await requireAdmin();
+
+  const uniqueIds = [...new Set(mediaIds.map((id) => id.trim()).filter(Boolean))];
+  if (uniqueIds.length === 0) {
+    return { success: false, error: "Select at least one media asset." };
+  }
+
+  const deletedIds: string[] = [];
+  const failed: { id: string; error: string }[] = [];
+  const chapterSlugs = new Set<string>();
+
+  for (const mediaId of uniqueIds) {
+    try {
+      const existing = await getMediaAssetForAdmin(mediaId);
+      if (!existing) {
+        failed.push({ id: mediaId, error: "Media asset not found." });
+        continue;
+      }
+      if (existing.chapterSlug) {
+        chapterSlugs.add(existing.chapterSlug);
+      }
+      await deleteMediaAssetRecord(mediaId);
+      deletedIds.push(mediaId);
+    } catch (error) {
+      failed.push({ id: mediaId, error: safeError(error) });
+    }
+  }
+
+  revalidateMediaPaths();
+  revalidatePath("/learn/chapters");
+  for (const slug of chapterSlugs) {
+    revalidatePath(`/admin/chapters/${slug}`);
+    revalidatePath(`/admin/chapters/${slug}/preview`);
+    revalidatePath(`/learn/chapters/${slug}`);
+  }
+
+  if (deletedIds.length === 0) {
+    return {
+      success: false,
+      error:
+        failed[0]?.error ?? "Unable to delete the selected media assets.",
+    };
+  }
+
+  return { success: true, data: { deletedIds, failed } };
 }

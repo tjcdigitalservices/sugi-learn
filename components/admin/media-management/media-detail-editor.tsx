@@ -88,7 +88,11 @@ export function MediaDetailEditor({
       }
 
       setAsset(result.data);
-      setSuccess("Media metadata saved.");
+      setSuccess(
+        reviewStatus === "approved" && result.data.sectionId
+          ? "Saved. Media and its chapter section are approved for learners."
+          : "Media metadata saved.",
+      );
     });
   }
 
@@ -458,7 +462,9 @@ export function MediaDetailEditor({
         <div>
           <p className="font-medium">Learner visibility</p>
           <p className="text-muted-foreground">
-            Only assets with status Approved are visible to learners.
+            Learners only see media that is Approved <em>and</em> assigned to an
+            Approved chapter section (or set as a book cover). Approving media
+            also approves its linked section.
           </p>
         </div>
         {asset.isReferenced ? (

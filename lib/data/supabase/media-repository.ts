@@ -328,6 +328,16 @@ export class SupabaseMediaRepository implements MediaRepository {
       await this.syncSectionLink(supabase, input.sectionId, mediaId);
     }
 
+    // Approving media alone is not enough for learners — the linked section
+    // must also be approved. Promote a draft linked section when media is approved.
+    if (input.reviewStatus === "approved") {
+      const existing = await this.getMediaAsset(mediaId);
+      const linkedSectionId = input.sectionId ?? existing?.sectionId ?? null;
+      if (linkedSectionId) {
+        await this.approveLinkedSection(supabase, linkedSectionId);
+      }
+    }
+
     const updated = await this.getMediaAsset(mediaId);
     if (!updated) {
       throw mediaError("Media asset not found after update.");
@@ -455,6 +465,15 @@ export class SupabaseMediaRepository implements MediaRepository {
     }
 
     await this.syncSectionLink(supabase, sectionId, mediaId);
+
+    const { data: fullAsset } = await supabase
+      .from("media_assets")
+      .select("review_status")
+      .eq("id", mediaId)
+      .maybeSingle();
+    if (fullAsset?.review_status === "approved") {
+      await this.approveLinkedSection(supabase, sectionId);
+    }
 
     const updated = await this.getMediaAsset(mediaId);
     if (!updated) {
@@ -607,6 +626,21 @@ export class SupabaseMediaRepository implements MediaRepository {
 
     if (error) {
       throw mediaError("Unable to link media to section.");
+    }
+  }
+
+  private async approveLinkedSection(
+    supabase: TypedSupabaseClient,
+    sectionId: string,
+  ) {
+    const { error } = await supabase
+      .from("chapter_sections")
+      .update({ review_status: "approved" })
+      .eq("id", sectionId)
+      .neq("review_status", "approved");
+
+    if (error) {
+      throw mediaError("Unable to approve the linked chapter section.");
     }
   }
 }

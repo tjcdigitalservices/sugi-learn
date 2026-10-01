@@ -84,6 +84,22 @@ export function MediaLibrary({ chapters }: MediaLibraryProps) {
     setAssets((current) => current.filter((item) => item.id !== mediaId));
   }
 
+  function handleApproved(mediaIds: string[]) {
+    const approved = new Set(mediaIds);
+    setAssets((current) =>
+      current.map((item) =>
+        approved.has(item.id)
+          ? { ...item, reviewStatus: "approved" as const }
+          : item,
+      ),
+    );
+  }
+
+  function handleBulkDeleted(mediaIds: string[]) {
+    const deleted = new Set(mediaIds);
+    setAssets((current) => current.filter((item) => !deleted.has(item.id)));
+  }
+
   return (
     <div className="space-y-6">
       {loadError ? (
@@ -196,6 +212,8 @@ export function MediaLibrary({ chapters }: MediaLibraryProps) {
         <MediaListTable
           assets={filteredAssets}
           onDeleted={handleDeleted}
+          onApproved={handleApproved}
+          onBulkDeleted={handleBulkDeleted}
           isLoading={showLoading}
         />
       </div>
