@@ -50,6 +50,24 @@ export class MockMediaRepository implements MediaRepository {
     return mockMediaStore.assignToSection(mediaId, chapterSlug, sectionId);
   }
 
+  async assignMediaAsChapterCover(
+    mediaId: string,
+    chapterSlug: string,
+  ): Promise<AdminMediaAssetDetail> {
+    const existing = mockMediaStore.get(mediaId);
+    if (!existing) {
+      throw new Error("Media asset not found.");
+    }
+    if (existing.kind !== "book_cover") {
+      throw new Error("Only book cover assets can be set as chapter covers.");
+    }
+    return mockMediaStore.update(mediaId, {
+      chapterSlug,
+      sectionId: null,
+      reviewStatus: "approved",
+    });
+  }
+
   async unlinkMediaFromSection(mediaId: string): Promise<AdminMediaAssetDetail> {
     return mockMediaStore.unlinkFromSection(mediaId);
   }

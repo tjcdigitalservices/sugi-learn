@@ -47,13 +47,21 @@ export function AssessmentManagementEditor({
           </div>
         </div>
 
-        <Link
-          href={`/admin/assessments/${assessment.id}/preview`}
-          className="inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-md border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:w-auto"
-        >
-          <Eye className="h-4 w-4" aria-hidden="true" />
-          Preview assessment
-        </Link>
+        <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:flex-wrap">
+          <Link
+            href={`/admin/assessments/${assessment.id}/preview`}
+            className="inline-flex min-h-10 items-center justify-center gap-2 rounded-md border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <Eye className="h-4 w-4" aria-hidden="true" />
+            Preview assessment
+          </Link>
+          <Link
+            href="/admin/assessments"
+            className="inline-flex min-h-10 items-center justify-center rounded-md border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            All assessments
+          </Link>
+        </div>
       </header>
 
       <AssessmentMetadataForm assessment={assessment} onSaved={setAssessment} />

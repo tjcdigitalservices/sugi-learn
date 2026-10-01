@@ -128,6 +128,24 @@ export function LearnerChapterLayout({
     [previewMode],
   );
 
+  const renderBookChrome = useCallback(
+    (position: number, total: number) => (
+      <>
+        <Link
+          href={previewMode ? "/admin/chapters" : "/learn/chapters"}
+          className="inline-flex items-center gap-1 text-sm text-sl-ink-muted transition hover:text-sl-navy"
+        >
+          <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+          All chapters
+        </Link>
+        <p className="text-sm tracking-wide text-sl-ink-muted">
+          Chapter {position} of {total}
+        </p>
+      </>
+    ),
+    [previewMode],
+  );
+
   useEffect(() => {
     const done = progressStatus === "completed";
     setChapterDone(done);
@@ -262,23 +280,9 @@ export function LearnerChapterLayout({
             previousChapterId,
             nextChapterId,
             continueLabel,
-            chrome: (
-              <>
-                <Link
-                  href={
-                    previewMode
-                      ? `/admin/chapters/${chapter.id}`
-                      : "/learn/chapters"
-                  }
-                  className="inline-flex items-center gap-1 text-sm text-sl-ink-muted transition hover:text-sl-navy"
-                >
-                  <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
-                  {previewMode ? "Back to editor" : "All chapters"}
-                </Link>
-                <p className="text-sm tracking-wide text-sl-ink-muted">
-                  Chapter {navigation.position} of {navigation.total}
-                </p>
-              </>
+            chrome: renderBookChrome(
+              navigation.position,
+              navigation.total,
             ),
           });
         });
@@ -304,7 +308,7 @@ export function LearnerChapterLayout({
       navigation.total,
       nextChapterId,
       previousChapterId,
-      previewMode,
+      renderBookChrome,
       rollbackTurn,
       router,
       turnBusy,
@@ -405,24 +409,10 @@ export function LearnerChapterLayout({
           onPrevious={handlePrevious}
           onNext={handleNext}
           onPostTest={handlePostTest}
-          bookChrome={
-            <>
-              <Link
-                href={
-                  previewMode
-                    ? `/admin/chapters/${chapter.id}`
-                    : "/learn/chapters"
-                }
-                className="inline-flex items-center gap-1 text-sm text-sl-ink-muted transition hover:text-sl-navy"
-              >
-                <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
-                {previewMode ? "Back to editor" : "All chapters"}
-              </Link>
-              <p className="text-sm tracking-wide text-sl-ink-muted">
-                Chapter {navigation.position} of {navigation.total}
-              </p>
-            </>
-          }
+          bookChrome={renderBookChrome(
+            navigation.position,
+            navigation.total,
+          )}
         />
       </div>
 

@@ -23,7 +23,11 @@ export type SectionKind =
   | "activity"
   | "completion";
 
-export type MediaKind = "illustration" | "audio" | "animation";
+export type MediaKind =
+  | "illustration"
+  | "audio"
+  | "animation"
+  | "book_cover";
 
 export type AssessmentType = "pre" | "post";
 

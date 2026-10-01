@@ -451,7 +451,7 @@ export async function prepareChapterCoverUploadAction(input: {
     };
   }
 
-  const fileError = validateMediaFileMeta("illustration", {
+  const fileError = validateMediaFileMeta("book_cover", {
     name: input.filename,
     type: input.contentType,
     size: input.fileSize,
@@ -466,8 +466,8 @@ export async function prepareChapterCoverUploadAction(input: {
       return { success: false, error: "Chapter not found." };
     }
 
-    const currentCount = await countMediaByKind("illustration");
-    const scopeError = validateScopeLimit("illustration", currentCount);
+    const currentCount = await countMediaByKind("book_cover");
+    const scopeError = validateScopeLimit("book_cover", currentCount);
     if (scopeError && !existing.coverMediaAssetId) {
       return { success: false, error: scopeError };
     }
@@ -475,7 +475,7 @@ export async function prepareChapterCoverUploadAction(input: {
     const assetId = randomUUID();
     const storagePath = buildStorageObjectPath({
       chapterSlug: input.chapterId,
-      kind: "illustration",
+      kind: "book_cover",
       assetId,
       filename: input.filename,
     });
@@ -529,9 +529,9 @@ export async function finalizeChapterCoverUploadAction(input: {
     await createMediaAssetRecord(
       {
         id: input.assetId,
-        kind: "illustration",
+        kind: "book_cover",
         title: `${existing.title} — Cover`,
-        description: "Chapter cover image",
+        description: "Chapter book cover",
         altText: `Cover for ${existing.title}`,
         chapterSlug: input.chapterId,
         sectionId: null,
@@ -572,7 +572,7 @@ export async function setChapterCoverAction(
     return { success: false, error: "A cover image file is required." };
   }
 
-  const fileError = validateMediaFile("illustration", file);
+  const fileError = validateMediaFile("book_cover", file);
   if (fileError) {
     return { success: false, error: fileError };
   }
@@ -591,8 +591,8 @@ export async function setChapterCoverAction(
       return { success: false, error: "Chapter not found." };
     }
 
-    const currentCount = await countMediaByKind("illustration");
-    const scopeError = validateScopeLimit("illustration", currentCount);
+    const currentCount = await countMediaByKind("book_cover");
+    const scopeError = validateScopeLimit("book_cover", currentCount);
     if (scopeError && !existing.coverMediaAssetId) {
       return { success: false, error: scopeError };
     }
@@ -603,9 +603,9 @@ export async function setChapterCoverAction(
     await createMediaAssetRecord(
       {
         id: assetId,
-        kind: "illustration",
+        kind: "book_cover",
         title: `${existing.title} — Cover`,
-        description: "Chapter cover image",
+        description: "Chapter book cover",
         altText: `Cover for ${existing.title}`,
         chapterSlug: chapterId,
         sectionId: null,

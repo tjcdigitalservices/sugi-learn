@@ -32,7 +32,7 @@ export default async function AdminMediaPage() {
     <div className="space-y-8">
       <PageHeader
         title="Media Library"
-        description="Upload and manage illustrations, audio, and animation. Approve items before learners can see them."
+        description="Upload and manage illustrations, audio, animation, and book covers. Approve content media before learners can see it; book covers apply on the chapter when set."
       />
 
       {errorMessage ? (

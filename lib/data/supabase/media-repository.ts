@@ -74,9 +74,16 @@ async function loadReferenceContext(
     .select("name")
     .eq("media_asset_id", row.id);
 
+  const { data: coverChapter } = await supabase
+    .from("chapters")
+    .select("title")
+    .eq("cover_media_asset_id", row.id)
+    .maybeSingle();
+
   const reference = buildReferenceInfo({
     sectionTitle,
     characterNames: characterRows?.map((character) => character.name) ?? [],
+    coverChapterTitle: coverChapter?.title ?? null,
   });
 
   return {
@@ -218,13 +225,25 @@ export class SupabaseMediaRepository implements MediaRepository {
       chapterId = await getChapterIdBySlug(supabase, input.chapterSlug);
     }
 
+    // Uploading with a chapter but no section still leaves learners empty.
+    // Prefer an unassigned matching section slot on that chapter.
+    // Book covers are chapter-level art — never auto-linked to content sections.
+    let sectionId = input.sectionId ?? null;
+    if (!sectionId && chapterId && input.kind !== "book_cover") {
+      sectionId = await this.findUnassignedSectionId(
+        supabase,
+        chapterId,
+        input.kind,
+      );
+    }
+
     const insertPayload = {
       kind: input.kind,
       title: input.title.trim(),
       caption: input.description?.trim() || null,
       alt_text: input.altText?.trim() || null,
       chapter_id: chapterId,
-      section_id: input.sectionId ?? null,
+      section_id: sectionId,
       source_reference: input.sourceReference?.trim() || null,
       storage_path: storagePath,
       review_status: input.reviewStatus ?? "draft",
@@ -241,8 +260,19 @@ export class SupabaseMediaRepository implements MediaRepository {
       throw mediaError("Unable to create media asset.");
     }
 
-    if (input.sectionId) {
-      await this.syncSectionLink(supabase, input.sectionId, data.id);
+    if (sectionId) {
+      await this.syncSectionLink(supabase, sectionId, data.id);
+    }
+
+    if (input.kind === "book_cover" && chapterId) {
+      // Covers are chapter chrome — approve when linked so learners see them.
+      if ((input.reviewStatus ?? "draft") !== "approved") {
+        await supabase
+          .from("media_assets")
+          .update({ review_status: "approved" })
+          .eq("id", data.id);
+      }
+      await this.syncChapterCoverLink(supabase, chapterId, data.id);
     }
 
     return (await this.getMediaAsset(data.id))!;
@@ -396,6 +426,12 @@ export class SupabaseMediaRepository implements MediaRepository {
       throw mediaError("Media asset not found.");
     }
 
+    if (asset.kind === "book_cover") {
+      throw mediaError(
+        "Book covers are assigned on the chapter metadata page, not to content sections.",
+      );
+    }
+
     const validKinds: Record<string, MediaAsset["kind"]> = {
       illustration: "illustration",
       audio: "audio",
@@ -423,6 +459,50 @@ export class SupabaseMediaRepository implements MediaRepository {
     const updated = await this.getMediaAsset(mediaId);
     if (!updated) {
       throw mediaError("Media asset not found after assignment.");
+    }
+
+    return updated;
+  }
+
+  async assignMediaAsChapterCover(
+    mediaId: string,
+    chapterSlug: string,
+  ): Promise<AdminMediaAssetDetail> {
+    const supabase = (await this.clientFactory()) as TypedSupabaseClient;
+    const chapterId = await getChapterIdBySlug(supabase, chapterSlug);
+
+    const { data: asset, error: assetError } = await supabase
+      .from("media_assets")
+      .select("kind")
+      .eq("id", mediaId)
+      .maybeSingle();
+
+    if (assetError || !asset) {
+      throw mediaError("Media asset not found.");
+    }
+
+    if (asset.kind !== "book_cover") {
+      throw mediaError("Only book cover assets can be set as chapter covers.");
+    }
+
+    const { error: assetUpdateError } = await supabase
+      .from("media_assets")
+      .update({
+        chapter_id: chapterId,
+        section_id: null,
+        review_status: "approved",
+      })
+      .eq("id", mediaId);
+
+    if (assetUpdateError) {
+      throw mediaError("Unable to prepare book cover for this chapter.");
+    }
+
+    await this.syncChapterCoverLink(supabase, chapterId, mediaId);
+
+    const updated = await this.getMediaAsset(mediaId);
+    if (!updated) {
+      throw mediaError("Media asset not found after cover assignment.");
     }
 
     return updated;
@@ -472,6 +552,47 @@ export class SupabaseMediaRepository implements MediaRepository {
     }
 
     return ((data ?? []) as MediaAssetRow[]).map(mapMediaAsset);
+  }
+
+  private async findUnassignedSectionId(
+    supabase: TypedSupabaseClient,
+    chapterId: string,
+    kind: MediaAsset["kind"],
+  ): Promise<string | null> {
+    if (kind === "book_cover") {
+      return null;
+    }
+
+    const { data, error } = await supabase
+      .from("chapter_sections")
+      .select("id")
+      .eq("chapter_id", chapterId)
+      .eq("kind", kind)
+      .is("media_asset_id", null)
+      .order("sort_order", { ascending: true })
+      .limit(1)
+      .maybeSingle();
+
+    if (error) {
+      throw mediaError("Unable to find a section to assign this media to.");
+    }
+
+    return data?.id ?? null;
+  }
+
+  private async syncChapterCoverLink(
+    supabase: TypedSupabaseClient,
+    chapterId: string,
+    mediaAssetId: string,
+  ) {
+    const { error } = await supabase
+      .from("chapters")
+      .update({ cover_media_asset_id: mediaAssetId })
+      .eq("id", chapterId);
+
+    if (error) {
+      throw mediaError("Unable to set chapter book cover.");
+    }
   }
 
   private async syncSectionLink(

@@ -109,12 +109,12 @@
   content: "";
   position: absolute;
   z-index: -1;
-  inset: -2rem -14% 28%;
+  inset: -1.5rem -10% 18%;
   background: radial-gradient(
-    ellipse 70% 65% at 50% 32%,
-    rgba(7, 20, 40, 0.55) 0%,
-    rgba(7, 20, 40, 0.22) 45%,
-    rgba(7, 20, 40, 0) 72%
+    ellipse 70% 70% at 50% 42%,
+    rgba(7, 20, 40, 0.72) 0%,
+    rgba(7, 20, 40, 0.4) 48%,
+    rgba(7, 20, 40, 0) 76%
   );
   pointer-events: none;
 }

@@ -15,7 +15,12 @@ function isReviewStatus(value: string): value is (typeof REVIEW_STATUSES)[number
 }
 
 export function validateMediaKind(kind: string): kind is MediaKind {
-  return kind === "illustration" || kind === "audio" || kind === "animation";
+  return (
+    kind === "illustration" ||
+    kind === "audio" ||
+    kind === "animation" ||
+    kind === "book_cover"
+  );
 }
 
 export function validateCreateMediaMetadata(
@@ -33,8 +38,13 @@ export function validateCreateMediaMetadata(
     return "Invalid review status.";
   }
 
-  if (input.kind === "illustration" && !input.altText?.trim()) {
-    return "Alt text is required for illustrations.";
+  if (
+    (input.kind === "illustration" || input.kind === "book_cover") &&
+    !input.altText?.trim()
+  ) {
+    return input.kind === "book_cover"
+      ? "Alt text is required for book covers."
+      : "Alt text is required for illustrations.";
   }
 
   return null;
@@ -61,11 +71,13 @@ export function validateUpdateMediaMetadata(
   }
 
   if (
-    kind === "illustration" &&
+    (kind === "illustration" || kind === "book_cover") &&
     input.altText !== undefined &&
     !input.altText?.trim()
   ) {
-    return "Alt text is required for illustrations.";
+    return kind === "book_cover"
+      ? "Alt text is required for book covers."
+      : "Alt text is required for illustrations.";
   }
 
   if (

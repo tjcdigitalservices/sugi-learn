@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 
 import { AdminMobileNav } from "@/components/admin/admin-mobile-nav";
@@ -11,8 +12,23 @@ interface AdminShellClientProps {
   userLabel?: string | null;
 }
 
+function isChapterPreviewPath(pathname: string): boolean {
+  return /^\/admin\/chapters\/[^/]+\/preview\/?$/.test(pathname);
+}
+
 export function AdminShellClient({ children, userLabel }: AdminShellClientProps) {
+  const pathname = usePathname();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
+  // Storybook preview needs a full-bleed book viewport — escape the admin
+  // sidebar / max-width chrome used for editors and tables.
+  if (isChapterPreviewPath(pathname)) {
+    return (
+      <div className="flex h-dvh min-h-0 flex-col overflow-hidden bg-sl-cream font-body text-sl-ink">
+        {children}
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-dvh flex-col overflow-hidden bg-sl-cream font-body text-sl-ink">

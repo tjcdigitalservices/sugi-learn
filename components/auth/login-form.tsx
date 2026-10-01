@@ -8,13 +8,17 @@ import { ArrowRight, Eye, EyeOff, User } from "lucide-react";
 import { HeritageAuthCard } from "@/components/auth/heritage-auth-shell";
 import { BusyButton } from "@/components/shared/busy-button";
 import {
-  defaultPostLoginPath,
-  resolvePostLoginPath,
-} from "@/lib/auth/post-login";
+  ADMIN_HOME_ROUTE,
+  AUTH_LOGIN_ROUTE,
+} from "@/lib/auth/routes";
+import { resolvePostLoginPath } from "@/lib/auth/post-login";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import type { UserRole } from "@/types/database";
 
+export type LoginFormVariant = "learner" | "admin";
+
 interface LoginFormProps {
+  variant?: LoginFormVariant;
   title?: string;
   description?: string;
 }
@@ -35,9 +39,19 @@ function errorMessage(error: unknown): string {
 }
 
 export function LoginForm({
-  title = "Welcome back",
-  description = "Sign in to continue your Suguidanon journey. Administrators can also sign in here.",
+  variant = "learner",
+  title,
+  description,
 }: LoginFormProps) {
+  const isAdmin = variant === "admin";
+  const resolvedTitle =
+    title ?? (isAdmin ? "Admin sign in" : "Welcome back");
+  const resolvedDescription =
+    description ??
+    (isAdmin
+      ? "Sign in with your administrator account to manage Suguidanon content."
+      : "Sign in to continue your Suguidanon learning journey.");
+
   const searchParams = useSearchParams();
   const requestedNext = safeNextPath(searchParams.get("next"));
 
@@ -73,7 +87,9 @@ export function LoginForm({
 
       if (signInError || !data.user) {
         setError(
-          "Invalid email or password. If you registered as a guest, use Create account again, or continue as a guest and save your progress.",
+          isAdmin
+            ? "Invalid email or password."
+            : "Invalid email or password. If you registered as a guest, use Create account again, or continue as a guest and save your progress.",
         );
         setIsLoading(false);
         return;
@@ -86,26 +102,53 @@ export function LoginForm({
         .maybeSingle();
 
       if (profileError) {
-        // Session is valid — still enter the app; profile can be healed later.
         console.warn("Login profile lookup failed:", profileError.message);
       }
 
       const role = (profile?.role ?? "learner") as UserRole;
       const displayName = profile?.display_name ?? null;
 
+      if (isAdmin && role !== "admin") {
+        try {
+          await supabase.auth.signOut({ scope: "local" });
+        } catch {
+          // continue
+        }
+        setError(
+          "This account is not an administrator. Use the learner sign-in page instead.",
+        );
+        setIsLoading(false);
+        return;
+      }
+
+      if (!isAdmin && role === "admin") {
+        try {
+          await supabase.auth.signOut({ scope: "local" });
+        } catch {
+          // continue
+        }
+        setError(
+          "This sign-in is for learners only. Administrator accounts cannot use this page.",
+        );
+        setIsLoading(false);
+        return;
+      }
+
       let destination: string;
       if (role === "admin") {
-        destination = requestedNext
-          ? resolvePostLoginPath(role, requestedNext, displayName)
-          : defaultPostLoginPath(role, displayName);
+        const next =
+          requestedNext?.startsWith(ADMIN_HOME_ROUTE) &&
+          !requestedNext.startsWith("/admin/login")
+            ? requestedNext
+            : ADMIN_HOME_ROUTE;
+        destination = resolvePostLoginPath(role, next, displayName);
       } else if (requestedNext?.startsWith("/learn")) {
         destination = resolvePostLoginPath(role, requestedNext, displayName);
       } else {
-        // Resume onboarding / pre-test / home from saved progress.
         destination = "/learn/continue";
       }
 
-      // Full navigation so session cookies are applied before /learn renders.
+      // Full navigation so session cookies are applied before app routes render.
       window.location.assign(destination);
     } catch (err) {
       console.error("Login failed:", err);
@@ -118,9 +161,11 @@ export function LoginForm({
     <HeritageAuthCard>
       <div className="auth-entrance-item auth-d1 space-y-2 text-center">
         <h1 className="font-display text-2xl font-semibold tracking-tight text-white drop-shadow-sm sm:text-3xl">
-          {title}
+          {resolvedTitle}
         </h1>
-        <p className="text-sm leading-relaxed text-white/85">{description}</p>
+        <p className="text-sm leading-relaxed text-white/85">
+          {resolvedDescription}
+        </p>
       </div>
 
       <div
@@ -192,6 +237,17 @@ export function LoginForm({
             role="alert"
           >
             {error}
+            {isAdmin && error.includes("learner sign-in") ? (
+              <>
+                {" "}
+                <Link
+                  href={AUTH_LOGIN_ROUTE}
+                  className="font-medium text-sl-gold-soft underline underline-offset-4"
+                >
+                  Go to learner sign-in
+                </Link>
+              </>
+            ) : null}
           </p>
         ) : null}
 
@@ -211,22 +267,34 @@ export function LoginForm({
         <span className="font-medium opacity-70">Coming soon</span>
       </p>
 
-      <p className="auth-entrance-item auth-d5 text-center text-xs text-white/80">
-        New learner?{" "}
-        <Link
-          href="/"
-          className="font-medium text-sl-gold-soft underline underline-offset-4"
-        >
-          Start as guest
-        </Link>
-        {" · "}
-        <Link
-          href="/register"
-          className="font-medium text-sl-gold-soft underline underline-offset-4"
-        >
-          Create account
-        </Link>
-      </p>
+      {isAdmin ? (
+        <p className="auth-entrance-item auth-d5 text-center text-xs text-white/80">
+          Learner account?{" "}
+          <Link
+            href={AUTH_LOGIN_ROUTE}
+            className="font-medium text-sl-gold-soft underline underline-offset-4"
+          >
+            Learner sign-in
+          </Link>
+        </p>
+      ) : (
+        <p className="auth-entrance-item auth-d5 text-center text-xs text-white/80">
+          New learner?{" "}
+          <Link
+            href="/"
+            className="font-medium text-sl-gold-soft underline underline-offset-4"
+          >
+            Start as guest
+          </Link>
+          {" · "}
+          <Link
+            href="/register"
+            className="font-medium text-sl-gold-soft underline underline-offset-4"
+          >
+            Create account
+          </Link>
+        </p>
+      )}
     </HeritageAuthCard>
   );
 }

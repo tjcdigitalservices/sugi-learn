@@ -1,7 +1,12 @@
 import type { ReviewStatus } from "@/types/review";
 
 /** Supported media kinds within project scope (see AGENTS.md). */
-export const MEDIA_KINDS = ["illustration", "audio", "animation"] as const;
+export const MEDIA_KINDS = [
+  "illustration",
+  "audio",
+  "animation",
+  "book_cover",
+] as const;
 
 export type MediaKind = (typeof MEDIA_KINDS)[number];
 

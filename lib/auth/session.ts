@@ -3,7 +3,7 @@ import "server-only";
 import { redirect } from "next/navigation";
 
 import {
-  AUTH_LOGIN_ROUTE,
+  ADMIN_LOGIN_ROUTE,
   UNAUTHORIZED_ROUTE,
 } from "@/lib/auth/routes";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
@@ -148,7 +148,7 @@ export async function requireUser(nextPath = "/"): Promise<CurrentAuth> {
 export async function requireAdmin(): Promise<CurrentAuth> {
   if (!hasSupabaseConfig()) {
     if (process.env.NODE_ENV === "production") {
-      redirect(AUTH_LOGIN_ROUTE);
+      redirect(ADMIN_LOGIN_ROUTE);
     }
 
     return {
@@ -170,7 +170,7 @@ export async function requireAdmin(): Promise<CurrentAuth> {
   const auth = await getCurrentAuth();
 
   if (!auth) {
-    redirect(AUTH_LOGIN_ROUTE);
+    redirect(ADMIN_LOGIN_ROUTE);
   }
 
   if (!isAdminRole(auth.profile.role)) {

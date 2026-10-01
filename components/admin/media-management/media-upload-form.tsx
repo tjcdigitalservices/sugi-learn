@@ -138,7 +138,15 @@ export function MediaUploadForm({
             return;
           }
 
-          setSuccess("Media uploaded successfully. Status: Draft.");
+          setSuccess(
+            kind === "book_cover"
+              ? chapterSlug
+                ? "Book cover uploaded and set for this chapter."
+                : "Book cover uploaded. Open the asset and assign a chapter to use it as a cover."
+              : finalized.data.sectionTitle
+                ? "Media uploaded and assigned to the chapter section. Approve the media (and section, if still Draft) before learners can see it."
+                : "Media uploaded successfully. Status: Draft. Assign it to a chapter section, then approve, before learners can see it.",
+          );
           resetForm();
           onUploaded(finalized.data);
           return;
@@ -168,7 +176,15 @@ export function MediaUploadForm({
           return;
         }
 
-        setSuccess("Media uploaded successfully. Status: Draft.");
+        setSuccess(
+          kind === "book_cover"
+            ? chapterSlug
+              ? "Book cover uploaded and set for this chapter."
+              : "Book cover uploaded. Open the asset and assign a chapter to use it as a cover."
+            : result.data.sectionTitle
+              ? "Media uploaded and assigned to the chapter section. Approve the media (and section, if still Draft) before learners can see it."
+              : "Media uploaded successfully. Status: Draft. Assign it to a chapter section, then approve, before learners can see it.",
+        );
         resetForm();
         onUploaded(result.data);
       } catch (caught) {
@@ -251,8 +267,8 @@ export function MediaUploadForm({
           label="Alt text"
           htmlFor="media-alt"
           hint={
-            kind === "illustration"
-              ? "Required for illustrations. Describe the actual image only."
+            kind === "illustration" || kind === "book_cover"
+              ? "Required. Describe the actual image only."
               : "Optional for audio/video."
           }
         >
@@ -261,7 +277,7 @@ export function MediaUploadForm({
             value={altText}
             onChange={(event) => setAltText(event.target.value)}
             className={formControlClassName}
-            required={kind === "illustration"}
+            required={kind === "illustration" || kind === "book_cover"}
             disabled={isPending}
           />
         </FormField>

@@ -39,13 +39,14 @@ export function MediaRenderer({
 
   switch (kind) {
     case "illustration":
+    case "book_cover":
       return (
         <figure className="mx-auto w-full max-w-2xl space-y-3">
           <div className="overflow-hidden rounded-lg border bg-muted/20">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={mediaUrl}
-              alt={asset.altText ?? asset.caption ?? "Chapter illustration"}
+              alt={asset.altText ?? asset.caption ?? "Chapter media"}
               className="mx-auto max-h-[min(70vh,720px)] w-full object-contain"
               loading="lazy"
               decoding="async"

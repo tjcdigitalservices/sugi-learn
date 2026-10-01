@@ -201,6 +201,10 @@ export interface MediaRepository {
     chapterSlug: string,
     sectionId: string,
   ): Promise<AdminMediaAssetDetail>;
+  assignMediaAsChapterCover(
+    mediaId: string,
+    chapterSlug: string,
+  ): Promise<AdminMediaAssetDetail>;
   unlinkMediaFromSection(mediaId: string): Promise<AdminMediaAssetDetail>;
   listMediaForChapter(chapterSlug: string): Promise<MediaAsset[]>;
 }

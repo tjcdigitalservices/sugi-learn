@@ -2,7 +2,9 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 import {
+  ADMIN_LOGIN_ROUTE,
   AUTH_LOGIN_ROUTE,
+  isAdminLoginRoute,
   isAdminRoute,
   isAuthLoginRoute,
   isLearnerRoute,
@@ -71,17 +73,25 @@ export async function updateSession(request: NextRequest) {
       const profile = await fetchUserProfile(supabase, user.id);
       const isAnonymous = Boolean(user.is_anonymous);
 
-      // Permanent admins skip login/register.
+      // Permanent admins: skip admin login, keep out of learner login/register.
       if (profile?.role === "admin" && !isAnonymous) {
-        const nextParam = request.nextUrl.searchParams.get("next");
-        const destination = resolvePostLoginPath(
-          "admin",
-          nextParam ?? defaultPostLoginPath("admin"),
-          profile.displayName,
-        );
+        if (isAdminLoginRoute(pathname)) {
+          const nextParam = request.nextUrl.searchParams.get("next");
+          const destination = resolvePostLoginPath(
+            "admin",
+            nextParam ?? defaultPostLoginPath("admin"),
+            profile.displayName,
+          );
+          return redirectWithCookies(
+            supabaseResponse,
+            new URL(destination, request.url),
+          );
+        }
+
+        // Already signed in as admin — don't use learner auth pages.
         return redirectWithCookies(
           supabaseResponse,
-          new URL(destination, request.url),
+          new URL(ADMIN_LOGIN_ROUTE, request.url),
         );
       }
 
@@ -105,6 +115,12 @@ export async function updateSession(request: NextRequest) {
     // Learners start from the landing CTA (anonymous session), not /login.
     if (isLearnerRoute(pathname)) {
       return redirectWithCookies(supabaseResponse, new URL("/", request.url));
+    }
+
+    if (isAdminRoute(pathname)) {
+      const loginUrl = new URL(ADMIN_LOGIN_ROUTE, request.url);
+      loginUrl.searchParams.set("next", pathname);
+      return redirectWithCookies(supabaseResponse, loginUrl);
     }
 
     const loginUrl = new URL(AUTH_LOGIN_ROUTE, request.url);

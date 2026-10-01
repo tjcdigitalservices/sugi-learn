@@ -139,7 +139,7 @@ export function ChapterMetadataForm({
     setMetadataError(null);
     setMetadataSuccess(null);
 
-    const localError = validateMediaFile("illustration", file);
+    const localError = validateMediaFile("book_cover", file);
     if (localError) {
       showCoverFeedback({ error: localError });
       return;
@@ -336,10 +336,11 @@ export function ChapterMetadataForm({
       {/* Cover upload is outside the metadata form so file bytes never ride a
           metadata Server Action multipart body (avoids “Unexpected end of form”). */}
       <div className="space-y-3 border-t pt-6">
-        <p className="text-sm font-medium">Chapter cover</p>
+        <p className="text-sm font-medium">Chapter book cover</p>
         <p className="text-xs text-muted-foreground">
-          Shown on the learner Chapters grid. JPEG, PNG, WebP, or GIF up to{" "}
-          {COVER_MAX_MB} MB.
+          Closed-book art on the learner Chapters grid and storybook cover.
+          Uploads are stored as the Book Cover media type. JPEG, PNG, WebP, or
+          GIF up to {COVER_MAX_MB} MB.
         </p>
         <div className="overflow-hidden rounded-xl border bg-muted/20">
           {/* eslint-disable-next-line @next/next/no-img-element */}

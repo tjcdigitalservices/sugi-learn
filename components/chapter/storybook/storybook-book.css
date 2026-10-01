@@ -41,6 +41,14 @@
   );
 }
 
+/* Admin chapter preview: reserve space for the compact preview banner. */
+.sb-book-view.sb-book-view--admin-preview {
+  --sb-viewport-chrome: calc(
+    2.75rem + 2.75rem + env(safe-area-inset-top, 0px) +
+      env(safe-area-inset-bottom, 0px)
+  );
+}
+
 /* Desktop book view: maximize book toward 1400×786 */
 @media (min-width: 768px) {
   .sb-book-view {
@@ -51,6 +59,13 @@
       var(--sb-page-max-h),
       calc(100vh - var(--sb-viewport-chrome)),
       calc(100dvh - var(--sb-viewport-chrome))
+    );
+  }
+
+  .sb-book-view.sb-book-view--admin-preview {
+    --sb-viewport-chrome: calc(
+      2.75rem + 2.75rem + env(safe-area-inset-top, 0px) +
+        env(safe-area-inset-bottom, 0px)
     );
   }
 }
@@ -143,7 +158,8 @@
   text-align: right;
 }
 
-/* Paged open: page content starts below the absolute chrome row. */
+/* Open book: page content starts below the absolute chrome row (desktop + paged). */
+.sb-frame:has(.sb-book-chrome--internal) .sb-spread--fixed > .sb-spread-grid > .sb-page--fixed,
 .sb-frame:has(.sb-book-chrome--internal) .sb-spread--paged .sb-page--fixed {
   padding-top: var(--sb-chrome-clearance, 3.25rem);
 }

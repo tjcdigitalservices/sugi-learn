@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 
 import { requireAdmin } from "@/lib/auth/session";
 import {
+  assignMediaAsChapterCoverRecord,
   assignMediaToSectionRecord,
   countMediaByKind,
   createMediaAssetRecord,
@@ -392,6 +393,26 @@ export async function assignMediaToSectionAction(
     revalidateMediaPaths(mediaId);
     revalidatePath(`/admin/chapters/${chapterSlug}`);
     revalidatePath(`/admin/chapters/${chapterSlug}/preview`);
+    revalidatePath(`/learn/chapters/${chapterSlug}`);
+    return { success: true, data: updated };
+  } catch (error) {
+    return { success: false, error: safeError(error) };
+  }
+}
+
+export async function assignMediaAsChapterCoverAction(
+  mediaId: string,
+  chapterSlug: string,
+): Promise<MediaManagementActionResult<AdminMediaAssetDetail>> {
+  await requireAdmin();
+
+  try {
+    const updated = await assignMediaAsChapterCoverRecord(mediaId, chapterSlug);
+    revalidateMediaPaths(mediaId);
+    revalidatePath("/admin/chapters");
+    revalidatePath(`/admin/chapters/${chapterSlug}`);
+    revalidatePath(`/admin/chapters/${chapterSlug}/preview`);
+    revalidatePath("/learn/chapters");
     revalidatePath(`/learn/chapters/${chapterSlug}`);
     return { success: true, data: updated };
   } catch (error) {

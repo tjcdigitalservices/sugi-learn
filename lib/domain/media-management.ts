@@ -56,6 +56,16 @@ export async function assignMediaToSectionRecord(
   );
 }
 
+export async function assignMediaAsChapterCoverRecord(
+  mediaId: string,
+  chapterSlug: string,
+): Promise<AdminMediaAssetDetail> {
+  return getRepositories().media.assignMediaAsChapterCover(
+    mediaId,
+    chapterSlug,
+  );
+}
+
 export async function unlinkMediaFromSectionRecord(
   mediaId: string,
 ): Promise<AdminMediaAssetDetail> {

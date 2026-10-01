@@ -6,12 +6,14 @@ export const MEDIA_KIND_LABELS: Record<MediaKind, string> = {
   illustration: "Illustration",
   audio: "Audio",
   animation: "Animation / Video",
+  book_cover: "Book Cover",
 };
 
 export const MEDIA_ACCEPTED_TYPES: Record<MediaKind, string[]> = {
   illustration: ["image/jpeg", "image/png", "image/webp", "image/gif"],
   audio: ["audio/mpeg", "audio/mp4", "audio/wav", "audio/ogg"],
   animation: ["video/mp4", "video/webm"],
+  book_cover: ["image/jpeg", "image/png", "image/webp", "image/gif"],
 };
 
 export const MEDIA_MAX_FILE_BYTES: Record<MediaKind, number> = {
@@ -19,12 +21,14 @@ export const MEDIA_MAX_FILE_BYTES: Record<MediaKind, number> = {
   audio: 25 * 1024 * 1024,
   /** Aligned with Supabase Free plan max upload size. */
   animation: 50 * 1024 * 1024,
+  book_cover: 10 * 1024 * 1024,
 };
 
 export const MEDIA_ACCEPT_ATTRIBUTE: Record<MediaKind, string> = {
   illustration: MEDIA_ACCEPTED_TYPES.illustration.join(","),
   audio: MEDIA_ACCEPTED_TYPES.audio.join(","),
   animation: MEDIA_ACCEPTED_TYPES.animation.join(","),
+  book_cover: MEDIA_ACCEPTED_TYPES.book_cover.join(","),
 };
 
 /** Soft project scope limits. `null` = no count cap (free-tier safe; size caps still apply). */
@@ -32,4 +36,5 @@ export const MEDIA_SCOPE_LIMITS: Record<MediaKind, number | null> = {
   illustration: null,
   audio: null,
   animation: null,
+  book_cover: null,
 };

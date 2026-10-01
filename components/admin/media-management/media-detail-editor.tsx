@@ -17,6 +17,7 @@ import { ReviewStatusBadge } from "@/components/admin/review-status-badge";
 import { REVIEW_STATUS_OPTIONS } from "@/lib/chapter-management/constants";
 import { MEDIA_KIND_LABELS } from "@/lib/media/constants";
 import {
+  assignMediaAsChapterCoverAction,
   assignMediaToSectionAction,
   deleteMediaAssetAction,
   saveMediaAssetAction,
@@ -52,7 +53,7 @@ export function MediaDetailEditor({
   const [success, setSuccess] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const [pendingAction, setPendingAction] = useState<
-    "save" | "assign" | "unlink" | "delete" | null
+    "save" | "assign" | "cover" | "unlink" | "delete" | null
   >(null);
 
   const compatibleSections = chapterSections.filter((section) => {
@@ -117,6 +118,34 @@ export function MediaDetailEditor({
 
       setAsset(result.data);
       setSuccess("Media assigned to section.");
+    });
+  }
+
+  function handleAssignChapterCover() {
+    if (!asset.chapterSlug) {
+      setError("This book cover needs a chapter before it can be used.");
+      return;
+    }
+
+    setError(null);
+    setSuccess(null);
+    setPendingAction("cover");
+
+    startTransition(async () => {
+      const result = await assignMediaAsChapterCoverAction(
+        asset.id,
+        asset.chapterSlug!,
+      );
+
+      setPendingAction(null);
+
+      if (!result.success) {
+        setError(result.error);
+        return;
+      }
+
+      setAsset(result.data);
+      setSuccess("Set as this chapter’s book cover.");
     });
   }
 
@@ -198,7 +227,15 @@ export function MediaDetailEditor({
           </p>
         ) : null}
 
-        {!asset.sectionId ? (
+        {asset.kind === "book_cover" ? (
+          !asset.isReferenced ? (
+            <p className="rounded-md border border-amber-500/30 bg-amber-500/5 px-3 py-2 text-sm text-amber-900 dark:text-amber-200">
+              This book cover is not set on a chapter yet. Use the control below
+              (or Chapter metadata → Upload cover) so learners see it on the
+              closed book.
+            </p>
+          ) : null
+        ) : !asset.sectionId ? (
           <p className="rounded-md border border-amber-500/30 bg-amber-500/5 px-3 py-2 text-sm text-amber-900 dark:text-amber-200">
             This asset is not assigned to a chapter section. Assign it from the
             chapter editor or below before learners can see it in the journey.
@@ -265,7 +302,40 @@ export function MediaDetailEditor({
           />
         </FormField>
 
-        {asset.chapterSlug ? (
+        {asset.kind === "book_cover" ? (
+          asset.chapterSlug ? (
+            <div className="space-y-3 rounded-lg border p-4">
+              <h3 className="font-medium">Book cover</h3>
+              <p className="text-sm text-muted-foreground">
+                Chapter: {asset.chapterTitle ?? asset.chapterSlug}
+              </p>
+              {asset.isReferenced ? (
+                <p className="text-sm">{asset.referenceSummary}</p>
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  Not currently set as this chapter’s closed-book cover.
+                </p>
+              )}
+              <button
+                type="button"
+                className={buttonSecondaryClassName}
+                onClick={handleAssignChapterCover}
+                disabled={isPending || !asset.storagePath?.trim()}
+              >
+                {pendingAction === "cover"
+                  ? "Setting cover…"
+                  : asset.isReferenced
+                    ? "Refresh as chapter book cover"
+                    : "Use as chapter book cover"}
+              </button>
+            </div>
+          ) : (
+            <p className="rounded-md border border-dashed px-3 py-2 text-sm text-muted-foreground">
+              Assign a chapter when uploading a book cover, or replace the cover
+              from Chapter metadata.
+            </p>
+          )
+        ) : asset.chapterSlug ? (
           <div className="space-y-3 rounded-lg border p-4">
             <h3 className="font-medium">Section association</h3>
             <p className="text-sm text-muted-foreground">
@@ -299,8 +369,8 @@ export function MediaDetailEditor({
                     chapter management
                   </Link>{" "}
                   and add a {MEDIA_KIND_LABELS[asset.kind].toLowerCase()}{" "}
-                  section, then return here to assign this file. Chapter covers
-                  are set separately under chapter metadata, not here.
+                  section, then return here to assign this file. Chapter book
+                  covers use the Book Cover media type under chapter metadata.
                 </p>
               </div>
             ) : (

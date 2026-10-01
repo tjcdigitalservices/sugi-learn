@@ -77,8 +77,13 @@ export function mapAdminMediaDetail(
 export function buildReferenceInfo(params: {
   sectionTitle?: string | null;
   characterNames?: string[];
+  coverChapterTitle?: string | null;
 }): MediaReferenceInfo {
   const parts: string[] = [];
+
+  if (params.coverChapterTitle) {
+    parts.push(`Book cover: ${params.coverChapterTitle}`);
+  }
 
   if (params.sectionTitle) {
     parts.push(`Section: ${params.sectionTitle}`);
