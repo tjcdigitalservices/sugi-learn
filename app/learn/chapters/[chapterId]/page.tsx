@@ -19,6 +19,10 @@ interface ChapterPageProps {
   params: Promise<{ chapterId: string }>;
 }
 
+/**
+ * Learner chapter route — storybook book for numbered chapters (PANEL-B*).
+ * See docs/PANEL_UI_CODE_MAP.md §4.
+ */
 export default async function ChapterPage({ params }: ChapterPageProps) {
   const { chapterId } = await params;
 

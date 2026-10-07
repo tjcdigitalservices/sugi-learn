@@ -10,6 +10,7 @@ import {
   getLearnerJourneySummary,
 } from "@/lib/domain/learner-progress";
 
+/** PANEL-L05 — Chapters index + cover grid (after pre-assessment) */
 export default async function ChaptersPage() {
   const learnerId = await getCurrentLearnerId();
   const journey = await getLearnerJourneySummary(learnerId);

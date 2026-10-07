@@ -50,6 +50,7 @@ function prefersReducedMotion(): boolean {
 }
 
 /**
+ * PANEL-B04 — Cover ↔ open state machine (docs/PANEL_UI_CODE_MAP.md).
  * Learner storybook shell: closed cover → CSS open → two-page spread.
  * Presentation only — progress callbacks are owned by the layout.
  */

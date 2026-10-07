@@ -26,6 +26,7 @@ interface MediaListTableProps {
   isLoading?: boolean;
 }
 
+/** PANEL-M06 — Media library table: row select, bulk approve/delete, per-row actions */
 export function MediaListTable({
   assets,
   onDeleted,

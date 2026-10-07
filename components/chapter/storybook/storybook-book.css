@@ -1,4 +1,7 @@
-/* Storybook — shared canonical sizing; chrome is external (cover) or internal (open). */
+/*
+ * PANEL-B10 — Storybook visual system (docs/PANEL_UI_CODE_MAP.md).
+ * Shared canonical sizing; chrome is external (cover) or internal (open).
+ */
 
 :root {
   /* ONE PAGE / CLOSED COVER: 700×786 · OPEN BOOK: 1400×786 */

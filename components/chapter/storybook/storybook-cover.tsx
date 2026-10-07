@@ -34,6 +34,7 @@ export function StorybookCover({
 }: StorybookCoverProps) {
   const paged = layoutMode === "paged";
 
+  // PANEL-B03 — Closed book cover (art, brand, title). Click opens the chapter.
   return (
     <div className="sb-stage w-full px-1">
       <div

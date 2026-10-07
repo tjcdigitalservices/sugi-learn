@@ -59,6 +59,8 @@ const HOLD_SAFETY_MS = 12_000;
  * Persists across chapter navigations. Owns a dual-layer hold:
  * Layer A (outgoing) stays visible; Layer B (incoming full spread) is staged
  * invisibly, then revealed as one unit at the page-turn midpoint.
+ *
+ * PANEL-B11 — Chapter-to-chapter page-turn hold layer (docs/PANEL_UI_CODE_MAP.md).
  */
 export function StorybookTransitionProvider({
   children,

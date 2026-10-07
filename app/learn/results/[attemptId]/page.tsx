@@ -8,6 +8,7 @@ interface ResultsAttemptPageProps {
   params: Promise<{ attemptId: string }>;
 }
 
+/** PANEL-L08 — Results dashboard for one assessment attempt */
 export default async function ResultsAttemptPage({
   params,
 }: ResultsAttemptPageProps) {

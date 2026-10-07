@@ -15,6 +15,7 @@ import { getPostAssessmentSession } from "@/lib/domain/post-assessment";
 import { getPreAssessmentSession } from "@/lib/domain/pre-assessment";
 import { hasSupabaseConfig } from "@/lib/supabase/service";
 
+/** PANEL-L01 — Learner home: greeting, progress, chapter covers (docs/PANEL_UI_CODE_MAP.md) */
 export default async function LearnHomePage() {
   const learnerId = await getCurrentLearnerId();
   const [journey, displayName, preSession, postSession, auth] =

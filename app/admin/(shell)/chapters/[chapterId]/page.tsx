@@ -10,6 +10,7 @@ interface AdminChapterDetailPageProps {
   params: Promise<{ chapterId: string }>;
 }
 
+/** PANEL-M04 — Chapter editor: metadata, sections, characters, media links */
 export default async function AdminChapterDetailPage({
   params,
 }: AdminChapterDetailPageProps) {

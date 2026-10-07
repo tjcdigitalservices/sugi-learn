@@ -203,8 +203,6 @@ export function StorybookSpread({
   const { rightAnimation, rightIllustration, continuationSections } =
     partitionSections(chapter.sections, chapter.media);
   const continuationSpreads = chunkIntoPairs(continuationSections);
-  const eyebrow =
-    chapter.number > 0 ? `Chapter ${chapter.number}` : "Chapter";
   const openCompleteFired = useRef(false);
   const readyFired = useRef(false);
   const localRootRef = useRef<HTMLDivElement | null>(null);
@@ -425,6 +423,7 @@ export function StorybookSpread({
   const busyClass = navBusy ? " is-busy" : "";
   const continueBusyLabel = leafTurn ? "Turning…" : "Opening…";
 
+  // PANEL-B05 / PANEL-B06 / PANEL-B07 — Left page: title, About summary, notice
   const textPage = (
     <div className={`${paged ? pageChromePaged : pageChrome} gap-2`}>
       {/*
@@ -432,10 +431,8 @@ export function StorybookSpread({
         laptop viewports. Only the summary scrolls so the title stays fully visible.
       */}
       <div className="flex min-h-0 flex-1 flex-col gap-3 sm:gap-4">
+        {/* PANEL-B05 — Chapter title + subtitle (CMS/chapter data) */}
         <div className="shrink-0 space-y-1.5 pt-0.5 sm:space-y-2">
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sl-navy">
-            {eyebrow}
-          </p>
           <h1 className="font-display text-xl font-semibold leading-[1.15] tracking-tight text-sl-navy sm:text-2xl lg:text-3xl">
             {chapter.title}
           </h1>
@@ -447,6 +444,7 @@ export function StorybookSpread({
         </div>
 
         {chapter.summary ? (
+          // PANEL-B06 — “About this chapter” + scrollable summary body
           <div className="flex min-h-0 flex-1 flex-col gap-2 border-t border-[color:rgba(44,36,22,0.1)] pt-3 sm:pt-4">
             <p className="shrink-0 text-xs font-semibold uppercase tracking-wide text-sl-navy">
               About this chapter
@@ -455,11 +453,13 @@ export function StorybookSpread({
           </div>
         ) : null}
 
+        {/* PANEL-B07 — Character representation short notice (admin-editable) */}
         <p className="shrink-0 text-[0.7rem] leading-snug text-sl-ink-muted/80 sm:text-xs">
           {characterRepresentationShort}
         </p>
       </div>
 
+      {/* PANEL-B09 — Page / chapter navigation buttons (prev, next, continue) */}
       {paged ? (
         <div className="sb-page-nav sb-page-nav--paged sb-page-nav--paged-end shrink-0 pt-2">
           <button
@@ -505,8 +505,10 @@ export function StorybookSpread({
     </div>
   );
 
+  // PANEL-B08 / PANEL-B09 — Right page: media + continue / page-turn nav
   const videoPage = (
     <div className={`${paged ? pageChromePaged : pageChromeRight} gap-1.5 sm:gap-2`}>
+      {/* PANEL-B08 — Animation / illustration / video slot */}
       <div className="sb-media-host flex min-h-0 flex-1 items-center justify-center">
         {renderRightMedia()}
       </div>

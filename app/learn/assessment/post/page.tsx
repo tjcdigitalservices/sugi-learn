@@ -10,6 +10,7 @@ import {
 } from "@/lib/domain/learner-progress";
 import { getPostAssessmentSession } from "@/lib/domain/post-assessment";
 
+/** PANEL-L07 — Post-Assessment (gated until chapters / policy allow) */
 export default async function PostAssessmentPage() {
   const learnerId = await getCurrentLearnerId();
 

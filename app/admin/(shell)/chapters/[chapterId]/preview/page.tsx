@@ -14,6 +14,7 @@ interface AdminChapterPreviewPageProps {
   params: Promise<{ chapterId: string }>;
 }
 
+/** PANEL-M05 — Admin learner-style chapter preview (same storybook as PANEL-B*) */
 export default async function AdminChapterPreviewPage({
   params,
 }: AdminChapterPreviewPageProps) {

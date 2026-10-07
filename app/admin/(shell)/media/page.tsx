@@ -5,6 +5,7 @@ import { PageHeader } from "@/components/shared/page-header";
 import { listChaptersForAdmin } from "@/lib/domain/chapter-management";
 import type { ChapterSummary } from "@/types/chapter";
 
+/** PANEL-M06 — Media library (upload, filter, bulk approve/delete) */
 export default async function AdminMediaPage() {
   let chapters: ChapterSummary[] = [];
   let errorMessage: string | null = null;

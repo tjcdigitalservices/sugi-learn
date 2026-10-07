@@ -16,9 +16,11 @@ const PEOPLE_LINKS = [
   },
 ] as const;
 
+/** PANEL-P01 — Landing page shell: brand nav + hero (docs/PANEL_UI_CODE_MAP.md) */
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#0b1d3a] font-body text-sl-ink">
+      {/* PANEL-P01 — Top brand mark on the public landing page */}
       <header className="landing-nav absolute inset-x-0 top-0 z-20">
         <div className="landing-nav__inner mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2 sm:gap-4 sm:px-6">
           <div className="landing-nav__brand -ml-[5%]">
@@ -32,6 +34,7 @@ export default function HomePage() {
         </div>
       </header>
 
+      {/* PANEL-P02 — Cinematic hero + CTAs (see landing-hero.tsx) */}
       <LandingHero />
 
       <section

@@ -31,6 +31,7 @@ export function LearnerShell({
   }
 
   if (isBookView) {
+    // PANEL-B01 — Immersive chapter book viewport (no learner header)
     return (
       <div className="sb-book-view flex h-dvh min-h-0 flex-col overflow-hidden bg-sl-cream font-body text-sl-ink">
         {/* Immersive book — no learner header (cover + open). Header stays on chapters index. */}
@@ -41,6 +42,7 @@ export function LearnerShell({
     );
   }
 
+  // PANEL-L03 — Standard learner chrome (header + main) for non-book /learn routes
   return (
     <div className="flex min-h-screen flex-col bg-sl-cream font-body text-sl-ink">
       <LearnerHeader

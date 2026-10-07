@@ -8,6 +8,7 @@ import { PageHeader } from "@/components/shared/page-header";
 import { getParticipationOverview } from "@/lib/domain/admin-analytics";
 import { getAdminDashboardSummary } from "@/lib/domain/admin-dashboard";
 
+/** PANEL-M02 — Admin dashboard metrics and chapter overview */
 export default async function AdminDashboardPage() {
   try {
     const [summary, participation] = await Promise.all([

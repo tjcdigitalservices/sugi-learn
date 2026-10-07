@@ -8,6 +8,7 @@ export const metadata: Metadata = {
     "Meet the BSIT 4-D researchers from West Visayas State University Calinog Campus behind SugiLearn.",
 };
 
+/** PANEL-P04 — Researchers grid */
 export default function ResearchersPage() {
   return <ResearchersPageView />;
 }

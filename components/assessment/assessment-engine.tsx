@@ -26,6 +26,11 @@ import { LearningResultsDashboard } from "@/components/learner/results/learning-
 import { QuestionReviewPanel } from "@/components/learner/results/question-review-panel";
 import { HeritageWave } from "@/components/brand/heritage-wave";
 
+/**
+ * PANEL-L04 / PANEL-L07 — Shared pre/post assessment UI engine
+ * (question flow, completion, optional results handoff).
+ * See docs/PANEL_UI_CODE_MAP.md.
+ */
 interface AssessmentEngineProps {
   assessment: Assessment;
   questions: LearnerAssessmentQuestion[];

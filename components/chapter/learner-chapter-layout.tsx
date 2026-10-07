@@ -128,6 +128,7 @@ export function LearnerChapterLayout({
     [previewMode],
   );
 
+  /** PANEL-B02 — Book chrome: “All chapters” + “Chapter N of M” (docs/PANEL_UI_CODE_MAP.md) */
   const renderBookChrome = useCallback(
     (position: number, total: number) => (
       <>

@@ -11,7 +11,7 @@ import { StartPreTestButton } from "@/components/learner/start-pre-test-button";
 import "./landing-hero.css";
 
 /**
- * Cinematic storybook opening hero.
+ * PANEL-P02 — Cinematic storybook opening hero (docs/PANEL_UI_CODE_MAP.md).
  *
  * Art swap: replace `public/images/landing-hero.png` only (same path).
  * Keep all ambient layers below (stars, clouds, fireflies, motes, glows,

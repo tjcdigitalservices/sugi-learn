@@ -257,6 +257,7 @@ Maintain:
 - `README.md`
 - `AGENTS.md`
 - `docs/Suguidanon_Project_Specification.md`
+- `docs/PANEL_UI_CODE_MAP.md` — client panel UI → code footprints (`PANEL-*`)
 
 ## Non-Negotiable Rules
 1. Do not invent client content.

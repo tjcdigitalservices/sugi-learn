@@ -12,6 +12,7 @@ export const metadata: Metadata = {
     "Meet Panay-Bukidnon cultural bearers Federico 'Nong Pedring' Caballero, Rodolfo “Sandigan” Caballero, and Rita “Intaru” Caballero.",
 };
 
+/** PANEL-P03 — Authors / Federico Caballero about page */
 export default async function AuthorPage() {
   let biography = DEFAULT_FEDERICO_CABALLERO_ABOUT;
   try {

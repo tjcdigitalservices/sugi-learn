@@ -288,6 +288,8 @@ Never rewrite the application wholesale unless explicitly requested.
 
 The implementation milestone sequence **M0–M19 is finished**. Handover documentation is in `docs/FINAL_HANDOVER.md`. Production deployment and client acceptance remain pending — see Launch Blockers in `docs/DEVELOPMENT_STATUS.md`.
 
+For client panel walkthroughs (UI element → code file + `PANEL-*` footprints), see `docs/PANEL_UI_CODE_MAP.md`.
+
 Supabase Auth protects learner and admin routes in production. See `docs/AUTHENTICATION.md`, `docs/DATABASE.md`, and `docs/PRODUCTION_DEPLOYMENT.md`.
 
 ## Local Development

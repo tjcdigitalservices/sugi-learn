@@ -5,6 +5,7 @@ import { isAssessmentLearnerReady } from "@/lib/domain/assessment-availability";
 import { getCurrentLearnerId } from "@/lib/domain/learner-progress";
 import { getPreAssessmentSession } from "@/lib/domain/pre-assessment";
 
+/** PANEL-L04 — Pre-Assessment entry (15 questions via AssessmentEngine) */
 export default async function PreAssessmentPage() {
   const learnerId = await getCurrentLearnerId();
 
