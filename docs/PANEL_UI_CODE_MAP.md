@@ -4,6 +4,9 @@
 **Purpose:** Point from what appears on screen to the exact files (and footprint IDs) in the codebase  
 **Last updated:** 2026-10-07
 
+**Client-ready PDF (no GitHub needed):**  
+`docs/exports/Suguidanon_Panel_UI_Code_Map.pdf` — attach this file in email / Drive / USB.
+
 ---
 
 ## How to use this guide during the panel
