@@ -10,22 +10,27 @@ import type {
 
 type LatestScore = { score: number; completedAt: number };
 
-/** Latest completed score per learner label and assessment type. */
+/**
+ * Latest COMPLETED score per learner label and assessment type.
+ * Rows without a score or without completedAt are ignored, so unfinished
+ * attempts never produce a score.
+ */
 function buildLatestScoreMap(
   rows: AssessmentResultExportRow[],
 ): Map<string, LatestScore> {
   const latest = new Map<string, LatestScore>();
 
   for (const row of rows) {
-    if (row.score === null) continue;
+    if (row.score === null || !row.completedAt) continue;
+
+    const parsed = Date.parse(row.completedAt);
+    if (Number.isNaN(parsed)) continue;
 
     const key = `${row.learnerLabel}::${row.assessmentType}`;
-    const parsed = row.completedAt ? Date.parse(row.completedAt) : 0;
-    const time = Number.isNaN(parsed) ? 0 : parsed;
     const existing = latest.get(key);
 
-    if (!existing || time >= existing.completedAt) {
-      latest.set(key, { score: row.score, completedAt: time });
+    if (!existing || parsed >= existing.completedAt) {
+      latest.set(key, { score: row.score, completedAt: parsed });
     }
   }
 
@@ -40,17 +45,28 @@ export async function getAdminAnalyticsSummary(
 
   const latestScores = buildLatestScoreMap(summary.exportData.assessmentResults);
 
-  const learners = summary.learners.map((learner) => ({
-    ...learner,
-    preAssessmentScore:
-      learner.preAssessmentScore ??
-      latestScores.get(`${learner.displayLabel}::pre`)?.score ??
-      null,
-    postAssessmentScore:
-      learner.postAssessmentScore ??
-      latestScores.get(`${learner.displayLabel}::post`)?.score ??
-      null,
-  }));
+  const learners = summary.learners.map((learner) => {
+    const preFromExport =
+      learner.preAssessmentStatus === "completed"
+        ? (latestScores.get(`${learner.displayLabel}::pre`)?.score ?? null)
+        : null;
+    const postFromExport =
+      learner.postAssessmentStatus === "completed"
+        ? (latestScores.get(`${learner.displayLabel}::post`)?.score ?? null)
+        : null;
+
+    return {
+      ...learner,
+      preAssessmentScore:
+        learner.preAssessmentStatus === "completed"
+          ? (learner.preAssessmentScore ?? preFromExport)
+          : null,
+      postAssessmentScore:
+        learner.postAssessmentStatus === "completed"
+          ? (learner.postAssessmentScore ?? postFromExport)
+          : null,
+    };
+  });
 
   return { ...summary, learners };
 }
