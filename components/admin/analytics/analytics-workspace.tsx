@@ -3,7 +3,7 @@ import {
   exportChapterCompletionCsvAction,
   exportLearnerProgressCsvAction,
 } from "@/lib/analytics/actions";
-import type { AdminAnalyticsSummary, AnalyticsFilters } from "@/types/admin-analytics";
+import type { AdminAnalyticsSummary } from "@/types/admin-analytics";
 
 import { AnalyticsExportButtons } from "@/components/admin/analytics/analytics-export-buttons";
 
@@ -37,63 +37,30 @@ function formatScore(value: number | null): string {
   return value === null ? "No data" : `${value}%`;
 }
 
-function AnalyticsFiltersForm({
-  filters,
-  chapters,
-}: {
-  filters: AnalyticsFilters;
-  chapters: { id: string; title: string }[];
-}) {
+function matches(search: string, ...values: (string | number | null | undefined)[]) {
+  if (!search) return true;
+  const needle = search.toLowerCase();
+  return values.some(
+    (value) =>
+      value !== null &&
+      value !== undefined &&
+      String(value).toLowerCase().includes(needle),
+  );
+}
+
+function AnalyticsSearchForm({ search }: { search: string }) {
   return (
     <form
       method="get"
       className="grid gap-4 rounded-lg border bg-card p-4 sm:grid-cols-2 xl:grid-cols-4"
     >
-      <label className="space-y-1 text-sm">
-        <span className="font-medium">Assessment type</span>
-        <select
-          name="assessmentType"
-          defaultValue={filters.assessmentType ?? "all"}
-          className="w-full rounded-md border bg-background px-3 py-2"
-        >
-          <option value="all">All</option>
-          <option value="pre">Pre-Assessment</option>
-          <option value="post">Post-Assessment</option>
-        </select>
-      </label>
-
-      <label className="space-y-1 text-sm">
-        <span className="font-medium">Chapter</span>
-        <select
-          name="chapterId"
-          defaultValue={filters.chapterId ?? ""}
-          className="w-full rounded-md border bg-background px-3 py-2"
-        >
-          <option value="">All chapters</option>
-          {chapters.map((chapter) => (
-            <option key={chapter.id} value={chapter.id}>
-              {chapter.title}
-            </option>
-          ))}
-        </select>
-      </label>
-
-      <label className="space-y-1 text-sm">
-        <span className="font-medium">Date from</span>
+      <label className="space-y-1 text-sm sm:col-span-2 xl:col-span-4">
+        <span className="font-medium">Search</span>
         <input
-          type="date"
-          name="dateFrom"
-          defaultValue={filters.dateFrom ?? ""}
-          className="w-full rounded-md border bg-background px-3 py-2"
-        />
-      </label>
-
-      <label className="space-y-1 text-sm">
-        <span className="font-medium">Date to</span>
-        <input
-          type="date"
-          name="dateTo"
-          defaultValue={filters.dateTo ?? ""}
+          type="search"
+          name="q"
+          defaultValue={search}
+          placeholder="Search learners, chapters, or questions"
           className="w-full rounded-md border bg-background px-3 py-2"
         />
       </label>
@@ -103,13 +70,13 @@ function AnalyticsFiltersForm({
           type="submit"
           className="inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
-          Apply filters
+          Search
         </button>
         <a
           href="/admin/analytics"
           className="inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
-          Clear filters
+          Clear search
         </a>
       </div>
     </form>
@@ -118,21 +85,29 @@ function AnalyticsFiltersForm({
 
 interface AnalyticsWorkspaceProps {
   summary: AdminAnalyticsSummary;
+  search?: string;
 }
 
-export function AnalyticsWorkspace({ summary }: AnalyticsWorkspaceProps) {
+export function AnalyticsWorkspace({
+  summary,
+  search = "",
+}: AnalyticsWorkspaceProps) {
   const { overview, chapters, learners, assessments, questions, dropOffs } =
     summary;
 
+  const filteredChapters = chapters.filter((chapter) =>
+    matches(search, chapter.title, chapter.chapterNumber),
+  );
+  const filteredLearners = learners.filter((learner) =>
+    matches(search, learner.displayLabel, learner.currentChapterTitle),
+  );
+  const filteredQuestions = questions.filter((question) =>
+    matches(search, question.prompt, question.assessmentTitle),
+  );
+
   return (
     <div className="space-y-10">
-      <AnalyticsFiltersForm
-        filters={summary.filters}
-        chapters={chapters.map((chapter) => ({
-          id: chapter.chapterId,
-          title: chapter.title,
-        }))}
-      />
+      <AnalyticsSearchForm search={search} />
 
       {!summary.hasActivityData && overview.totalLearners === 0 ? (
         <section className="rounded-lg border border-dashed bg-card p-8 text-center">
@@ -171,36 +146,42 @@ export function AnalyticsWorkspace({ summary }: AnalyticsWorkspaceProps) {
 
       <section className="space-y-4">
         <h2 className="text-lg font-semibold">Chapter progress</h2>
-        <div className="overflow-x-auto rounded-lg border">
-          <table className="min-w-full text-sm">
-            <thead className="bg-muted/40 text-left">
-              <tr>
-                <th className="px-4 py-3 font-medium">Chapter</th>
-                <th className="px-4 py-3 font-medium">Started</th>
-                <th className="px-4 py-3 font-medium">Completed</th>
-                <th className="px-4 py-3 font-medium">Completion rate</th>
-              </tr>
-            </thead>
-            <tbody>
-              {chapters.map((chapter) => (
-                <tr key={chapter.chapterId} className="border-t">
-                  <td className="px-4 py-3">
-                    {chapter.chapterNumber}. {chapter.title}
-                  </td>
-                  <td className="px-4 py-3 tabular-nums">
-                    {chapter.startedLearners}
-                  </td>
-                  <td className="px-4 py-3 tabular-nums">
-                    {chapter.completedLearners}
-                  </td>
-                  <td className="px-4 py-3 tabular-nums">
-                    {formatRate(chapter.completionRate)}
-                  </td>
+        {filteredChapters.length === 0 ? (
+          <p className="text-sm text-muted-foreground">
+            No chapters match your search.
+          </p>
+        ) : (
+          <div className="overflow-x-auto rounded-lg border">
+            <table className="min-w-full text-sm">
+              <thead className="bg-muted/40 text-left">
+                <tr>
+                  <th className="px-4 py-3 font-medium">Chapter</th>
+                  <th className="px-4 py-3 font-medium">Started</th>
+                  <th className="px-4 py-3 font-medium">Completed</th>
+                  <th className="px-4 py-3 font-medium">Completion rate</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {filteredChapters.map((chapter) => (
+                  <tr key={chapter.chapterId} className="border-t">
+                    <td className="px-4 py-3">
+                      {chapter.chapterNumber}. {chapter.title}
+                    </td>
+                    <td className="px-4 py-3 tabular-nums">
+                      {chapter.startedLearners}
+                    </td>
+                    <td className="px-4 py-3 tabular-nums">
+                      {chapter.completedLearners}
+                    </td>
+                    <td className="px-4 py-3 tabular-nums">
+                      {formatRate(chapter.completionRate)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </section>
 
       {dropOffs.length > 0 ? (
@@ -358,8 +339,12 @@ export function AnalyticsWorkspace({ summary }: AnalyticsWorkspaceProps) {
 
       <section className="space-y-4">
         <h2 className="text-lg font-semibold">Learners</h2>
-        {learners.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No learner records available.</p>
+        {filteredLearners.length === 0 ? (
+          <p className="text-sm text-muted-foreground">
+            {search
+              ? "No learners match your search."
+              : "No learner records available."}
+          </p>
         ) : (
           <div className="overflow-x-auto rounded-lg border">
             <table className="min-w-full text-sm">
@@ -373,7 +358,7 @@ export function AnalyticsWorkspace({ summary }: AnalyticsWorkspaceProps) {
                 </tr>
               </thead>
               <tbody>
-                {learners.map((learner) => (
+                {filteredLearners.map((learner) => (
                   <tr key={learner.learnerId} className="border-t">
                     <td className="px-4 py-3">{learner.displayLabel}</td>
                     <td className="px-4 py-3 tabular-nums">
@@ -397,9 +382,11 @@ export function AnalyticsWorkspace({ summary }: AnalyticsWorkspaceProps) {
 
       <section className="space-y-4">
         <h2 className="text-lg font-semibold">Question performance</h2>
-        {questions.length === 0 ? (
+        {filteredQuestions.length === 0 ? (
           <p className="text-sm text-muted-foreground">
-            No question responses recorded for the selected filters.
+            {search
+              ? "No questions match your search."
+              : "No question responses recorded."}
           </p>
         ) : (
           <div className="overflow-x-auto rounded-lg border">
@@ -415,7 +402,7 @@ export function AnalyticsWorkspace({ summary }: AnalyticsWorkspaceProps) {
                 </tr>
               </thead>
               <tbody>
-                {questions.map((question) => (
+                {filteredQuestions.map((question) => (
                   <tr key={question.questionId} className="border-t">
                     <td className="px-4 py-3">{question.assessmentTitle}</td>
                     <td className="max-w-md px-4 py-3">{question.prompt}</td>
