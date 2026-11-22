@@ -45,6 +45,10 @@ export interface LearnerProgressRow {
   currentChapterTitle: string | null;
   preAssessmentStatus: AssessmentParticipationStatus;
   postAssessmentStatus: AssessmentParticipationStatus;
+  /** Latest completed pre-assessment score (percent). Null if none. */
+  preAssessmentScore?: number | null;
+  /** Latest completed post-assessment score (percent). Null if none. */
+  postAssessmentScore?: number | null;
 }
 
 export interface AssessmentAnalyticsMetrics {
