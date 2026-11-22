@@ -37,7 +37,16 @@ function formatScore(value: number | null): string {
   return value === null ? "No data" : `${value}%`;
 }
 
-function matches(search: string, ...values: (string | number | null | undefined)[]) {
+function formatDiff(pre: number | null, post: number | null): string {
+  if (pre === null || post === null) return "—";
+  const diff = Math.round((post - pre) * 100) / 100;
+  return `${diff > 0 ? "+" : ""}${diff} pts`;
+}
+
+function matches(
+  search: string,
+  ...values: (string | number | null | undefined)[]
+) {
   if (!search) return true;
   const needle = search.toLowerCase();
   return values.some(
@@ -46,6 +55,27 @@ function matches(search: string, ...values: (string | number | null | undefined)
       value !== undefined &&
       String(value).toLowerCase().includes(needle),
   );
+}
+
+/**
+ * Optional per-learner score fields. Declared locally so this file compiles
+ * even before the summary type is updated. Once `preAssessmentScore` and
+ * `postAssessmentScore` exist on the learner type, these just read them.
+ */
+type LearnerScoreFields = {
+  preAssessmentScore?: number | null;
+  postAssessmentScore?: number | null;
+};
+
+function getScores(learner: object): {
+  pre: number | null;
+  post: number | null;
+} {
+  const scores = learner as LearnerScoreFields;
+  return {
+    pre: scores.preAssessmentScore ?? null,
+    post: scores.postAssessmentScore ?? null,
+  };
 }
 
 function AnalyticsSearchForm({ search }: { search: string }) {
@@ -346,37 +376,127 @@ export function AnalyticsWorkspace({
               : "No learner records available."}
           </p>
         ) : (
-          <div className="overflow-x-auto rounded-lg border">
-            <table className="min-w-full text-sm">
-              <thead className="bg-muted/40 text-left">
-                <tr>
-                  <th className="px-4 py-3 font-medium">Learner</th>
-                  <th className="px-4 py-3 font-medium">Progress</th>
-                  <th className="px-4 py-3 font-medium">Current chapter</th>
-                  <th className="px-4 py-3 font-medium">Pre</th>
-                  <th className="px-4 py-3 font-medium">Post</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredLearners.map((learner) => (
-                  <tr key={learner.learnerId} className="border-t">
-                    <td className="px-4 py-3">{learner.displayLabel}</td>
-                    <td className="px-4 py-3 tabular-nums">
-                      {learner.chaptersCompleted}/{learner.totalChapters}
-                      {learner.progressPercentage !== null
-                        ? ` (${learner.progressPercentage}%)`
-                        : ""}
-                    </td>
-                    <td className="px-4 py-3">
-                      {learner.currentChapterTitle ?? "—"}
-                    </td>
-                    <td className="px-4 py-3">{learner.preAssessmentStatus}</td>
-                    <td className="px-4 py-3">{learner.postAssessmentStatus}</td>
+          <>
+            {search ? (
+              <div className="grid gap-4 lg:grid-cols-2">
+                {filteredLearners.map((learner) => {
+                  const { pre, post } = getScores(learner);
+                  const progress = learner.progressPercentage ?? 0;
+
+                  return (
+                    <div
+                      key={learner.learnerId}
+                      className="rounded-lg border bg-card p-4"
+                    >
+                      <h3 className="font-medium">{learner.displayLabel}</h3>
+
+                      <div className="mt-3">
+                        <div className="mb-1 flex justify-between text-xs">
+                          <span>
+                            Progress: {learner.chaptersCompleted}/
+                            {learner.totalChapters}
+                          </span>
+                          <span className="tabular-nums">{progress}%</span>
+                        </div>
+                        <div className="h-2 rounded-full bg-muted">
+                          <div
+                            className="h-2 rounded-full bg-primary"
+                            style={{ width: `${Math.min(progress, 100)}%` }}
+                          />
+                        </div>
+                        <p className="mt-1 text-xs text-muted-foreground">
+                          Current chapter: {learner.currentChapterTitle ?? "—"}
+                        </p>
+                      </div>
+
+                      <dl className="mt-4 grid grid-cols-3 gap-3">
+                        <div>
+                          <dt className="text-xs uppercase text-muted-foreground">
+                            Pre-test
+                          </dt>
+                          <dd className="mt-1 text-xl font-semibold tabular-nums">
+                            {formatScore(pre)}
+                          </dd>
+                          <dd className="text-xs text-muted-foreground">
+                            {learner.preAssessmentStatus}
+                          </dd>
+                        </div>
+                        <div>
+                          <dt className="text-xs uppercase text-muted-foreground">
+                            Post-test
+                          </dt>
+                          <dd className="mt-1 text-xl font-semibold tabular-nums">
+                            {formatScore(post)}
+                          </dd>
+                          <dd className="text-xs text-muted-foreground">
+                            {learner.postAssessmentStatus}
+                          </dd>
+                        </div>
+                        <div>
+                          <dt className="text-xs uppercase text-muted-foreground">
+                            Difference
+                          </dt>
+                          <dd className="mt-1 text-xl font-semibold tabular-nums">
+                            {formatDiff(pre, post)}
+                          </dd>
+                        </div>
+                      </dl>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : null}
+
+            <div className="overflow-x-auto rounded-lg border">
+              <table className="min-w-full text-sm">
+                <thead className="bg-muted/40 text-left">
+                  <tr>
+                    <th className="px-4 py-3 font-medium">Learner</th>
+                    <th className="px-4 py-3 font-medium">Progress</th>
+                    <th className="px-4 py-3 font-medium">Current chapter</th>
+                    <th className="px-4 py-3 font-medium">Pre score</th>
+                    <th className="px-4 py-3 font-medium">Post score</th>
+                    <th className="px-4 py-3 font-medium">Difference</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {filteredLearners.map((learner) => {
+                    const { pre, post } = getScores(learner);
+
+                    return (
+                      <tr key={learner.learnerId} className="border-t">
+                        <td className="px-4 py-3">{learner.displayLabel}</td>
+                        <td className="px-4 py-3 tabular-nums">
+                          {learner.chaptersCompleted}/{learner.totalChapters}
+                          {learner.progressPercentage !== null
+                            ? ` (${learner.progressPercentage}%)`
+                            : ""}
+                        </td>
+                        <td className="px-4 py-3">
+                          {learner.currentChapterTitle ?? "—"}
+                        </td>
+                        <td className="px-4 py-3 tabular-nums">
+                          {formatScore(pre)}
+                          <span className="block text-xs text-muted-foreground">
+                            {learner.preAssessmentStatus}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 tabular-nums">
+                          {formatScore(post)}
+                          <span className="block text-xs text-muted-foreground">
+                            {learner.postAssessmentStatus}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 tabular-nums">
+                          {formatDiff(pre, post)}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </section>
 
