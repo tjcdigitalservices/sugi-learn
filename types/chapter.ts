@@ -22,6 +22,10 @@ export interface ChapterSummary {
 /** Full chapter record for the chapter engine. */
 export interface Chapter extends ChapterSummary {
   summary: string | null;
+  /** Optional Hiligaynon translations (database values override inline text). */
+  titleHil?: string | null;
+  subtitleHil?: string | null;
+  summaryHil?: string | null;
   sections: ChapterSection[];
   characters: Character[];
   learningPoints: LearningPoint[];
