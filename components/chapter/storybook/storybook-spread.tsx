@@ -35,13 +35,106 @@ import { resolveMediaUrl } from "@/lib/media/resolve-media-url";
 type PagedLeaf = "text" | "video";
 
 /**
- * Optional Hiligaynon fields. Until these exist on the Chapter type/data,
- * the English text is used as fallback.
+ * Optional Hiligaynon fields from the database. When present they take
+ * priority over the inline translations below.
  */
 type ChapterTranslations = {
   titleHil?: string | null;
   subtitleHil?: string | null;
   summaryHil?: string | null;
+};
+
+type HilText = {
+  title?: string;
+  subtitle?: string;
+  summary?: string;
+};
+
+/**
+ * Inline Hiligaynon text. Key = chapter slug (chapter.id).
+ * Entries are ordered by chapter number (1–13).
+ * Chapters without an entry fall back to English.
+ * Draft translations: have a Hiligaynon speaker review before publishing.
+ */
+const INLINE_HIL: Record<string, HilText> = {
+  // Chapter 1 of 13
+  "tikum-kadlum": {
+    subtitle: "Suguidanon (Epiko) sang Panay Libro I",
+    summary:
+      "Nagapangayam si Datu Paiburong upod sang iya utod nga si Dumaraog kag sang ila pambihira nga ido nga si Tikum Kadlum. Makapila ka beses nga ginatawag sang ido ang ila pagtalupangod sa isa ka pihak nga kawayan, apang indi naintindihan ni Paiburong ang pasidaan kag ginputol niya ini. Ang kawayan iya ni Makabagting, isa ka mapintas nga nagakaon sang tawo, kag sang iya utod nga ermitanya nga si Amburukay. Nagsulod si Paiburong sa teritoryo sang iban nga linalang kag ginguba niya ang butang nga indi iya. Pagkatapos sang pagpakigsabot, nagsugot ang mga tag-iya nga tanggapon ang mga anak ni Paiburong, si Matan-ayon kag Saranggaon, subong bayad-pinsala. Ginsulayan ni Paiburong kag ni Bulawanon nga itago ang mga bata nga babayi paagi sa pagpahid sang uling sa ila, apang nakita ni Makabagting ang paglimbong.",
+  },
+  // Chapter 2 of 13
+  amburukay: {
+    subtitle: "Suguidanon (Epiko) sang Panay Libro II",
+    summary:
+      "Ginpadaku ni Amburukay si Matan-ayon kag Saranggaon subong iya kaugalingon nga mga anak nga babayi, kag gintipigan niya sila sa isa ka bulawan nga lawak subong mga binukot. Nagsaad siya sang pambihira nga saad: ang iya ginpadaku nga mga anak magaasawa sa bisan sin-o nga makasarang sa pagpangawat sang iya bulawan nga bulbol. Kon maputol ang isa ka kuwerdas sang instrumento sa musika ni Labaw Donggon, nahibaluan niya nga ang buhok ni Amburukay mahimo nga ipuli sini. Gin-engkanto niya si Amburukay agod matulog kag ginputol ang buhok, apang nadiskobrehan niya nga ang pagkuha sini nagbugkos sa iya sa kondisyon ni Amburukay. Sa pagtuo nga kinahanglan niya pangasawahon ang makahadlok nga ermitanya mismo, nagapalapit siya sa kasal nga indi gusto. Apang imbes, ginpresentar ni Amburukay ang mga anak nga iya ginpadaku kag ginhukman niya nga takos si Labaw Donggon nga mangasawa sa ila.",
+  },
+  // Chapter 3 of 13
+  "derikaryong-pada": {
+    subtitle: "Suguidanon (Epiko) sang Panay Libro III",
+    summary:
+      "Antes pa matawo si Matan-ayon, gin-saaran na siya nga pangasawahon ni Labaw Donggon. Ang isa ka bulawan nga medalyon gintugyan subong tanda sang kasugtanan. Sang nag-edad na siya sang pag-asawa, ginapangita man siya ni Sinagnayan. Konektado siya kay Paglambuhan, nga nagkuha sang kabilin nga paraw sang mga ginikanan ni Matan-ayon. Ang pagbawi sang sakayan nangin kondisyon agod mapamatud-an sang isa ka manugpangulitawo ang iya katarungan nga mangasawa sa iya. Naipit si Labaw Donggon sa tunga sang una nga saad kag sang bag-o nga pagsulay. Ang pag-asawa diri indi lang pribado nga gugma: ginahiusa sini ang mga pamilya, manggad, dungog, mga kabilin nga butang, kag mga saad nga ginhimo antes pa mag-edad ang mga nahanungod nga tawo agod makahimo sang desisyon para sa ila kaugalingon.",
+  },
+  // Chapter 4 of 13
+  balanakon: {
+    subtitle: "Suguidanon (Epiko) sang Panay Libro VII",
+    summary:
+      "Si Balanakon isa ka dalagangan, isa ka tawo nga may pambihira nga likas nga gahum. Gin-aghat siya ni Taghuy nga sumukol kay Labaw Donggon kag mangita kay Matan-ayon. Sa iya paglakat, gin-untat si Balanakon ni Sarandihon, ang utod ni Labaw Donggon, apang indi niya mapierde si Balanakon. Gintawag ni Taghuy si Labaw Donggon, apang bisan ang nagkaisa nga kusog sang mga magutod indi pa gihapon igo. Natapos lang ang inaway kon mamagitan si Laon Sina. Matuod ang gahum ni Balanakon, kag ang kadaugan indi makuha paagi sa kusog lang; kinahanglan may tagapamagitan nga may awtoridad nga magpahiuli sang kahusayan antes pa maguba sang inaway ang kaangtanan sang mga nagaaway.",
+  },
+  // Chapter 5 of 13
+  kalampay: {
+    subtitle: "Suguidanon (Epiko) sang Panay Libro V",
+    summary:
+      "Si Masangladon, isa ka linalang nga may pambihira nga gahum nga may kaangtanan sa idalom nga kalibutan, nagahandum kay Matan-ayon. Ginbag-o niya ang isa ka kalampay, ukon alimango, nangin isla nga puno sang mga kahoy nga may bunga. Ginpabatyag kay Matan-ayon ang indi mapatas nga kainit kag nagkadto siya sa isla agod maligo. Samtang nagakuha sang bunga, indi niya hibaloan nga ginadala siya padulong sa panibyungan, ang tuburan sang tubig nga nagasulog sa idalom nga kalibutan. Ginpahibalo ni Taghuy si Labaw Donggon. Nagtinguha si Labaw kag Paubare nga magsunod sa iya sa idalom, apang ginpugngan sang dako nga alimango ang ila agi. Nagsisid si Katnub Magkaruan sa idalom sini kag nagbuhat sang bukas sa mga lutahan sini diin makaagi si Labaw Donggon. Indi madaug ni Labaw Donggon si Masangladon. Si Luyong Kabig, utod ni Laon Sina kag hukom sa idalom nga kalibutan, kinahanglan mamagitan sang kasugtanan nga nagapahanugot kay Matan-ayon nga makabalik.",
+  },
+  // Chapter 6 of 13
+  pahagunong: {
+    subtitle: "Suguidanon (Epiko) sang Panay Libro IV",
+    summary:
+      "Nagapangayo si Labaw Donggon sang pagtugot sa iya mga asawa, si Matan-ayon kag si Padilagong Bulan, nga maglayag. Nagsugot si Matan-ayon, samtang si Padilagong Bulan nagapilit nga magduyog sa iya. Sang nagdumili siya, ginhatagan niya ini sang apog kag buyo nga ginhimo halin sa tul-an sang dako nga pawikan. Sang makakaon siya sini, nangin pawikan siya. Nagsunod si Matan-ayon kag ang iya utod nga si Paubare sa ginbag-o nga bantugan. Nakita ni Pahagunong si Matan-ayon nga naligo, nagpangandoy sa iya, kag nadaug niya si Paubare sa inaway. Wala magpabilin si Matan-ayon subong premyo nga walay kaya: ginbag-o niya ang iya kaugalingon nangin lalaki kag nagsulod sa inaway agod buligan ang iya utod. Sa katapusan, ginpahiuli ni Laon Sina si Labaw Donggon kag namagitan sa inaway.",
+  },
+  // Chapter 7 of 13
+  sinagnayan: {
+    subtitle: "Suguidanon (Epiko) sang Panay Libro VI",
+    summary:
+      "Gin-aghat ni Matan-ayon si Labaw Donggon nga sukulon si Sinagnayan agod madala si Pinailog sa Pinggan—ang asawa ni Sinagnayan kag utod ni Matan-ayon—sa panimalay ni Labaw Donggon. Antes makaabot kay Sinagnayan, nakig-away si Labaw Donggon kay Sarandihon nga wala nila mahibaluan nga mga magutod sila. Namagitan si Laon Sina, ginpahayag ang ila kaangtanan, kag ginpaathag nga ang kusog sang kabuhi ni Sinagnayan natago sa kabhang sang isa ka itlog sa sulod sang tagiposoon sang isa ka leon nga ginabantayan sang iya iloy nga si Minayunmon. Ginbag-o ni Sarandihon ang iya kaugalingon nangin si Sinagnayan, gingamit ang isa ka mahika nga taghuy agod pahamtangon si Minayunmon, ginpatay ang leon, kag ginkuha ang kabhang sang itlog. Mapierde na dayon ni Labaw Donggon si Sinagnayan kag madala niya si Pinailog sa balay.",
+  },
+  // Chapter 8 of 13
+  "humadapnon-tarangban": {
+    subtitle: "Suguidanon (Epiko) sang Panay Libro VIII, Bolyum 1",
+    summary:
+      "Ang Humadapnon amo ang pinakamahaba nga titulo sa serye kag nagakuha sang apat ka nalathala nga bolyum. Ang iya asoy nagasunod sa pagpangita ni Humadapnon sang nagakabagay nga asawa, sa iya pagpangulitawo kay Nagmalitong Yawa—nga kanunay ginatawag nga Mali—kag sa mga saad, pagpakigsangka, paghimulag, kag pagpasag-uli nga nagasunod. Indi lang si Mali ang babayi nga ginapangita ni Humadapnon. Sa sini nga mga yugto, nagabag-o siya sang iya dagway, nagahimo sang ritwal kag mahika nga mga buhat, nagaluwas kay Humadapnon, nagabulig sa iya sa pagdaug sa mga kaaway, nagahimo sang estratehiko nga mga desisyon, kag nagasabat sa pagpakaulaw kag pagtraidor.",
+  },
+  // Chapter 9 of 13
+  "humadapnon-pagbalukat-ka-biday": {
+    subtitle: "Suguidanon (Epiko) sang Panay Libro VIII, Bolyum 2",
+    summary:
+      "Agod mapadayon ang iya pagpangulitawo, kinahanglan bawion ni Humadapnon ang kabilin nga sakayan nga nagaserbi subong tuos ni Mali, ukon tanda sang pagkasugot. Ang sakayan yara kay Paglambuhan. Nakig-away si Humadapnon kay Paglambuhan kag Sumagulong apang indi niya sila madaug nga wala sing buligan. Namagitan si Mali, ginlibang niya si Paglambuhan agod masugatan ni Humadapnon. Dayon ginapangayo sang kustombre nga magpabilin si Humadapnon upod sa asawa sang napierde. Sang nagdugay siya sang sobra sa ginhandum, nagselos si Mali. Ginkuha niya ang bulawan nga sakayan ni Humadapnon kag ang nabawi nga kabilin nga sakayan kag nagpanaw, ginbayaan siya sa isa ka bulawan nga bukag. Ginsulayan ni Taghuy nga pasag-uron sila. Sang ulihi ginhangkat ni Humadapnon ang amay ni Mali, apang ang pagsumpakil ginbag-o ang kahulugan subong pagsulay sang kusog sang manugpangulitawo.",
+  },
+  // Chapter 10 of 13
+  "humadapnon-hungaw": {
+    subtitle: "Suguidanon (Epiko) sang Panay Libro VIII, Bolyum 3",
+    summary:
+      "Sang mabawi na ang biday nga nagaserbi subong tanda sang pagkasugot ni Mali, pormal nga ginpangayo ni Humadapnon ang iya kamot. May nagbangon nga una nga indi pagkaintindihan kay Labaw Donggon, apang ginsugata si Humadapnon sang mga paryente ni Mali. Ginhimo ang ila kasal kag gindaluhan sang mga ginatahod nga bisita. Ang bolyum nagahatag sang espesyal nga atensyon sa seremonya sang kasal nga hungaw kag sa pagsugata sang bisita, kaangtanan sang pamilya, pag-asawa, dungog, kag sa supernatural.",
+  },
+  // Chapter 11 of 13
+  "humadapnon-ginlawan": {
+    subtitle: "Suguidanon (Epiko) sang Panay Libro VIII, Bolyum 4",
+    summary:
+      "Nagbalik sa dagat sanday Humadapnon kag Dumalapdap agod mangita sang nagakabagay nga mapangasawa para kay Dumalapdap. Sa ila pagkadto, nagaplano si Taghoy upod kanday Paglambuhan kag Sumagulong nga kuhaon si Mali kay Humadapnon. Ginpasugot ni Sumagulong ang mga paryente ni Mali nga tanggapon ang pagpares, kag nagsugod ang pagkaon sa kasal. Nagbalik si Humadapnon sa tunga sang selebrasyon, kag ang inaway nagdul-ong sa kamatayon ni Mali. May kaguol, ginpabalik niya siya sa kabuhi kag nagpangayo sang patawad kay Mali kag sa iya mga ginikanan. Apang ang pagbangon halin sa kamatayon wala nagpapas sang pagpakaulaw kag kaakig, kag naghimulag ang mag-asawa. Ang ginlawan nagapatuhoy sa publiko nga silot ukon pagsingil nga ginapahamtang kon ginlapas ang isa ka tuos.",
+  },
+  // Chapter 12 of 13
+  alayaw: {
+    subtitle: "Suguidanon (Epiko) sang Panay Libro IX",
+    summary:
+      "Luyag makita ni Humadapnon si Mali, apang nakakulong siya sa burukutan sang iya pamilya. Ginsilingan ni Laon Sina si Humadapnon nga magtanom sang kahoy nga alayaw sa bakuran sang mga ginikanan ni Mali. Ginapaabot nga ang mahamot nga mga bulak sini magaakit kay Mali nga magguwa sa iya kulungan kag magkuha sang mga bulak, nga nagapahanugot kay Humadapnon nga makita ang babayi nga ginapangandoy niya nga pangulitawuhon. Ang mahamot nga kahoy nangin tagapamagitan nga nagalapas sang utlanan nga indi malapasan sang manugpangulitawo.",
+  },
+  // Chapter 13 of 13
+  nagbuhis: {
+    subtitle: "Suguidanon (Epiko) sang Panay Libro X",
+    summary:
+      "Nagmasakit si Matan-ayon kag nangin tuman kapayat. Ginpatawag si Ginduluman agod himuon ang mga seremonya nga kinahanglanon sa iya pagkaayo. Luyag man ni Matan-ayon nga mas hingpit nga mapasulod si Mali sa kaalam sang ritwal agod mapanubli ni Mali ang mga gahum kag isa ka espiritu nga manugbantay. Sang magkadto ang komunidad sa baybayon para sa seremonya, ginpugngan ni Humadapnon si Mali nga magtambong. Sang ulihi nahibaluan niya nga nagapangulitawo si Humadapnon sa isa pa ka babayi nga nakakulong. Nagsabat si Mali paagi sa paglimbong kag mahika, nagbuhat sang isa ka ginmahika nga ulunan nga puli kag nagpanaw sa bulawan nga bukag samtang ang mahika nga puli nagapadayon sang pagpasundayag sa idalom.",
+  },
 };
 
 interface StorybookSpreadProps {
@@ -225,14 +318,18 @@ export function StorybookSpread({
   // Language toggle (English / Hiligaynon)
   const [language, setLanguage] = useState<Language>("en");
   const translations = chapter as Chapter & ChapterTranslations;
+  const inlineHil: HilText | undefined = INLINE_HIL[chapter.id];
   const isHil = language === "hil";
   const displayTitle =
-    (isHil && translations.titleHil?.trim()) || chapter.title;
+    (isHil && (translations.titleHil?.trim() || inlineHil?.title)) ||
+    chapter.title;
   const displaySubtitle =
-    (isHil && translations.subtitleHil?.trim()) || chapter.subtitle;
+    (isHil && (translations.subtitleHil?.trim() || inlineHil?.subtitle)) ||
+    chapter.subtitle;
   const displaySummary =
-    (isHil && translations.summaryHil?.trim()) || chapter.summary;
-  const aboutLabel = isHil ? "Tuhoy sa sini nga kapitulo" : "About this chapter";
+    (isHil && (translations.summaryHil?.trim() || inlineHil?.summary)) ||
+    chapter.summary;
+  const aboutLabel = "About this chapter";
 
   const setRootRef = (node: HTMLDivElement | null) => {
     localRootRef.current = node;
