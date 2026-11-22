@@ -66,6 +66,9 @@ export interface Database {
           title: string;
           subtitle: string | null;
           summary: string | null;
+          title_hil: string | null;
+          subtitle_hil: string | null;
+          summary_hil: string | null;
           review_status: ReviewStatus;
           is_active: boolean;
           cover_media_asset_id: string | null;
@@ -79,6 +82,9 @@ export interface Database {
           title: string;
           subtitle?: string | null;
           summary?: string | null;
+          title_hil?: string | null;
+          subtitle_hil?: string | null;
+          summary_hil?: string | null;
           review_status?: ReviewStatus;
           is_active?: boolean;
           cover_media_asset_id?: string | null;
@@ -92,6 +98,9 @@ export interface Database {
           title?: string;
           subtitle?: string | null;
           summary?: string | null;
+          title_hil?: string | null;
+          subtitle_hil?: string | null;
+          summary_hil?: string | null;
           review_status?: ReviewStatus;
           is_active?: boolean;
           cover_media_asset_id?: string | null;
