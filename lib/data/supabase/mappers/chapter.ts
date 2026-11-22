@@ -182,6 +182,9 @@ export function mapChapterRecord(params: {
   return {
     ...summary,
     summary: params.chapter.summary,
+    titleHil: params.chapter.title_hil ?? null,
+    subtitleHil: params.chapter.subtitle_hil ?? null,
+    summaryHil: params.chapter.summary_hil ?? null,
     sections: params.sections.map((section) =>
       mapChapterSection(section, context),
     ),
