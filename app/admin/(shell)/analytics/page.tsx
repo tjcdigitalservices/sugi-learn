@@ -5,6 +5,7 @@ import type { AnalyticsFilters } from "@/types/admin-analytics";
 
 interface AdminAnalyticsPageProps {
   searchParams: Promise<{
+    q?: string;
     assessmentType?: string;
     chapterId?: string;
     dateFrom?: string;
@@ -35,6 +36,7 @@ export default async function AdminAnalyticsPage({
 }: AdminAnalyticsPageProps) {
   const params = await searchParams;
   const filters = parseFilters(params);
+  const search = (params.q ?? "").trim();
 
   let summary;
   try {
@@ -49,7 +51,7 @@ export default async function AdminAnalyticsPage({
         title="Admin Analytics"
         description="Participation, progress, and assessment metrics."
       />
-      <AnalyticsWorkspace summary={summary} />
+      <AnalyticsWorkspace summary={summary} search={search} />
     </div>
   );
 }
