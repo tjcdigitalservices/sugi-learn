@@ -11,16 +11,37 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createClient } from "@supabase/supabase-js";
 
+function getEnv(name) {
+  const value = process.env[name];
+  return value && value.trim() ? value.trim() : undefined;
+}
+
+function getSupabaseUrl() {
+  return getEnv("SUPABASE_URL") || getEnv("NEXT_PUBLIC_SUPABASE_URL");
+}
+
+function getPublishableOrAnonKey() {
+  return (
+    getEnv("SUPABASE_PUBLISHABLE_KEY") ||
+    getEnv("NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY") ||
+    getEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY")
+  );
+}
+
+function getSecretOrServiceRoleKey() {
+  return getEnv("SUPABASE_SECRET_KEY") || getEnv("SUPABASE_SERVICE_ROLE_KEY");
+}
+
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const bank = JSON.parse(
   readFileSync(join(root, "lib/assessment/official-question-bank.json"), "utf8"),
 );
 
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const url = getSupabaseUrl();
+const serviceKey = getSecretOrServiceRoleKey();
 
 if (!url || !serviceKey) {
-  console.error("Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY.");
+  console.error("Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SECRET_KEY (or legacy SUPABASE_SERVICE_ROLE_KEY).");
   process.exit(1);
 }
 
@@ -136,6 +157,7 @@ async function seedKind(kind) {
     assessment_id: assessmentId,
     prompt: q.prompt,
     prompt_hiligaynon: q.promptHiligaynon?.trim() || null,
+    prompt_image_path: q.promptImagePath?.trim() || null,
     sort_order: index + 1,
     review_status: "approved",
     chapter_id: null,

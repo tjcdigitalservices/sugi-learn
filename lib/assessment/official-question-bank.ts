@@ -8,6 +8,7 @@ type BankQuestion = {
   id: string;
   prompt: string;
   promptHiligaynon?: string | null;
+  promptImagePath?: string | null;
   correctIndex: number;
   options: string[];
   optionsHiligaynon?: Array<string | null> | null;
@@ -46,6 +47,7 @@ function toAssessmentQuestions(
       chapterId: null,
       prompt: question.prompt,
       promptHiligaynon: question.promptHiligaynon?.trim() || null,
+      promptImagePath: question.promptImagePath?.trim() || null,
       options,
       correctOptionId: options[question.correctIndex]!.id,
       explanation: null,

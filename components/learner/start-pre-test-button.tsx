@@ -38,8 +38,12 @@ export function StartPreTestButton({
       router.push("/learn/onboarding");
       router.refresh();
       // Keep busy until navigation unmounts this button.
-    } catch {
-      setError("Unable to start right now. Please try again.");
+    } catch (error) {
+      const message =
+        error instanceof Error && error.message.trim()
+          ? error.message
+          : "Unable to start right now. Please try again.";
+      setError(message);
       setIsLoading(false);
     }
   }

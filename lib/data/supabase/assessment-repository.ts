@@ -139,6 +139,7 @@ async function mapQuestionsForAssessment(
         : null,
       prompt: question.prompt,
       promptHiligaynon: question.prompt_hiligaynon ?? null,
+      promptImagePath: question.prompt_image_path ?? null,
       options: questionOptions.map((option) => ({
         id: option.id,
         label: option.label,
@@ -706,6 +707,7 @@ export class SupabaseAssessmentRepository implements AssessmentRepository {
         assessment_id: assessmentId,
         prompt: input.prompt.trim(),
         prompt_hiligaynon: input.promptHiligaynon?.trim() || null,
+        prompt_image_path: input.promptImagePath?.trim() || null,
         explanation: input.explanation?.trim() || null,
         explanation_hiligaynon: input.explanationHiligaynon?.trim() || null,
         source_reference: input.sourceReference?.trim() || null,
@@ -752,6 +754,9 @@ export class SupabaseAssessmentRepository implements AssessmentRepository {
       .update({
         prompt: input.prompt.trim(),
         prompt_hiligaynon: input.promptHiligaynon?.trim() || null,
+        ...(input.promptImagePath !== undefined
+          ? { prompt_image_path: input.promptImagePath?.trim() || null }
+          : {}),
         explanation: input.explanation?.trim() || null,
         explanation_hiligaynon: input.explanationHiligaynon?.trim() || null,
         source_reference: input.sourceReference?.trim() || null,

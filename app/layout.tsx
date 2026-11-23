@@ -1,5 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Inter, Playfair_Display } from "next/font/google";
+import {
+  Caveat,
+  Cormorant_Garamond,
+  Inter,
+  Playfair_Display,
+} from "next/font/google";
 
 import "./globals.css";
 
@@ -20,6 +25,13 @@ const body = Inter({
   variable: "--font-body",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+});
+
+/** Assessment report script accent (loaded in root layout for Turbopack). */
+const script = Caveat({
+  variable: "--font-script",
+  subsets: ["latin"],
+  weight: ["600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -53,7 +65,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${display.variable} ${editorial.variable} ${body.variable} min-h-screen font-body antialiased`}
+        className={`${display.variable} ${editorial.variable} ${body.variable} ${script.variable} min-h-screen font-body antialiased`}
       >
         {children}
       </body>

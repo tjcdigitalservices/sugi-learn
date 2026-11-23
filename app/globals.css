@@ -83,6 +83,10 @@
     font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
   }
 
+  .font-script {
+    font-family: var(--font-script), ui-serif, Georgia, "Times New Roman", serif;
+  }
+
   .bg-sl-cream {
     background-color: var(--sl-cream);
   }

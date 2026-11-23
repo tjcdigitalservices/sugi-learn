@@ -356,6 +356,7 @@ export interface Database {
           chapter_id: string | null;
           prompt: string;
           prompt_hiligaynon: string | null;
+          prompt_image_path: string | null;
           explanation: string | null;
           explanation_hiligaynon: string | null;
           source_reference: string | null;
@@ -370,6 +371,7 @@ export interface Database {
           chapter_id?: string | null;
           prompt: string;
           prompt_hiligaynon?: string | null;
+          prompt_image_path?: string | null;
           explanation?: string | null;
           explanation_hiligaynon?: string | null;
           source_reference?: string | null;
@@ -384,6 +386,7 @@ export interface Database {
           chapter_id?: string | null;
           prompt?: string;
           prompt_hiligaynon?: string | null;
+          prompt_image_path?: string | null;
           explanation?: string | null;
           explanation_hiligaynon?: string | null;
           source_reference?: string | null;

@@ -274,6 +274,101 @@
           "Nagagamit sia sang pagpanglinlang kag salamangka kag may kaangtanan sa panublion sang kinaagman sa ritual paagi sa pamilya sang iya iloy",
           "Sia ang tag-iya sang ginpanubli nga biday"
         ]
+      },
+      {
+        "id": "b1000000-0000-4000-8000-000000000016",
+        "prompt": "Who is this character?",
+        "promptHiligaynon": "Sin-o ini nga karakter?",
+        "promptImagePath": "/assessment/characters/taghuy.png",
+        "correctIndex": 1,
+        "options": [
+          "Labaw Donggon",
+          "Taghuy",
+          "Paiburong",
+          "Masangladon"
+        ],
+        "optionsHiligaynon": [
+          "Labaw Donggon",
+          "Taghuy",
+          "Paiburong",
+          "Masangladon"
+        ]
+      },
+      {
+        "id": "b1000000-0000-4000-8000-000000000017",
+        "prompt": "Who is this character?",
+        "promptHiligaynon": "Sin-o ini nga karakter?",
+        "promptImagePath": "/assessment/characters/amburukay.png",
+        "correctIndex": 2,
+        "options": [
+          "Matan-ayon",
+          "Makabagting",
+          "Amburukay",
+          "Laon Sina"
+        ],
+        "optionsHiligaynon": [
+          "Matan-ayon",
+          "Makabagting",
+          "Amburukay",
+          "Laon Sina"
+        ]
+      },
+      {
+        "id": "b1000000-0000-4000-8000-000000000018",
+        "prompt": "Who is this character?",
+        "promptHiligaynon": "Sin-o ini nga karakter?",
+        "promptImagePath": "/assessment/characters/mali.png",
+        "correctIndex": 1,
+        "options": [
+          "Pinailog",
+          "Mali",
+          "Saranggaon",
+          "Padilagong Bulan"
+        ],
+        "optionsHiligaynon": [
+          "Pinailog",
+          "Mali",
+          "Saranggaon",
+          "Padilagong Bulan"
+        ]
+      },
+      {
+        "id": "b1000000-0000-4000-8000-000000000019",
+        "prompt": "Who is this character?",
+        "promptHiligaynon": "Sin-o ini nga karakter?",
+        "promptImagePath": "/assessment/characters/golden-lion.png?v=2",
+        "correctIndex": 1,
+        "options": [
+          "Tikum Kadlum",
+          "Golden Lion",
+          "Kalampay",
+          "Balanakon"
+        ],
+        "optionsHiligaynon": [
+          "Tikum Kadlum",
+          "Golden Lion",
+          "Kalampay",
+          "Balanakon"
+        ]
+      },
+      {
+        "id": "b1000000-0000-4000-8000-000000000020",
+        "prompt": "Who is this character?",
+        "promptHiligaynon": "Sin-o ini nga karakter?",
+        "promptImagePath": "/assessment/characters/humadapnon.png",
+        "correctIndex": 2,
+        "options": [
+          "Labaw Donggon",
+          "Dumalapdap",
+          "Humadapnon",
+          "Sinagnayan"
+        ],
+        "optionsHiligaynon": [
+          "Labaw Donggon",
+          "Dumalapdap",
+          "Humadapnon",
+          "Sinagnayan"
+        ]
       }
     ]
   },
@@ -551,6 +646,101 @@
           "Si Mali may kaangtanan sa panublion sang kinaagman sa ritual kag awtoridad paagi sa pamilya sang iya iloy",
           "Si Humadapnon lang ang makapanag-iya sang engkantado nga kinaagman",
           "Ang kinaagman sa ritual wala sang labot sa pamilya"
+        ]
+      },
+      {
+        "id": "c1000000-0000-4000-8000-000000000016",
+        "prompt": "Who is this character?",
+        "promptHiligaynon": "Sin-o ini nga karakter?",
+        "promptImagePath": "/assessment/characters/taghuy.png",
+        "correctIndex": 1,
+        "options": [
+          "Labaw Donggon",
+          "Taghuy",
+          "Paiburong",
+          "Masangladon"
+        ],
+        "optionsHiligaynon": [
+          "Labaw Donggon",
+          "Taghuy",
+          "Paiburong",
+          "Masangladon"
+        ]
+      },
+      {
+        "id": "c1000000-0000-4000-8000-000000000017",
+        "prompt": "Who is this character?",
+        "promptHiligaynon": "Sin-o ini nga karakter?",
+        "promptImagePath": "/assessment/characters/amburukay.png",
+        "correctIndex": 2,
+        "options": [
+          "Matan-ayon",
+          "Makabagting",
+          "Amburukay",
+          "Laon Sina"
+        ],
+        "optionsHiligaynon": [
+          "Matan-ayon",
+          "Makabagting",
+          "Amburukay",
+          "Laon Sina"
+        ]
+      },
+      {
+        "id": "c1000000-0000-4000-8000-000000000018",
+        "prompt": "Who is this character?",
+        "promptHiligaynon": "Sin-o ini nga karakter?",
+        "promptImagePath": "/assessment/characters/mali.png",
+        "correctIndex": 1,
+        "options": [
+          "Pinailog",
+          "Mali",
+          "Saranggaon",
+          "Padilagong Bulan"
+        ],
+        "optionsHiligaynon": [
+          "Pinailog",
+          "Mali",
+          "Saranggaon",
+          "Padilagong Bulan"
+        ]
+      },
+      {
+        "id": "c1000000-0000-4000-8000-000000000019",
+        "prompt": "Who is this character?",
+        "promptHiligaynon": "Sin-o ini nga karakter?",
+        "promptImagePath": "/assessment/characters/golden-lion.png?v=2",
+        "correctIndex": 1,
+        "options": [
+          "Tikum Kadlum",
+          "Golden Lion",
+          "Kalampay",
+          "Balanakon"
+        ],
+        "optionsHiligaynon": [
+          "Tikum Kadlum",
+          "Golden Lion",
+          "Kalampay",
+          "Balanakon"
+        ]
+      },
+      {
+        "id": "c1000000-0000-4000-8000-000000000020",
+        "prompt": "Who is this character?",
+        "promptHiligaynon": "Sin-o ini nga karakter?",
+        "promptImagePath": "/assessment/characters/humadapnon.png",
+        "correctIndex": 2,
+        "options": [
+          "Labaw Donggon",
+          "Dumalapdap",
+          "Humadapnon",
+          "Sinagnayan"
+        ],
+        "optionsHiligaynon": [
+          "Labaw Donggon",
+          "Dumalapdap",
+          "Humadapnon",
+          "Sinagnayan"
         ]
       }
     ]

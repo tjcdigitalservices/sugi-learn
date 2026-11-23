@@ -1,16 +1,10 @@
 "use client";
 
-import { Caveat } from "next/font/google";
 import { forwardRef } from "react";
 
 import { ResultsScoreCards, formatCompletedDate } from "@/components/learner/results/results-score-cards";
 import type { LearnerResultsDashboardView } from "@/types/assessment";
 import { cn } from "@/lib/utils";
-
-const script = Caveat({
-  subsets: ["latin"],
-  weight: ["600", "700"],
-});
 
 interface LearnerAssessmentReportProps {
   view: LearnerResultsDashboardView;
@@ -93,12 +87,7 @@ export const LearnerAssessmentReport = forwardRef<
           className="absolute inset-0 bg-gradient-to-r from-[rgba(247,239,228,0.55)] via-transparent to-[rgba(247,239,228,0.2)]"
           aria-hidden="true"
         />
-        <p
-          className={cn(
-            script.className,
-            "absolute bottom-8 right-6 max-w-[12rem] text-right text-3xl leading-tight text-sl-navy sm:bottom-10 sm:right-10 sm:text-4xl",
-          )}
-        >
+        <p className="font-script absolute bottom-8 right-6 max-w-[12rem] text-right text-3xl font-semibold leading-tight text-sl-navy sm:bottom-10 sm:right-10 sm:text-4xl">
           Heritage Lives Forward
         </p>
       </div>

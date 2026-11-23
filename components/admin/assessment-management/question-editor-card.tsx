@@ -132,6 +132,7 @@ export function QuestionEditorCard({
       const result = await saveQuestionAction(assessmentId, question.id, {
         prompt,
         promptHiligaynon: promptHiligaynon.trim() ? promptHiligaynon.trim() : null,
+        promptImagePath: question.promptImagePath ?? null,
         explanation: explanation.trim() ? explanation.trim() : null,
         explanationHiligaynon: explanationHiligaynon.trim()
           ? explanationHiligaynon.trim()

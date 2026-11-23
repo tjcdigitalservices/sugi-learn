@@ -83,6 +83,7 @@ function generateSeed(kind) {
   lines.push("  assessment_id,");
   lines.push("  prompt,");
   lines.push("  prompt_hiligaynon,");
+  lines.push("  prompt_image_path,");
   lines.push("  sort_order,");
   lines.push("  review_status");
   lines.push(")");
@@ -91,6 +92,7 @@ function generateSeed(kind) {
   lines.push("  a.id,");
   lines.push("  v.prompt,");
   lines.push("  v.prompt_hiligaynon,");
+  lines.push("  v.prompt_image_path,");
   lines.push("  v.sort_order,");
   lines.push("  'approved'");
   lines.push("FROM (");
@@ -98,10 +100,13 @@ function generateSeed(kind) {
 
   const questionValues = assessment.questions.map((q, index) => {
     const hil = q.promptHiligaynon?.trim() ? sqlString(q.promptHiligaynon.trim()) : "NULL";
-    return `    (${sqlString(q.id)}::uuid, ${sqlString(q.prompt)}, ${hil}, ${index + 1})`;
+    const image = q.promptImagePath?.trim()
+      ? sqlString(q.promptImagePath.trim())
+      : "NULL";
+    return `    (${sqlString(q.id)}::uuid, ${sqlString(q.prompt)}, ${hil}, ${image}, ${index + 1})`;
   });
   lines.push(questionValues.join(",\n"));
-  lines.push(") AS v(id, prompt, prompt_hiligaynon, sort_order)");
+  lines.push(") AS v(id, prompt, prompt_hiligaynon, prompt_image_path, sort_order)");
   lines.push("CROSS JOIN public.assessments a");
   lines.push(`WHERE a.type = ${sqlString(assessment.type)};`);
   lines.push("");

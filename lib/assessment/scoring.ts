@@ -10,6 +10,7 @@ export function toLearnerAssessmentQuestions(
     id: question.id,
     prompt: question.prompt,
     promptHiligaynon: question.promptHiligaynon,
+    promptImagePath: question.promptImagePath ?? null,
     sortOrder: question.sortOrder,
     options: question.options.map((option) => ({
       id: option.id,

@@ -30,6 +30,8 @@ export interface QuestionOptionInput {
 export interface CreateQuestionInput {
   prompt: string;
   promptHiligaynon?: string | null;
+  /** Optional public path for Guess Who / prompt portraits. */
+  promptImagePath?: string | null;
   explanation?: string | null;
   explanationHiligaynon?: string | null;
   sourceReference?: string | null;

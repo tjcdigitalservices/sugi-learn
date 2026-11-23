@@ -17,6 +17,8 @@ export interface LearnerAssessmentQuestion {
   id: string;
   prompt: string;
   promptHiligaynon: string | null;
+  /** Optional portrait/image shown with the prompt. */
+  promptImagePath: string | null;
   options: QuestionOption[];
   sortOrder: number;
 }
@@ -28,6 +30,8 @@ export interface AssessmentQuestion {
   chapterId: string | null;
   prompt: string;
   promptHiligaynon: string | null;
+  /** Optional portrait/image shown with the prompt. */
+  promptImagePath: string | null;
   options: QuestionOption[];
   /** Server-side only — not sent to the browser. */
   correctOptionId: string;

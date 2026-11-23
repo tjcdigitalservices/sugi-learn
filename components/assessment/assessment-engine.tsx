@@ -136,6 +136,7 @@ export function AssessmentEngine({
         id: question.id,
         prompt: question.prompt,
         promptHiligaynon: question.promptHiligaynon,
+        promptImagePath: question.promptImagePath ?? null,
         options: question.options,
         sortOrder: question.sortOrder,
       }))

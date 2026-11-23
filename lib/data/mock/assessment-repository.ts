@@ -186,6 +186,7 @@ function buildQuestionFromInput(
     chapterId: input.chapterId ?? null,
     prompt: input.prompt.trim(),
     promptHiligaynon: input.promptHiligaynon?.trim() || null,
+    promptImagePath: input.promptImagePath?.trim() || null,
     options,
     correctOptionId: options[correctIndex]?.id ?? "",
     explanation: input.explanation?.trim() || null,

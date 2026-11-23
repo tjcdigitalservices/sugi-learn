@@ -125,6 +125,19 @@ export function AssessmentQuestionPanel({
           />
         </div>
 
+        {question.promptImagePath ? (
+          <div className="mx-auto w-full max-w-sm overflow-hidden rounded-xl bg-white">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={question.promptImagePath}
+              alt="Character to identify"
+              className="mx-auto max-h-64 w-full object-contain"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        ) : null}
+
         <h1
           id={`${groupName}-prompt`}
           className="font-display text-2xl font-semibold leading-snug tracking-tight text-sl-navy sm:text-3xl"
